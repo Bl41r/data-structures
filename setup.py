@@ -2,15 +2,14 @@
 from setuptools import setup
 
 setup(
-    name="mailroom",
-    description="The mailroom implementation tracks donations and send thank you letters.",
-    version='0.1.1',
-    author="Zach Rickert, Steven Than, David Smith",
-    author_email="zachrickert@gmail.com, steventhan11@gmail.com, dbsmith.dbs83@gmail.com",
+    name="linked-list",
+    description="Implementation of a linked list",
+    version='0.1.0',
+    author="David Smith, Jeff Torres",
+    author_email="dbsmith.dbs83@gmail.com, jeffrey.n.torres@gmail.com",
     license='MIT',
-    py_modules=['mailroom'],
+    py_modules=['linked-list'],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require={'test': ['pytest', 'tox']},
-    entry_points={'console_scripts': ["mailroom = mailroom:main_menu"]}
 )
