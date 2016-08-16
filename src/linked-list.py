@@ -21,7 +21,7 @@ class LinkedList(object):
         self.length = len(node_list)
 
         self.head = None
-        for node in node_list:
+        for node in self.node_list:
             self.head = Node(node, self.head)
 
     def __repr__(self):
