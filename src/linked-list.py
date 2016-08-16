@@ -34,7 +34,7 @@ class LinkedList(object):
 
     def display(self):
         """Return a unicode string representing the list as if it were a Python tuple."""
-        pass
+        return u'(' + str(self.head) + u')'
 
     def push(self, val):
         """Insert the value val at the head of the list."""
@@ -42,7 +42,9 @@ class LinkedList(object):
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
-        pass
+        popped_node = self.head
+        self.head = self.head.next_node
+        return popped_node.data
 
     def search(self, val):
         """Return the node containing val in the list, if exists, else None."""
