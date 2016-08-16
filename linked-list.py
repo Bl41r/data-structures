@@ -10,7 +10,7 @@ class Node(object):
 
     def __repr__(self):
         """Display the data in this node."""
-        return 'data: ' + str(self.data) + ' next_node: ' + str(self.next_node)
+        return str(self.data) + ' --> ' + str(self.next_node)
 
 
 class LinkedList(object):
@@ -23,3 +23,7 @@ class LinkedList(object):
         self.head = None
         for node in node_list:
             self.head = Node(node, self.head)
+
+    def __repr__(self):
+        """Display the linked list."""
+        return str(self.head)
