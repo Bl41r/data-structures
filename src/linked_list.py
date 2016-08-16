@@ -24,14 +24,14 @@ class LinkedList(object):
 
         self.head = None
         self.length = 0
-
-        try:
+        if hasattr(params, '__iter__'):
             for node in params:
-                self.length += 1
                 self.push(node)
-        except TypeError:
+        elif params:
+            self.head = Node(None)
             self.push(params)
-            self.length = 1
+        else:
+            self.head = Node(None)
 
     def __repr__(self):
         """Display the linked list."""
