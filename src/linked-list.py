@@ -10,26 +10,42 @@ class Node(object):
 
     def __repr__(self):
         """Display the data in this node."""
-        return str(self.data) + ' --> ' + str(self.next_node)
+        return str(self.data) + ', ' + str(self.next_node)
 
 
 class LinkedList(object):
 
     def __init__(self, node_list):
         """Initialize the linked list instance."""
-        self.node_list = node_list
 
         self.head = None
         self.tail = Node(node_list[0])
-
-        for node in self.node_list:
+        self.length = 0
+        for node in node_list:
+            self.length += 1
             self.head = Node(node, self.head)
-
-        self.length = len(node_list)    # make sure to inc/dec with push/remove
 
     def __repr__(self):
         """Display the linked list."""
-        return str(self.head)
+        return '(' + str(self.head) + ')'
 
     def __len__(self):
         return self.length
+
+    def display(self):
+        pass
+
+    def push(self, val):
+        pass
+
+    def pop(self):
+        pass
+
+    def search(self, val):
+        pass
+
+    def size(self):
+        return self.length
+
+    def remove(node):
+        pass
