@@ -18,12 +18,18 @@ class LinkedList(object):
     def __init__(self, node_list):
         """Initialize the linked list instance."""
         self.node_list = node_list
-        self.length = len(node_list)
 
         self.head = None
+        self.tail = Node(node_list[0])
+
         for node in self.node_list:
             self.head = Node(node, self.head)
+
+        self.length = len(node_list)    # make sure to inc/dec with push/remove
 
     def __repr__(self):
         """Display the linked list."""
         return str(self.head)
+
+    def __len__(self):
+        return self.length
