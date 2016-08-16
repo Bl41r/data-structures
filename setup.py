@@ -11,5 +11,5 @@ setup(
     py_modules=['linked-list'],
     package_dir={'': 'src'},
     install_requires=[],
-    extras_require={'test': ['pytest', 'tox']},
+    extras_require={'test': ['pytest', 'pytest-cov', 'tox']},
 )
