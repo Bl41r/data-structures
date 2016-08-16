@@ -39,11 +39,13 @@ class LinkedList(object):
     def push(self, val):
         """Insert the value val at the head of the list."""
         self.head = Node(val, self.head)
+        self.length += 1
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
         popped_node = self.head
         self.head = self.head.next_node
+        self.length -= 1
         return popped_node.data
 
     def search(self, val):
