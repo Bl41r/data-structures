@@ -48,14 +48,21 @@ class LinkedList(object):
         self.length -= 1
         return popped_node.data
 
-    def search(self, val):
-        """Return the node containing val in the list, if exists, else None."""
-        pass
-
     def size(self):
         """Return the length of the list."""
         return self.length
 
-    def remove(node):
+    def search(self, val):
+        """Return the node containing val in the list, if exists, else None."""
+        current = self.head
+        while current.data is not None:
+            if current.data == val:
+                return current
+            elif current.next_node is None:
+                return None
+            current = current.next_node
+
+    def remove(self, node):
         """Remove the given node from the list, wherever it might be."""
-        pass
+        node.data = node.next_node.data
+        node.next_node = node.next_node.next_node
