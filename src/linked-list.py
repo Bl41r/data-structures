@@ -10,7 +10,7 @@ class Node(object):
 
     def __repr__(self):
         """Display the data in this node."""
-        return str(self.data) + ', ' + str(self.next_node)
+        return str(self.data) + u', ' + str(self.next_node)
 
 
 class LinkedList(object):
@@ -27,25 +27,31 @@ class LinkedList(object):
 
     def __repr__(self):
         """Display the linked list."""
-        return '(' + str(self.head) + ')'
+        return u'(' + str(self.head) + u')'
 
     def __len__(self):
         return self.length
 
     def display(self):
+        """Return a unicode string representing the list as if it were a Python tuple."""
         pass
 
     def push(self, val):
-        pass
+        """Insert the value val at the head of the list."""
+        self.head = Node(val, self.head)
 
     def pop(self):
+        """Pop the first value off the head of the list and return it."""
         pass
 
     def search(self, val):
+        """Return the node containing val in the list, if exists, else None."""
         pass
 
     def size(self):
+        """Return the length of the list."""
         return self.length
 
     def remove(node):
+        """Remove the given node from the list, wherever it might be."""
         pass
