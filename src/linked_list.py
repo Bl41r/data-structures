@@ -37,7 +37,7 @@ class LinkedList(object):
         return self.length
 
     def display(self):
-        """Return a unicode string representing the list as if it were a Python tuple."""
+        """Return a unicode string representing the linked list as if it were a Python tuple."""
         return u'(' + str(self.head) + u')'
 
     def push(self, val):
@@ -46,7 +46,7 @@ class LinkedList(object):
         self.length += 1
 
     def pop(self):
-        """Pop the first value off the head of the list and return it."""
+        """Pop the first value off the head of the linked list and return it."""
         if self.length > 0:
             popped_node = self.head
             self.head = self.head.next_node
