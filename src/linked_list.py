@@ -1,4 +1,4 @@
-"""Implementation of a link-list data type in Python."""
+"""Implementation of a linked-list data type in Python."""
 
 
 class Node(object):
@@ -16,12 +16,10 @@ class Node(object):
             return str(self.data)
 
 
-
 class LinkedList(object):
 
     def __init__(self, params=None):
         """Initialize the linked list instance."""
-
         self.head = Node(None)
         self.length = 0
 
