@@ -24,12 +24,13 @@ class Node_Dll(object):
 
 class Dll(object):
 
+    first_time = False
     def __init__(self, params=None):
         """Initialize the linked list instance."""
 
-        self.head = Node_Dll(None)
-        self.tail = self.head
+        self.head = Node_Dll(None, None)
         self.length = 0
+        self.first_time = True
 
         if hasattr(params, '__iter__'):
             for node in params:
@@ -54,6 +55,9 @@ class Dll(object):
     def push(self, val):
         """Insert the value val at the head of the list."""
         self.head = Node_Dll(val, None, self.head)
+        if self.first_time:
+            self.tail = self.head
+            self.first_time = False
         self.length += 1
 
     def pop(self):
