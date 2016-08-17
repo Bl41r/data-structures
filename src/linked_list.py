@@ -77,7 +77,12 @@ class LinkedList(object):
                 return None
             current = current.next_node
 
-    def remove(self, node):
+    def remove(self, node):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
-        node.data = node.next_node.data
-        node.next_node = node.next_node.next_node
+        try:
+            node.data = node.next_node.data
+            node.next_node = node.next_node.next_node
+        except AttributeError:
+            node.data = None
+        self.length -= 1
+        return
