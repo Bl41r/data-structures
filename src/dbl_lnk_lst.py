@@ -11,26 +11,18 @@ class Node_Dll(object):
 
     def __repr__(self):
         """Display the data in this node."""
-        if self.next_node is not None and self.prev_node is not None:
-            return str(self.prev_node) + u', ' + str(self.data) + u', '
-            + str(self.next_node) + '-->'
-        elif self.prev_node is None and self.next_node:
+        if self.next_node is not None:
             return str(self.data) + u', ' + str(self.next_node)
-        elif self.next_node is None and self.prev_node:
-            return str(self.prev_node) + u', ' + str(self.data)
         else:
             return str(self.data)
 
 
 class Dll(object):
 
-    first_time = False
     def __init__(self, params=None):
         """Initialize the linked list instance."""
 
-        self.head = Node_Dll(None, None)
         self.length = 0
-        self.first_time = True
 
         if hasattr(params, '__iter__'):
             for node in params:
@@ -54,10 +46,21 @@ class Dll(object):
 
     def push(self, val):
         """Insert the value val at the head of the list."""
-        self.head = Node_Dll(val, None, self.head)
-        if self.first_time:
+        tmp = Node_Dll(val, None, None)
+
+        if self.length == 0:
+            self.head = tmp
+            self.tail = tmp
+        elif self.length == 1:
+            tmp.next_node = self.tail
             self.tail = self.head
-            self.first_time = False
+            self.tail.prev_node = tmp
+            self.head = tmp
+        elif self.length > 1:
+            tmp.next_node = self.head
+            self.head.prev_node = tmp
+            self.head = tmp
+
         self.length += 1
 
     def pop(self):
@@ -65,7 +68,7 @@ class Dll(object):
         if self.length > 0:
             popped_node = self.head
             self.head = self.head.next_node
-            self.head.prev_node = None
+            self.head.next_node = None
             self.length -= 1
             return popped_node.data
         else:
@@ -100,8 +103,8 @@ class Dll(object):
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node"""
-        self.node.tail.next_node = Node_Dll(val, self.node.tail, None)
-        self.node.tail = self.node.tail.next_node
+        self.tail.next_node = Node_Dll(val, self.tail, None)
+        self.tail = self.tail.next_node
 
     def shift(self):
         """
