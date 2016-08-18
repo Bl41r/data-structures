@@ -54,11 +54,7 @@ class Dll(object):
         if self.length == 0:
             self.head = tmp
             self.tail = tmp
-        #elif self.length == 1:  # check if this part necessary
-        #    tmp.next_node = self.tail
-        #    self.tail = self.head
-        #    self.tail.prev_node = tmp
-        #    self.head = tmp
+
         elif self.length >= 1:
             tmp.next_node = self.head
             self.head.prev_node = tmp
@@ -72,7 +68,7 @@ class Dll(object):
             popped_node = self.head
             self.head.next_node.prev_node = None
             self.head = self.head.next_node
-            
+
             self.length -= 1
             return popped_node.data
         else:
