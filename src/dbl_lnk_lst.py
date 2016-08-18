@@ -32,7 +32,10 @@ class Dll(object):
 
     def __repr__(self):
         """Display the linked list."""
-        return u'(' + str(self.head) + u')'
+        try:
+            return u'(' + str(self.head) + u')'
+        except AttributeError:
+            return u'()'
 
     def __len__(self):
         return self.length
@@ -42,7 +45,7 @@ class Dll(object):
         Return a unicode string representing
         the list as if it were a Python tuple.
         """
-        return u'(' + str(self.head) + u')'
+        self.__repr__()
 
     def push(self, val):
         """Insert the value val at the head of the list."""
@@ -51,7 +54,7 @@ class Dll(object):
         if self.length == 0:
             self.head = tmp
             self.tail = tmp
-        elif self.length == 1:
+        elif self.length == 1:  # check if this part necessary
             tmp.next_node = self.tail
             self.tail = self.head
             self.tail.prev_node = tmp
@@ -67,8 +70,9 @@ class Dll(object):
         """Pop the first value off the head of the list and return it."""
         if self.length > 0:
             popped_node = self.head
+            self.head.next_node.prev_node = None
             self.head = self.head.next_node
-            self.head.next_node = None
+            
             self.length -= 1
             return popped_node.data
         else:
@@ -91,6 +95,7 @@ class Dll(object):
     def remove(self, val):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
         node = self.search(val)
+
         if node.next_node is not None:
             node.data = node.next_node.data
             node.next_node = node.next_node.next_node
@@ -100,9 +105,10 @@ class Dll(object):
             node.prev_node.next_node = None
 
         self.length -= 1
+        return self
 
     def append(self, val):
-        """Append the val arg to the end of the list as a new node"""
+        """Append the val arg to the end of the list as a new node."""
         self.tail.next_node = Node_Dll(val, self.tail, None)
         self.tail = self.tail.next_node
 
