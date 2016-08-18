@@ -68,7 +68,7 @@ class Dll(object):
             popped_node = self.head
             self.head.next_node.prev_node = None
             self.head = self.head.next_node
-            
+
             self.length -= 1
             return popped_node.data
         else:
