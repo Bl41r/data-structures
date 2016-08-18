@@ -12,6 +12,7 @@ class Queue(object):
 
     def __init__(self, iter=None):
         self._queue = Dll(iter)
+        self.length = self.size()
 
     def __repr__(self):
         s = self._queue.__repr__()
@@ -19,6 +20,20 @@ class Queue(object):
 
     def enqueue(self, val):
         self._queue.push(val)
+        self.length += 1
+        return self
 
     def dequeue(self):
-        self._queue.shift()
+        try:
+            self._queue.shift()
+            self.length += 1
+            return self
+        except AttributeError:
+            raise IndexError('Cannot dequeue an empty queue.')
+            pass
+
+    def peek(self):
+        return self._queue.tail
+
+    def size(self):
+        return self._queue.length
