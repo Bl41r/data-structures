@@ -23,6 +23,7 @@ class LinkedList(object):
         """Initialize the linked list instance."""
         
         self.head = Node(None)
+        self.head.data = None
         self.length = 0
 
         if hasattr(params, '__iter__'):
@@ -46,6 +47,7 @@ class LinkedList(object):
         """Insert the value val at the head of the list."""
         self.head = Node(val, self.head)
         self.length += 1
+        return self
 
     def pop(self):
         """Pop the first value off the head of the linked list and return it."""
@@ -73,11 +75,18 @@ class LinkedList(object):
 
     def remove(self, node):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
-        if node.next_node is not None:
-            node.data = node.next_node.data
-            node.next_node = node.next_node.next_node
-        else:
-            node.data = None
-            node.next_node = None
+        if node is None:
+            return self
+
+        try:
+            if node.next_node is not None:
+                node.data = node.next_node.data
+                node.next_node = node.next_node.next_node
+            else:
+                node.data = None
+                node.next_node = None
+        except AttributeError:
+            pass
 
         self.length -= 1
+        return self
