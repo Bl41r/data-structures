@@ -16,7 +16,6 @@ class Node(object):
             return str(self.data)
 
 
-
 class LinkedList(object):
 
     def __init__(self, params=None):

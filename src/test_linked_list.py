@@ -26,6 +26,7 @@ def test_size(list_data, length, head_data, next_n_data, display, rem_val):
     l_list = LinkedList(list_data)
     assert l_list.size() == length
 
+
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
 def test_display(list_data, length, head_data, next_n_data, display, rem_val):
     l_list = LinkedList(list_data)
