@@ -19,11 +19,13 @@ class Queue(object):
         return str(s)
 
     def enqueue(self, val):
+        """Push value onto teh stack."""
         self._queue.push(val)
         self.length += 1
         return self
 
     def dequeue(self):
+        """Remove and return value from the queue."""
         try:
             return self._queue.shift()
         except AttributeError:
@@ -31,10 +33,12 @@ class Queue(object):
             pass
 
     def peek(self):
+        """Peek at next value without dequeing it."""
         if self._queue.length > 0:
             return self._queue.tail.data
         else:
             return None
 
     def size(self):
+        """Return size of queue."""
         return self._queue.length
