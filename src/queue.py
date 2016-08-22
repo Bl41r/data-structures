@@ -1,14 +1,14 @@
-'''This is a module implementing a stack function composed from LinkedList()'''
+"""This is a module implementing a stack function composed from LinkedList()."""
 
 
 from dbl_lnk_lst import Dll
 
 
 class Queue(object):
-    '''
-    This is our Queue class and it's associated methods.
+    """This is our Queue class and it's associated methods.
+
     The Queue class accepts an optional iterable as a parameter.
-    '''
+    """
 
     def __init__(self, iter=None):
         self._queue = Dll(iter)
@@ -19,11 +19,13 @@ class Queue(object):
         return str(s)
 
     def enqueue(self, val):
+        """Push value onto teh stack."""
         self._queue.push(val)
         self.length += 1
         return self
 
     def dequeue(self):
+        """Remove and return value from the queue."""
         try:
             return self._queue.shift()
         except AttributeError:
@@ -31,10 +33,12 @@ class Queue(object):
             pass
 
     def peek(self):
+        """Peek at next value without dequeing it."""
         if self._queue.length > 0:
             return self._queue.tail.data
         else:
             return None
 
     def size(self):
+        """Return size of queue."""
         return self._queue.length
