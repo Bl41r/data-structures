@@ -1,4 +1,4 @@
-"""Implementation of a link-list data type in Python."""
+"""Implementation of a dbl link-list data type in Python."""
 
 
 class Node_Dll(object):
@@ -23,6 +23,8 @@ class Dll(object):
         """Initialize the linked list instance."""
 
         self.length = 0
+        self.head = Node_Dll(None)
+        self.head.data = None
 
         if hasattr(params, '__iter__'):
             for node in params:
@@ -45,7 +47,7 @@ class Dll(object):
         Return a unicode string representing
         the list as if it were a Python tuple.
         """
-        self.__repr__()
+        return u'(' + str(self.head) + u')'
 
     def push(self, val):
         """Insert the value val at the head of the list."""
@@ -101,7 +103,7 @@ class Dll(object):
             node.prev_node.next_node = None
 
         self.length -= 1
-        return self
+        return (node, self, self.length)
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node."""
