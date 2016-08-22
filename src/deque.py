@@ -9,7 +9,7 @@ class Deque(object):
 
     def __init__(self, iter=None):
         self._deque = Dll(iter)
-        self.length = self.size()
+        self.length = self._deque.length
 
     def __repr__(self):
         s = self._deque.__repr__()
@@ -61,4 +61,4 @@ class Deque(object):
 
     def size(self):
         """Return size of deque."""
-        return self._deque.length
+        return self.length
