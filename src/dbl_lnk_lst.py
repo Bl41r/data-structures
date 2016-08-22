@@ -122,9 +122,9 @@ class Dll(object):
             self.length -= 1
             return shifted_node.data
         elif self.length == 1:
-            shifted_node = self.tail
+            shifted_node_data = self.tail.data
             self.head.data = None
             self.tail.data = None
-            return shifted_node.data
+            return shifted_node_data
         else:
             return None
