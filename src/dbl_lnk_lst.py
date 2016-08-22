@@ -103,7 +103,7 @@ class Dll(object):
             node.prev_node.next_node = None
 
         self.length -= 1
-        return self
+        return (node, self, self.length)
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node."""
