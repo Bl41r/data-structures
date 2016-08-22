@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Test of dbl_lnk_lst.py."""
+"""Test of queue.py."""
 
 import pytest
-<<<<<<< HEAD
-from dbl_lnk_lst import Dll
-=======
->>>>>>> queue
 from queue import Queue
 
 # format:
