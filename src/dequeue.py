@@ -35,7 +35,6 @@ class Deque(object):
             return val
         except AttributeError:
             raise IndexError('Cannot dequeue an empty queue.')
-            pass
 
     def popleft(self):
         """Remove and return value from front of deque."""
@@ -45,7 +44,6 @@ class Deque(object):
             return val
         except AttributeError:
             raise IndexError('Cannot pop an empty queue.')
-            pass
 
     def peek(self):
         """Peek at next value without dequeing it."""
