@@ -22,4 +22,4 @@ class Stack(object):
         self._stack.push(val)
 
     def pop(self):
-        self._stack.pop()
+        return self._stack.pop()
