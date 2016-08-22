@@ -2,7 +2,10 @@
 """Test of dbl_lnk_lst.py."""
 
 import pytest
+<<<<<<< HEAD
 from dbl_lnk_lst import Dll
+=======
+>>>>>>> queue
 from queue import Queue
 
 # format:
@@ -19,9 +22,7 @@ TEST_DATAS = [
 ]
 
 
-@pytest.mark.parametrize(
-    'list_data, length, head_data, shift', TEST_DATAS
-    )
+@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
 def test_data(list_data, length, head_data, shift):
     q = Queue(list_data)
     print(q)
@@ -31,25 +32,19 @@ def test_data(list_data, length, head_data, shift):
         assert q._queue.head.next_node.data == q._queue.head.next_node.data
 
 
-@pytest.mark.parametrize(
-    'list_data, length, head_data, shift', TEST_DATAS
-    )
+@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
 def test_size(list_data, length, head_data, shift):
     q = Queue(list_data)
     assert q.size() == length
 
 
-@pytest.mark.parametrize(
-    'list_data, length, head_data, shift', TEST_DATAS
-    )
+@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
 def test_enqueue(list_data, length, head_data, shift):
     q = Queue(list_data)
     assert q.enqueue(6).peek() == q.peek()
 
 
-@pytest.mark.parametrize(
-    'list_data, length, head_data, shift', TEST_DATAS
-    )
+@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
 def test_dequeue(list_data, length, head_data, shift):
     q = Queue(list_data)
     if q is not None:
@@ -58,9 +53,7 @@ def test_dequeue(list_data, length, head_data, shift):
         q.dequeue() == IndexError
 
 
-@pytest.mark.parametrize(
-    'list_data, length, head_data, shift', TEST_DATAS
-    )
+@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
 def test_peek(list_data, length, head_data, shift):
     q = Queue(list_data)
     if q._queue.length > 0:
