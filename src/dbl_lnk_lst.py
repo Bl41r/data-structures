@@ -115,11 +115,16 @@ class Dll(object):
         Shift the node off the tail of the list and return the value of the
         node.
         """
-        if self.length > 0:
+        if self.length > 1:
             shifted_node = self.tail
             self.tail = self.tail.prev_node
             self.tail.next_node = None
             self.length -= 1
+            return shifted_node.data
+        elif self.length == 1:
+            shifted_node = self.tail
+            self.head.data = None
+            self.tail.data = None
             return shifted_node.data
         else:
             return None
