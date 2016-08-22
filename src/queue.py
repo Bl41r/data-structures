@@ -26,7 +26,9 @@ class Queue(object):
     def dequeue(self):
         """Remove and return value from the queue."""
         try:
-            return self._queue.shift()
+            val = self._queue.shift()
+            self.length -= 1
+            return val
         except AttributeError:
             raise IndexError('Cannot dequeue an empty queue.')
             pass
