@@ -11,7 +11,6 @@ TEST_DATAS = [
     ([], 0, None, None, '(None)', 2, None, None)
 ]
 
-TEST_LISTS = [(Dll(data[0]), data[1], data[2], data[3], data[4], data[5], data[6], data[7]) for data in TEST_DATAS]
 
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
 def test_data_integrity(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
