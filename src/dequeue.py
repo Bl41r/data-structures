@@ -1,7 +1,7 @@
 from dbl_lnk_lst import Dll
 
 
-class Dequeue(object):
+class Deque(object):
     """This is our Queue class and it's associated methods.
 
     The Queue class accepts an optional iterable as a parameter.
@@ -16,17 +16,17 @@ class Dequeue(object):
         return str(s)
 
     def appendleft(self, val):      # this was enqueue(val)
-        """Push value onto the dequeue head."""
+        """Push value onto the deque head."""
         self._queue.push(val)
         self.length += 1
         return self
 
     def append(self, val):
-        """Append value to end of dequeue."""
+        """Append value to end of deque."""
         pass
 
     def pop(self):  # this was dequeue()
-        """Remove and return value from the dequeue and return it."""
+        """Remove and return value from the deque and return it."""
         try:
             val = self._queue.shift()
             self.length -= 1
@@ -36,7 +36,7 @@ class Dequeue(object):
             pass
 
     def popleft(self):
-        """Remove and return value from front of dequeue."""
+        """Remove and return value from front of deque."""
 
     def peek(self):
         """Peek at next value without dequeing it."""
@@ -50,5 +50,5 @@ class Dequeue(object):
         pass
 
     def size(self):
-        """Return size of dequeue."""
+        """Return size of deque."""
         return self._queue.length
