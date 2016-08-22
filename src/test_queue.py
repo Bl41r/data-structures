@@ -45,6 +45,8 @@ def test_dequeue(list_data, length, head_data, shift):
     q = Queue(list_data)
     if q is not None:
         assert q.dequeue() == shift
+        q.dequeue()
+        assert q.length == length - 2
     else:
         q.dequeue() == IndexError
 
