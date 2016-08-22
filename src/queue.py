@@ -1,14 +1,25 @@
+<<<<<<< HEAD
 '''This is a module implementing a stack function composed from LinkedList()'''
+=======
+"""This is a module implementing stack class composed from LinkedList()."""
+>>>>>>> stack
 
 
 from dbl_lnk_lst import Dll
 
 
 class Queue(object):
+<<<<<<< HEAD
     '''
     This is our Queue class and it's associated methods.
     The Queue class accepts an optional iterable as a parameter.
     '''
+=======
+    """This is our Queue class and it's associated methods.
+
+    The Queue class accepts an optional iterable as a parameter.
+    """
+>>>>>>> stack
 
     def __init__(self, iter=None):
         self._queue = Dll(iter)

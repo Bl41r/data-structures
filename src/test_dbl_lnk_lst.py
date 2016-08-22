@@ -8,7 +8,11 @@ from dbl_lnk_lst import Dll
 TEST_DATAS = [
     ([5, 4, 3, 2, 1], 5, 1, 2, '(1, 2, 3, 4, 5)', 3, 1, 5),
     (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'v', "(u, v, w, x, y, z)", 'z', 'w', 'z'),
+<<<<<<< HEAD
     ([], 0, None, None, '(None)', 2, None, None)
+=======
+    ([], 0, None, None, '(None)', 2, 1, None)
+>>>>>>> stack
 ]
 
 
@@ -52,6 +56,7 @@ def test_push(list_data, length, head_data, next_n_data, display, rem_val, searc
 def test_shift(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
     l_list = Dll(list_data)
     assert l_list.shift() == shift
+<<<<<<< HEAD
 
 
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
@@ -72,3 +77,5 @@ def test_remove(list_data, length, head_data, next_n_data, display, rem_val, sea
     l_list = Dll(list_data)
     if l_list:
         assert l_list.remove(l_list.head.data) == (l_list.head, l_list, l_list.length)
+=======
+>>>>>>> stack
