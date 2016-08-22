@@ -1,4 +1,4 @@
-"""Implementation of a link-list data type in Python."""
+"""Implementation of a dbl link-list data type in Python."""
 
 
 class Node_Dll(object):
