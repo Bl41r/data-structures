@@ -9,20 +9,14 @@ from queue import Queue
 # (list of datas,
 # length,
 # head data,
-# shift)
+# shift val)
 
 
 TEST_DATAS = [
-    ([5, 4, 3, 2, 1], 5, 1, 1),
-    (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'u'),
+    ([5, 4, 3, 2, 1], 5, 1, 5),
+    (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'z'),
     ([], 0, None, None)
 ]
-
-TEST_LISTS = [
-    (Dll(data[0]),
-        data[1],
-        data[2],
-        data[3]) for data in TEST_DATAS]
 
 
 @pytest.mark.parametrize(
@@ -59,7 +53,7 @@ def test_enqueue(list_data, length, head_data, shift):
 def test_dequeue(list_data, length, head_data, shift):
     q = Queue(list_data)
     if q is not None:
-        assert q.dequeue() == q._queue.head
+        assert q.dequeue() == shift
     else:
         q.dequeue() == IndexError
 
@@ -69,5 +63,7 @@ def test_dequeue(list_data, length, head_data, shift):
     )
 def test_peek(list_data, length, head_data, shift):
     q = Queue(list_data)
-    if q:
-        assert q.peek() == q._queue.tail
+    if q._queue.length > 0:
+        assert q.peek() == shift
+    else:
+        assert q.peek() is None

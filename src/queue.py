@@ -25,15 +25,16 @@ class Queue(object):
 
     def dequeue(self):
         try:
-            self._queue.shift()
-            self.length -= 1
-            return self
+            return self._queue.shift()
         except AttributeError:
             raise IndexError('Cannot dequeue an empty queue.')
             pass
 
     def peek(self):
-        return self._queue.tail
+        if self._queue.length > 0:
+            return self._queue.tail.data
+        else:
+            return None
 
     def size(self):
         return self._queue.length
