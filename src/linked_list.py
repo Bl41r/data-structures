@@ -1,4 +1,4 @@
-"""Implementation of a link-list data type in Python."""
+"""Implementation of a linked-list data type in Python."""
 
 
 class Node(object):
@@ -16,13 +16,13 @@ class Node(object):
             return str(self.data)
 
 
-
 class LinkedList(object):
 
     def __init__(self, params=None):
         """Initialize the linked list instance."""
 
         self.head = Node(None)
+        self.head.data = None
         self.length = 0
 
         if hasattr(params, '__iter__'):
@@ -39,16 +39,17 @@ class LinkedList(object):
         return self.length
 
     def display(self):
-        """Return a unicode string representing the list as if it were a Python tuple."""
+        """Return a unicode string representing the linked list as if it were a Python tuple."""
         return u'(' + str(self.head) + u')'
 
     def push(self, val):
         """Insert the value val at the head of the list."""
         self.head = Node(val, self.head)
         self.length += 1
+        return self
 
     def pop(self):
-        """Pop the first value off the head of the list and return it."""
+        """Pop the first value off the head of the linked list and return it."""
         if self.length > 0:
             popped_node = self.head
             self.head = self.head.next_node
@@ -73,11 +74,18 @@ class LinkedList(object):
 
     def remove(self, node):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
-        if node.next_node is not None:
-            node.data = node.next_node.data
-            node.next_node = node.next_node.next_node
-        else:
-            node.data = None
-            node.next_node = None
+        if node is None:
+            return self
+
+        try:
+            if node.next_node is not None:
+                node.data = node.next_node.data
+                node.next_node = node.next_node.next_node
+            else:
+                node.data = None
+                node.next_node = None
+        except AttributeError:
+            pass
 
         self.length -= 1
+        return self
