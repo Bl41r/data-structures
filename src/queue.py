@@ -1,4 +1,4 @@
-"""This is a module implementing a stack function composed from LinkedList()."""
+"""This is a module implementing stack class composed from LinkedList()."""
 
 
 from dbl_lnk_lst import Dll
