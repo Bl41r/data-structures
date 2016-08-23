@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from collections import namedtuple
 import pytest
 
@@ -51,3 +52,31 @@ def deque(request):
 
 def test_deque_pop(deque):
     assert deque.instance.pop() == deque.first
+
+
+def test_deque_popleft(deque):
+    assert deque.instance.popleft() == deque.last
+
+
+def test_append(deque):
+    if deque.first is not None:
+        assert deque.instance.append(0)._deque.tail.data == 0
+
+
+def test_appendleft(deque):
+    if deque.first is not None:
+        assert deque.instance.appendleft(1)._deque.head.data == 1
+
+
+def test_peek(deque):
+    if deque.first is not None:
+        assert deque.instance.peek() == deque.first
+
+
+def test_peekleft(deque):
+    if deque.first is not None:
+        assert deque.instance.peekleft() == deque.last
+
+
+def test_size(deque):
+    assert deque.instance.size() == deque.size

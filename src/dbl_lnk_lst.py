@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Implementation of a dbl link-list data type in Python."""
 
 
@@ -130,6 +131,7 @@ class Dll(object):
             shifted_node_data = self.tail.data
             self.head.data = None
             self.tail.data = None
+            self.length = 0
             return shifted_node_data
         else:
             return None
