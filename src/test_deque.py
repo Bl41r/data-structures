@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf8 -*-
+from __future__ import unicode_literals
 from collections import namedtuple
 import pytest
 
@@ -21,8 +22,25 @@ TEST_CASES = [
     [],
     [1],
     [1, 2],
-    [1, 3, 5]
+    [1, 3, 5],
+    [-50, 0, 50],
+    [-50, 25, -25, 0],
+    ['a', 'b', 'c'],
+    ['abc'],
+    ['¡', '¢', '£'],
+    ['¡¢£'],
+    ['a¡', 2],
+    ['', None, 0],
+    [(), (), ()],
+    [(1, 2), (3, 4), 4, 'string'],
+    [{}, {}, {}],
+    [{'key': 'value', 'key2': 'value2', 'key3': 'value3'},
+     {'key4': 'value4', 'key5': 'value5', 'key6': 'value6'}],
+    {},
+    'string',
+    'a',
 ]
+
 
 MyDequeFix = namedtuple(
     'DequeFixture',
