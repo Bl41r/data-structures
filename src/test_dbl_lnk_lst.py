@@ -1,16 +1,3 @@
-# # -*- coding: utf-8 -*-
-# """Test of dbl_lnk_lst.py."""
-#
-# import pytest
-# from dbl_lnk_lst import Dll
-#
-# # format: (list of datas, length, head data, next node data, display, rem_val, search, shift)
-# TEST_DATAS = [
-#     ([5, 4, 3, 2, 1], 5, 1, 2, '(1, 2, 3, 4, 5)', 3, 1, 5),
-#     (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'v', "(u, v, w, x, y, z)", 'z', 'w', 'z'),
-#     ([], 0, None, None, '(None)', 2, 1, None)
-# ]
-
 # -*- coding: utf8 -*-
 from __future__ import unicode_literals
 from collections import namedtuple
@@ -83,6 +70,7 @@ def test_init(dll):
     assert dll.instance.length == dll.size
     assert dll.instance.head.data == dll.last
 
+
 def test_size(dll):
     assert dll.instance.size() == dll.size
 
@@ -100,17 +88,27 @@ def test_push(dll):
     assert dll.instance.size() == dll.size + 1
 
 
+def test_append(dll):
+    assert dll.instance.append(8).tail.data == 8
+    assert dll.instance.size() == dll.size + 1
+
+
 def test_shift(dll):
     if dll.instance.head.data is not None:
         assert dll.instance.shift() == dll.first
         assert dll.instance.size() == dll.size - 1
+    else:
+        assert dll.instance.shift() is None
 
 
 def test_search(dll):
     if dll.instance.head.data is not None:
         assert dll.instance.search(dll.first).data == dll.first
+    assert dll.instance.search('asdfasdf') is None
 
 
 def test_remove(dll):
-    if dll.instance.head.data is not None:
+    if dll.size > 1:
         assert dll.instance.remove(dll.first).tail.data == dll.seq[1]
+    else:
+        assert dll.instance.remove(dll.first).length == 0

@@ -36,10 +36,7 @@ class Dll(object):
 
     def __repr__(self):
         """Display the linked list."""
-        try:
-            return '(' + repr(self.head) + ')'
-        except AttributeError:
-            return '()'
+        return '(' + repr(self.head) + ')'
 
     def __len__(self):
         return self.length
@@ -101,13 +98,17 @@ class Dll(object):
         """Remove the given node from the list, wherever it might be."""
         node = self.search(val)
 
-        if node.next_node is not None:
+        try:
             node.data = node.next_node.data
             node.next_node = node.next_node.next_node
-        elif node.next_node is None:
+        except AttributeError:
             self.tail = node.prev_node
             node.data = None
-            node.prev_node.next_node = None
+            try:
+                node.prev_node.next_node = None
+            except AttributeError:
+                if self.length == 0:
+                    return self
 
         self.length -= 1
         return self
@@ -116,6 +117,8 @@ class Dll(object):
         """Append the val arg to the end of the list as a new node."""
         self.tail.next_node = Node_Dll(val, self.tail, None)
         self.tail = self.tail.next_node
+        self.length += 1
+        return self
 
     def shift(self):
         """
