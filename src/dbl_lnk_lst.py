@@ -13,9 +13,9 @@ class Node_Dll(object):
     def __repr__(self):
         """Display the data in this node."""
         if self.next_node is not None:
-            return str(self.data) + u', ' + str(self.next_node)
+            return repr(self.data) + ', ' + repr(self.next_node)
         else:
-            return str(self.data)
+            return repr(self.data)
 
 
 class Dll(object):
@@ -37,9 +37,9 @@ class Dll(object):
     def __repr__(self):
         """Display the linked list."""
         try:
-            return u'(' + repr(self.head) + u')'
+            return '(' + repr(self.head) + ')'
         except AttributeError:
-            return u'()'
+            return '()'
 
     def __len__(self):
         return self.length
@@ -49,7 +49,7 @@ class Dll(object):
         Return a unicode string representing
         the list as if it were a Python tuple.
         """
-        return u'(' + str(self.head) + u')'
+        return '(' + repr(self.head) + ')'
 
     def push(self, val):
         """Insert the value val at the head of the list."""
@@ -65,6 +65,7 @@ class Dll(object):
             self.head = tmp
 
         self.length += 1
+        return self
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
@@ -90,12 +91,11 @@ class Dll(object):
     def search(self, val):
         """Return the node containing val in the list, if exists, else None."""
         current = self.head
-        while current.data is not None:
+        while current is not None:
             if current.data == val:
                 return current
-            elif current.next_node is None:
-                return None
             current = current.next_node
+        return None
 
     def remove(self, val):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
@@ -110,7 +110,7 @@ class Dll(object):
             node.prev_node.next_node = None
 
         self.length -= 1
-        return (node, self, self.length)
+        return self
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node."""
