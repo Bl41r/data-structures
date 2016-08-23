@@ -1,4 +1,5 @@
-"""Implementation of a link-list data type in Python."""
+# -*- coding: utf-8 -*-
+"""Implementation of a dbl link-list data type in Python."""
 
 
 class Node_Dll(object):
@@ -66,13 +67,18 @@ class Dll(object):
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
-        if self.length > 0:
+        if self.length > 1:
             popped_node = self.head
             self.head.next_node.prev_node = None
             self.head = self.head.next_node
-
             self.length -= 1
             return popped_node.data
+        elif self.length == 1:
+            popped_node_data = self.head.data
+            self.head.data = None
+            self.tail.data = None
+            self.length = 0
+            return popped_node_data
         else:
             return None
 
@@ -103,7 +109,7 @@ class Dll(object):
             node.prev_node.next_node = None
 
         self.length -= 1
-        return self
+        return (node, self, self.length)
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node."""
@@ -115,11 +121,17 @@ class Dll(object):
         Shift the node off the tail of the list and return the value of the
         node.
         """
-        if self.length > 0:
+        if self.length > 1:
             shifted_node = self.tail
             self.tail = self.tail.prev_node
             self.tail.next_node = None
             self.length -= 1
             return shifted_node.data
+        elif self.length == 1:
+            shifted_node_data = self.tail.data
+            self.head.data = None
+            self.tail.data = None
+            self.length = 0
+            return shifted_node_data
         else:
             return None

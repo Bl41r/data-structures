@@ -11,8 +11,6 @@ TEST_DATAS = [
     ([], 0, None, None, '(None)', 2)
 ]
 
-TEST_LISTS = [(LinkedList(data[0]), data[1], data[2], data[3], data[4], data[5]) for data in TEST_DATAS]
-
 
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
 def test_data_integrity(list_data, length, head_data, next_n_data, display, rem_val):
@@ -27,6 +25,7 @@ def test_data_integrity(list_data, length, head_data, next_n_data, display, rem_
 def test_size(list_data, length, head_data, next_n_data, display, rem_val):
     l_list = LinkedList(list_data)
     assert l_list.size() == length
+
 
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
 def test_display(list_data, length, head_data, next_n_data, display, rem_val):

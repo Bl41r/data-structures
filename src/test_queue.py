@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Test of dbl_lnk_lst.py."""
+"""Test of queue.py."""
 
 import pytest
 from queue import Queue

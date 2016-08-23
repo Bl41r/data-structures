@@ -11,7 +11,6 @@ TEST_DATAS = [
     ([], 0, None, None, '(None)', 2, 1, None)
 ]
 
-TEST_LISTS = [(Dll(data[0]), data[1], data[2], data[3], data[4], data[5], data[6], data[7]) for data in TEST_DATAS]
 
 @pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
 def test_data_integrity(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
@@ -53,3 +52,23 @@ def test_push(list_data, length, head_data, next_n_data, display, rem_val, searc
 def test_shift(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
     l_list = Dll(list_data)
     assert l_list.shift() == shift
+
+
+@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
+def test_length(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
+    l_list = Dll(list_data)
+    if l_list:
+        assert l_list.__len__() == length
+
+
+@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
+def test_search(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
+    l_list = Dll(list_data)
+    if l_list:
+        assert l_list.search(l_list.head.data).data == l_list.head.data
+
+@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val, search, shift', TEST_DATAS)
+def test_remove(list_data, length, head_data, next_n_data, display, rem_val, search, shift):
+    l_list = Dll(list_data)
+    if l_list:
+        assert l_list.remove(l_list.head.data) == (l_list.head, l_list, l_list.length)
