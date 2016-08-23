@@ -13,8 +13,7 @@ class Deque(object):
         self.length = self._deque.length
 
     def __repr__(self):
-        s = self._deque.__repr__()
-        return str(s)
+        return repr(self._deque)
 
 
     def appendleft(self, val):      # this was enqueue(val)
