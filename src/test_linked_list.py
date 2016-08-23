@@ -73,8 +73,8 @@ def test_init(ll):
     assert ll.instance.head.data == ll.last
 
 
-def test_size(ll):
-    assert ll.instance.size() == ll.size
+def test_push(ll):
+    assert ll.instance.push(ll.size).head.data == ll.size
 
 
 def test_display(ll):
@@ -85,17 +85,6 @@ def test_pop(ll):
     assert ll.instance.pop() == ll.last
 
 
-def test_push(ll):
-    assert ll.instance.push(8).head.data == 8
-    assert ll.instance.size() == ll.size + 1
-
-
-def test_shift(ll):
-    if ll.instance.head.data is not None:
-        assert ll.instance.shift() == ll.first
-        assert ll.instance.size() == ll.size - 1
-
-
 def test_search(ll):
     if ll.instance.head.data is not None:
         assert ll.instance.search(ll.first).data == ll.first
@@ -104,62 +93,3 @@ def test_search(ll):
 def test_remove(ll):
     if ll.instance.head.data is not None:
         assert ll.instance.remove(ll.first).tail.data == ll.seq[1]
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_data_integrity(
-    list_data, length, head_data, next_n_data, display, rem_val
-):
-    l_list = LinkedList(list_data)
-    assert l_list.length == length
-    assert l_list.head.data == head_data
-    if l_list.head.data is not None:
-        assert l_list.head.next_node.data == next_n_data
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_size(list_data, length, head_data, next_n_data, display, rem_val):
-    l_list = LinkedList(list_data)
-    assert l_list.size() == length
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_display(list_data, length, head_data, next_n_data, display, rem_val):
-    l_list = LinkedList(list_data)
-    assert l_list.display() == display
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_pop(list_data, length, head_data, next_n_data, display, rem_val):
-    l_list = LinkedList(list_data)
-    assert l_list.pop() == head_data
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_push(list_data, length, head_data, next_n_data, display, rem_val):
-    l_list = LinkedList(list_data)
-    l_list.push(8)
-    assert l_list.head.data == 8
-    assert l_list.size() == length + 1
-
-
-@pytest.mark.parametrize(
-    'list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS
-    )
-def test_remove(list_data, length, head_data, next_n_data, display, rem_val):
-    l_list = LinkedList(list_data)
-    x = l_list.search(rem_val)
-    if x is not None and length > 0:
-        assert l_list.remove(x).size() == length - 1
-    else:
-        assert l_list.remove(x).size() == length
