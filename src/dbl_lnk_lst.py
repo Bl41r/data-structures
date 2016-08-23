@@ -25,6 +25,7 @@ class Dll(object):
 
         self.length = 0
         self.head = Node_Dll(None)
+        self.tail = self.head
         self.head.data = None
 
         if hasattr(params, '__iter__'):
@@ -36,7 +37,7 @@ class Dll(object):
     def __repr__(self):
         """Display the linked list."""
         try:
-            return u'(' + str(self.head) + u')'
+            return u'(' + repr(self.head) + u')'
         except AttributeError:
             return u'()'
 
