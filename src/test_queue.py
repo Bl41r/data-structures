@@ -1,60 +1,88 @@
-# -*- coding: utf-8 -*-
-"""Test of queue.py."""
-
+# -*- coding: utf8 -*-
+from __future__ import unicode_literals
+from collections import namedtuple
 import pytest
-from queue import Queue
 
-# format:
-# (list of datas,
-# length,
-# head data,
-# shift val)
+''' This is the test file for the Queue module.'''
 
-
-TEST_DATAS = [
-    ([5, 4, 3, 2, 1], 5, 1, 5),
-    (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'z'),
-    ([], 0, None, None)
+TEST_CASES = [
+    [],
+    [1],
+    [1, 2],
+    [1, 3, 5],
+    [-50, 0, 50],
+    [-50, 25, -25, 0],
+    ['a', 'b', 'c'],
+    ['abc'],
+    ['¡', '¢', '£'],
+    ['¡¢£'],
+    ['a¡', 2],
+    ['', None, 0],
+    [(), (), ()],
+    [(1, 2), (3, 4), 4, 'string'],
+    [{}, {}, {}],
+    [{'key': 'value', 'key2': 'value2', 'key3': 'value3'},
+     {'key4': 'value4', 'key5': 'value5', 'key6': 'value6'}],
+    {},
+    'string',
+    'a',
 ]
 
-
-@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
-def test_data(list_data, length, head_data, shift):
-    q = Queue(list_data)
-    print(q)
-    assert q.length == length
-    assert q._queue.head.data == head_data
-    if q._queue.head.data is not None:
-        assert q._queue.head.next_node.data == q._queue.head.next_node.data
+MyQueueFix = namedtuple(
+    'QueueFixture',
+    ('instance', 'first', 'seq', 'pop_error', 'size', 'last')
+)
 
 
-@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
-def test_size(list_data, length, head_data, shift):
-    q = Queue(list_data)
-    assert q.size() == length
-
-
-@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
-def test_enqueue(list_data, length, head_data, shift):
-    q = Queue(list_data)
-    assert q.enqueue(6).peek() == q.peek()
-
-
-@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
-def test_dequeue(list_data, length, head_data, shift):
-    q = Queue(list_data)
-    if q is not None:
-        assert q.dequeue() == shift
-        q.dequeue()
-        assert q.length == length - 2
+@pytest.fixture(scope='function', params=TEST_CASES)
+def queue(request):
+    '''Return an empty queue'''
+    from dbl_lnk_lst import Queue
+    instance = Queue()
+    seq = request.param
+    size = len(seq)
+    if seq:
+        first = seq[0]
+        pop_error = None
+        last = seq[-1]
     else:
-        q.dequeue() == IndexError
+        first = None
+        pop_error = IndexError
+        last = None
+    for val in request.param:
+        instance.push(val)
+    return MyQueueFix(instance, first, seq, pop_error, size, last)
 
 
-@pytest.mark.parametrize('list_data, length, head_data, shift', TEST_DATAS)
-def test_peek(list_data, length, head_data, shift):
-    q = Queue(list_data)
-    if q._queue.length > 0:
-        assert q.peek() == shift
+def test_init(queue):
+    pass
+
+
+def test_size(queue):
+    assert queue.instance.size() == queue.size
+
+
+def test_display(queue):
+    assert queue.instance.display() == str(queue.instance)
+
+
+def test_pop(queue):
+    if queue.pop_error is None:
+        assert queue.instance.pop() == queue.last
     else:
-        assert q.peek() is None
+        with pytest.raises(queue.pop_error):
+            queue.instance.pop()
+
+
+def test_shift(queue):
+    if queue.pop_error is None:
+        assert queue.instance.shift() == queue.first
+        assert queue.instance.size() == queue.size - 1
+    else:
+        with pytest.raises(queue.pop_error):
+            queue.instance.shift()
+
+
+def test_push(queue):
+    assert queue.instance.push(8).head.data == 8
+    assert queue.instance.size() == queue.size + 1

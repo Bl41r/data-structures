@@ -12,7 +12,7 @@ class Queue(object):
     def __init__(self, iter=None):
         """Init instance of Queue."""
         self._queue = Dll(iter)
-        self.length = self.size()
+        self.size()
 
     def __repr__(self):
         """Represent self."""
@@ -22,14 +22,12 @@ class Queue(object):
     def enqueue(self, val):
         """Push value onto teh stack."""
         self._queue.push(val)
-        self.length += 1
         return self
 
     def dequeue(self):
         """Remove and return value from the queue."""
         if self.length > 0:
             val = self._queue.shift()
-            self.length -= 1
             return val
         else:
             raise IndexError('Cannot dequeue an empty queue.')
@@ -43,4 +41,11 @@ class Queue(object):
 
     def size(self):
         """Return size of queue."""
-        return self._queue.length
+        current = self.head
+        inc = 0
+        while True:
+            try:
+                current = current.next_node
+            except AttributeError:
+                return inc
+            inc += 1
