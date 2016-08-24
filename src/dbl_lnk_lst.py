@@ -3,6 +3,7 @@
 
 
 class Node_Dll(object):
+    """Node class."""
 
     def __init__(self, data, prev_node=None, next_node=None):
         """Initialize the Node instance."""
@@ -19,6 +20,7 @@ class Node_Dll(object):
 
 
 class Dll(object):
+    """Double linked list class."""
 
     def __init__(self, params=None):
         """Initialize the linked list instance."""
