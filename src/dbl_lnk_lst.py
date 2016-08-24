@@ -23,16 +23,15 @@ class Dll(object):
     def __init__(self, params=None):
         """Initialize the linked list instance."""
 
-        self.length = 0
-        self.head = Node_Dll(None)
-        self.tail = self.head
-        self.head.data = None
+        self.head = None
+        self.tail = None
 
-        if hasattr(params, '__iter__'):
+        try:
             for node in params:
                 self.push(node)
-        elif params:
-            self.push(params)
+        except TypeError:
+            if params is not None:
+                raise TypeError('Argument is not iterable.  Must use an iterable type to initialize Dll.')
 
     def __repr__(self):
         """Display the linked list."""
@@ -52,72 +51,77 @@ class Dll(object):
         """Insert the value val at the head of the list."""
         tmp = Node_Dll(val, None, None)
 
-        if self.length == 0:
+        if self.size() == 0:
             self.head = tmp
             self.tail = tmp
 
-        elif self.length >= 1:
+        elif self.size() >= 1:
             tmp.next_node = self.head
             self.head.prev_node = tmp
             self.head = tmp
 
-        self.length += 1
         return self
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
-        if self.length > 1:
-            popped_node = self.head
+
+        try:
+            popped_val = self.head.data
+        except AttributeError:
+            raise IndexError('Cannot pop an empty list.')
+
+        try:
             self.head.next_node.prev_node = None
-            self.head = self.head.next_node
-            self.length -= 1
-            return popped_node.data
-        elif self.length == 1:
-            popped_node_data = self.head.data
-            self.head.data = None
-            self.tail.data = None
-            self.length = 0
-            return popped_node_data
-        else:
-            return None
+        except AttributeError:
+            pass
+        self.head = self.head.next_node
+        return popped_val
 
     def size(self):
         """Return the length of the list."""
-        return self.length
+        current = self.head
+        inc = 0
+        while True:
+            try:
+                current = current.next_node
+            except AttributeError:
+                return inc
+            inc += 1
 
     def search(self, val):
         """Return the node containing val in the list, if exists, else None."""
         current = self.head
         while current is not None:
-            if current.data == val:
-                return current
+            try:
+                if current.data == val:
+                    return current
+            except AttributeError:
+                    break
             current = current.next_node
         return None
 
     def remove(self, val):  # if last node --> set Node to None
         """Remove the given node from the list, wherever it might be."""
         node = self.search(val)
-
+        if node is None:
+            raise ValueError('Value not in list.')
         try:
-            node.data = node.next_node.data
-            node.next_node = node.next_node.next_node
+            node.prev_node.next_node = node.next_node
+        except AttributeError:
+            self.head = node.next_node
+        try:
+            node.next_node.prev_node = node.prev_node
         except AttributeError:
             self.tail = node.prev_node
-            node.data = None
-            try:
-                node.prev_node.next_node = None
-            except AttributeError:
-                if self.length == 0:
-                    return self
-
-        self.length -= 1
-        return self
 
     def append(self, val):
         """Append the val arg to the end of the list as a new node."""
-        self.tail.next_node = Node_Dll(val, self.tail, None)
-        self.tail = self.tail.next_node
-        self.length += 1
+        tmp = Node_Dll(val, self.tail, None)
+        try:
+            self.tail.next_node = tmp
+            self.tail = self.tail.next_node
+        except AttributeError:
+            self.push(tmp.data)
         return self
 
     def shift(self):
@@ -125,17 +129,15 @@ class Dll(object):
         Shift the node off the tail of the list and return the value of the
         node.
         """
-        if self.length > 1:
-            shifted_node = self.tail
-            self.tail = self.tail.prev_node
-            self.tail.next_node = None
-            self.length -= 1
-            return shifted_node.data
-        elif self.length == 1:
-            shifted_node_data = self.tail.data
-            self.head.data = None
-            self.tail.data = None
-            self.length = 0
-            return shifted_node_data
-        else:
-            return None
+        try:
+            shift_val = self.tail.data
+        except AttributeError:
+            raise IndexError('Cannot shift an empty list.')
+
+        try:
+            self.tail.prev_node.next_node = None
+        except AttributeError:
+            self.head = None
+
+        self.tail = self.tail.prev_node
+        return shift_val

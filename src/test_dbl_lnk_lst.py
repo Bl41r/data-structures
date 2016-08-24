@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from collections import namedtuple
 import pytest
+import random
 
 ''' This is the test file for the deque module. Expected behavior below.
     append(val): adds value to the end of the deque
@@ -40,9 +41,10 @@ TEST_CASES = [
     'string',
     'a',
 ]
+
 MyDllFix = namedtuple(
     'DequeFixture',
-    ('instance', 'first', 'seq', 'pop_error', 'size', 'last')
+    ('instance', 'first', 'seq', 'pop_error', 'size', 'last', 'remove_val', 'sequence_after_remove', 'remove_error')
 )
 
 
@@ -56,19 +58,25 @@ def dll(request):
     if seq:
         first = seq[0]
         pop_error = None
+        remove_error = None
         last = seq[-1]
+        random_idx = random.randrange(len(seq))
+        remove_val = seq[random_idx]
+        sequence_after_remove = seq[:random_idx] + seq[random_idx + 1:]
     else:
         first = None
         pop_error = IndexError
+        remove_error = ValueError
         last = None
+        remove_val = None
+        sequence_after_remove = None
     for val in request.param:
         instance.push(val)
-    return MyDllFix(instance, first, seq, pop_error, size, last)
+    return MyDllFix(instance, first, seq, pop_error, size, last, remove_val, sequence_after_remove, remove_error)
 
 
 def test_init(dll):
-    assert dll.instance.length == dll.size
-    assert dll.instance.head.data == dll.last
+    pass
 
 
 def test_size(dll):
@@ -80,7 +88,20 @@ def test_display(dll):
 
 
 def test_pop(dll):
-    assert dll.instance.pop() == dll.last
+    if dll.pop_error is None:
+        assert dll.instance.pop() == dll.last
+    else:
+        with pytest.raises(dll.pop_error):
+            dll.instance.pop()
+
+
+def test_shift(dll):
+    if dll.pop_error is None:
+        assert dll.instance.shift() == dll.first
+        assert dll.instance.size() == dll.size - 1
+    else:
+        with pytest.raises(dll.pop_error):
+            dll.instance.shift()
 
 
 def test_push(dll):
@@ -93,22 +114,22 @@ def test_append(dll):
     assert dll.instance.size() == dll.size + 1
 
 
-def test_shift(dll):
-    if dll.instance.head.data is not None:
-        assert dll.instance.shift() == dll.first
-        assert dll.instance.size() == dll.size - 1
-    else:
-        assert dll.instance.shift() is None
-
-
 def test_search(dll):
-    if dll.instance.head.data is not None:
+    if hasattr(dll.instance.head, 'data'):
         assert dll.instance.search(dll.first).data == dll.first
     assert dll.instance.search('asdfasdf') is None
 
 
-def test_remove(dll):
-    if dll.size > 1:
-        assert dll.instance.remove(dll.first).tail.data == dll.seq[1]
-    else:
-        assert dll.instance.remove(dll.first).length == 0
+def test_remove_valid(dll):
+    if dll.remove_val is None:
+        pytest.skip()
+    dll.instance.remove(dll.remove_val)
+    result = list(reversed(dll.sequence_after_remove))
+    output = [dll.instance.pop() for n in dll.sequence_after_remove]
+    assert result == output
+
+
+def test_remove_value_error(dll):
+    if dll.remove_error is not None:
+        with pytest.raises(dll.remove_error):
+            dll.instance.remove(dll.remove_val)

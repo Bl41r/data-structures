@@ -87,5 +87,4 @@ class LinkedList(object):
         except AttributeError:
             pass
 
-        self.length -= 1
         return self
