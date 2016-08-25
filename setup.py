@@ -2,13 +2,13 @@
 from setuptools import setup
 
 setup(
-    name="linked-list",
-    description="Implementation of a linked list",
+    name="simple_graph",
+    description="Implementation of a simple graph",
     version='0.1.0',
     author="David Smith, Jeff Torres",
     author_email="dbsmith.dbs83@gmail.com, jeffrey.n.torres@gmail.com",
     license='MIT',
-    py_modules=['linked-list'],
+    py_modules=['simple_graph'],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require={'test': ['pytest', 'pytest-cov', 'tox']},
