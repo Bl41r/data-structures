@@ -129,6 +129,7 @@ class Dll(object):
         Shift the node off the tail of the list and return the value of the
         node.
         """
+
         try:
             shift_val = self.tail.data
         except AttributeError:
