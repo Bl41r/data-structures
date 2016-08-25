@@ -38,7 +38,7 @@ class Dll(object):
         return '(' + repr(self.head) + ')'
 
     def __len__(self):
-        return self.length
+        return self.size()
 
     def display(self):
         """
