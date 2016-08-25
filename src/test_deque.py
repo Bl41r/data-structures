@@ -50,7 +50,7 @@ MyDequeFix = namedtuple(
 
 @pytest.fixture(scope='function', params=TEST_CASES)
 def deque(request):
-    '''return an empty deque'''
+    """Return a fixture."""
     from deque import Deque
     instance = Deque()
     seq = request.param

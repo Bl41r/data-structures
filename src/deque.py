@@ -44,7 +44,6 @@ class Deque(object):
         """Peek at front of dequeue without dequeing it."""
         return self._deque.head.data
 
-
     def size(self):
         """Return size of deque."""
         return self._deque.size()
