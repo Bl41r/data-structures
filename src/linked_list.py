@@ -84,7 +84,7 @@ class LinkedList(object):
     def remove(self, node):
         """Remove the given node from the list, from any point in the list."""
         parent = self.head
-        if parent.next_node == node.next_node:
+        if parent.next_node == node.next_node and parent.data == node.data:
             self.head = parent.next_node
             parent.next_node = None
             return
