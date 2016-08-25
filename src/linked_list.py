@@ -90,7 +90,4 @@ class LinkedList(object):
         while parent.next_node != node:
             parent = parent.next_node
 
-        try:
-            parent.next_node = parent.next_node.next_node
-        except AttributeError:
-            parent.next_node = None
+        parent.next_node = parent.next_node.next_node
