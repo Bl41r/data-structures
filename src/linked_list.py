@@ -51,13 +51,15 @@ class LinkedList(object):
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
-        popped_node = self.head
+        try:
+            popped_val = self.head.data
+        except AttributeError:
+            raise IndexError('Cannot pop an empty list.')
         try:
             self.head = self.head.next_node
-            return popped_node.data
         except AttributeError:
             pass
-            return None
+        return popped_val
 
     def size(self):
         """Return the length of the list."""

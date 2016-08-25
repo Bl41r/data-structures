@@ -62,7 +62,11 @@ def test_push(stack):
 
 def test_pop(stack):
     """Test the pop function."""
-    assert stack.instance.pop() == stack.last
+    if stack.pop_error is None:
+        assert stack.instance.pop() == stack.last
+    else:
+        with pytest.raises(stack.pop_error):
+            stack.instance.pop()
 
 
 def test_single_int():

@@ -98,8 +98,11 @@ def test_display(ll):
 
 def test_pop(ll):
     '''Test the pop function'''
-    assert ll.instance.pop() == ll.last
-
+    if ll.pop_error is None:
+        assert ll.instance.pop() == ll.last
+    else:
+        with pytest.raises(ll.pop_error):
+            ll.instance.pop()
 
 def test_search(ll):
     '''Test the search function'''
