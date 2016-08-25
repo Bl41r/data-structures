@@ -11,10 +11,12 @@ class Stack(object):
     The Stack class accepts an optional iterable as a parameter.
     """
 
-    def __init__(self, idx=None):
-        self._stack = LinkedList(idx)
+    def __init__(self, iter=None):
+        """Initialize Stack."""
+        self._stack = LinkedList(iter)
 
     def __repr__(self):
+        """Representation of stack."""
         s = self._stack.__repr__()
         return str(s)
 

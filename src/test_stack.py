@@ -6,6 +6,7 @@ from stack import Stack
 
 # format: (list of datas, length, head data, next node data, display, rem_val)
 TEST_DATAS = [
+
     ([5, 4, 3, 2, 1], 5, 1, 2, '(1, 2, 3, 4, 5, None)', 3),
     (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'v', "(u, v, w, x, y, z, None)", 'z'),
     ([], 0, None, None, '(None)', 2)
