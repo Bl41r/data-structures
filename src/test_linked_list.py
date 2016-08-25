@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from collections import namedtuple
 import pytest
+import random
 
 ''' This is the test file for the linked_list module. Expected behavior below.
 
@@ -42,9 +43,10 @@ TEST_CASES = [
     'string',
     'a',
 ]
+
 MyLLFix = namedtuple(
     'LLFixture',
-    ('instance', 'first', 'seq', 'pop_error', 'size', 'last')
+    ('instance', 'first', 'seq', 'pop_error', 'size', 'last', 'remove_val', 'sequence_after_remove', 'remove_error')
 )
 
 
@@ -58,23 +60,26 @@ def ll(request):
     if seq:
         first = seq[0]
         pop_error = None
+        remove_error = None
         last = seq[-1]
+        random_idx = random.randrange(len(seq))
+        remove_val = seq[random_idx]
+        sequence_after_remove = seq[:random_idx] + seq[random_idx + 1:]
     else:
         first = None
         pop_error = IndexError
+        remove_error = TypeError
         last = None
+        remove_val = None
+        sequence_after_remove = None
     for val in request.param:
         instance.push(val)
-    return MyLLFix(instance, first, seq, pop_error, size, last)
-
-
-def test_init(ll):
-    assert ll.instance.length == ll.size
-    assert ll.instance.head.data == ll.last
+    return MyLLFix(instance, first, seq, pop_error, size, last, remove_val, sequence_after_remove, remove_error)
 
 
 def test_push(ll):
-    assert ll.instance.push(ll.size).head.data == ll.size
+    ll.instance.push(ll.size)
+    assert ll.instance.head.data == ll.size
 
 
 def test_display(ll):
@@ -86,10 +91,31 @@ def test_pop(ll):
 
 
 def test_search(ll):
-    if ll.instance.head.data is not None:
+    if ll.instance.head is not None:
         assert ll.instance.search(ll.first).data == ll.first
 
 
-def test_remove(ll):
-    if ll.instance.head.data is not None:
-        assert ll.instance.remove(ll.first).tail.data == ll.seq[1]
+def test_size(ll):
+    assert ll.instance.size() == ll.size
+
+
+def test_remove_valid(ll):
+    if ll.remove_val is None:
+        pytest.skip()
+    ll.instance.remove(ll.instance.search(ll.remove_val))
+    result = list(reversed(ll.sequence_after_remove))
+    output = [ll.instance.pop() for n in ll.sequence_after_remove]
+    assert result == output
+
+
+def test_single_int():
+    from linked_list import LinkedList
+    with pytest.raises(TypeError):
+        assert LinkedList(1)
+
+def test_single_none():
+    from linked_list import LinkedList
+    l = LinkedList([])
+    s = l.search([])
+    with pytest.raises(AttributeError):
+        assert l.remove([])
