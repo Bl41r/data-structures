@@ -2,7 +2,9 @@
 
 from __future__ import unicode_literals
 
+
 class Node(object):
+    """Node class with data and next_node pointer.  Init with value."""
 
     def __init__(self, data, next_node=None):
         """Initialize the Node instance."""
@@ -17,12 +19,11 @@ class Node(object):
             return str(self.data)
 
 
-
 class LinkedList(object):
+    """Linked List data structure.  Takes in an iterable."""
 
     def __init__(self, params=None):
         """Initialize the linked list instance."""
-
         self.head = None
 
         try:
@@ -37,6 +38,7 @@ class LinkedList(object):
         return u'(' + str(self.head) + u')'
 
     def __len__(self):
+        """Return length of list."""
         return self.size()
 
     def display(self):
@@ -68,7 +70,6 @@ class LinkedList(object):
                 return inc
             inc += 1
 
-
     def search(self, val):
         """Return the node containing val in the list, if exists, else None."""
         current = self.head
@@ -78,10 +79,8 @@ class LinkedList(object):
             current = current.next_node
         return current
 
-
-    def remove(self, node):  # if last node --> set Node to None
+    def remove(self, node):
         """Remove the given node from the list, from any point in the list."""
-
         parent = self.head
         if parent.next_node == node.next_node:
             self.head = parent.next_node
