@@ -17,8 +17,7 @@ class Stack(object):
 
     def __repr__(self):
         """Representation of stack."""
-        s = self._stack.__repr__()
-        return str(s)
+        return u'(' + str(self._stack.head) + u')'
 
     def push(self, val):
         """Push a value onto the stack."""

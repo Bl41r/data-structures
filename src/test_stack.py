@@ -1,42 +1,72 @@
 # -*- coding: utf-8 -*-
-"""Test of stack.py."""
-
+"""This is the test file for the stack module. Expected behavior below."""
+from __future__ import unicode_literals
+from collections import namedtuple
 import pytest
-from stack import Stack
 
-# format: (list of datas, length, head data, next node data, display, rem_val)
-TEST_DATAS = [
 
-    ([5, 4, 3, 2, 1], 5, 1, 2, '(1, 2, 3, 4, 5, None)', 3),
-    (['z', 'y', 'x', 'w', 'v', 'u'], 6, 'u', 'v', "(u, v, w, x, y, z, None)", 'z'),
-    ([], 0, None, None, '(None)', 2)
+TEST_CASES = [
+    [],
+    [1],
+    [1, 2],
+    [1, 3, 5],
+    [-50, 0, 50],
+    [-50, 25, -25, 0],
+    ['a', 'b', 'c'],
+    ['abc'],
+    ['¡', '¢', '£'],
+    ['¡¢£'],
+    ['a¡', 2],
+    ['', None, 0],
+    [(), (), ()],
+    [(1, 2), (3, 4), 4, 'string'],
+    [{}, {}, {}],
+    [{'key': 'value', 'key2': 'value2', 'key3': 'value3'},
+     {'key4': 'value4', 'key5': 'value5', 'key6': 'value6'}],
+    {},
+    'string',
+    'a',
 ]
 
-
-@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
-def test_data_integrity(list_data, length, head_data, next_n_data, display, rem_val):
-    stack = Stack(list_data)
-    assert stack._stack.length == length
-    assert stack._stack.head.data == head_data
-    if stack._stack.head.data is not None:
-        assert stack._stack.head.next_node.data == next_n_data
+MyStackFix = namedtuple(
+    'StackFixture',
+    ('instance', 'first', 'seq', 'pop_error', 'size', 'last')
+)
 
 
-@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
-def test_pop(list_data, length, head_data, next_n_data, display, rem_val):
-    stack = Stack(list_data)
-    assert stack.pop() == head_data
+@pytest.fixture(scope='function', params=TEST_CASES)
+def stack(request):
+    """Return an empty stack for tests."""
+    from stack import Stack
+    instance = Stack()
+    seq = request.param
+    size = len(seq)
+    if seq:
+        first = seq[0]
+        pop_error = None
+        last = seq[-1]
+    else:
+        first = None
+        pop_error = IndexError
+        last = None
+    for val in request.param:
+        instance.push(val)
+    return MyStackFix(instance, first, seq, pop_error, size, last)
 
 
-@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
-def test_push(list_data, length, head_data, next_n_data, display, rem_val):
-    stack = Stack(list_data)
-    stack.push(8)
-    assert stack._stack.head.data == 8
-    assert stack._stack.length == length + 1
+def test_push(stack):
+    """Test the push function."""
+    stack.instance.push(stack.size)
+    assert stack.instance._stack.head.data == stack.size
 
 
-@pytest.mark.parametrize('list_data, length, head_data, next_n_data, display, rem_val', TEST_DATAS)
-def test_display(list_data, length, head_data, next_n_data, display, rem_val):
-    stack = Stack(list_data)
-    assert stack.__repr__() == display
+def test_pop(stack):
+    """Test the pop function."""
+    assert stack.instance.pop() == stack.last
+
+
+def test_single_int():
+    """Test stack __init__ with a single integer."""
+    from stack import Stack
+    with pytest.raises(TypeError):
+        assert Stack(1)
