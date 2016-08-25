@@ -4,7 +4,7 @@ from collections import namedtuple
 import pytest
 import random
 
-''' This is the test file for the dll module.'''
+"""This is the test file for the dll module."""
 
 TEST_CASES = [
     [],
@@ -37,7 +37,7 @@ MyDllFix = namedtuple(
 
 @pytest.fixture(scope='function', params=TEST_CASES)
 def dll(request):
-    '''return an empty deque'''
+    """Create fixture for tests."""
     from dbl_lnk_lst import Dll
     instance = Dll()
     seq = request.param
@@ -60,10 +60,6 @@ def dll(request):
     for val in request.param:
         instance.push(val)
     return MyDllFix(instance, first, seq, pop_error, size, last, remove_val, sequence_after_remove, remove_error)
-
-
-def test_init(dll):
-    pass
 
 
 def test_size(dll):
