@@ -9,9 +9,11 @@ class Deque(object):
     """
 
     def __init__(self, iter=None):
+        """Initialize the Deque."""
         self._deque = Dll(iter)
 
     def __repr__(self):
+        """Show the Deque."""
         return repr(self._deque)
 
     def appendleft(self, val):      # this was enqueue(val)
