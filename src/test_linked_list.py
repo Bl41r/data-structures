@@ -77,6 +77,14 @@ def ll(request):
     return MyLLFix(instance, first, seq, pop_error, size, last, remove_val, sequence_after_remove, remove_error)
 
 
+def test_init():
+    '''Test init.'''
+    from linked_list import LinkedList
+    l = LinkedList()
+    l.__init__([1,2])
+    assert l.size() == 2
+
+
 def test_push(ll):
     '''Test the push function'''
     ll.instance.push(ll.size)
@@ -104,6 +112,11 @@ def test_size(ll):
     assert ll.instance.size() == ll.size
 
 
+def test_len(ll):
+    '''Test the size function'''
+    assert ll.instance.__len__() == ll.size
+
+
 def test_remove_valid(ll):
     '''Test the remove function'''
     if ll.remove_val is None:
@@ -120,6 +133,7 @@ def test_single_int():
     with pytest.raises(TypeError):
         assert LinkedList(1)
 
+
 def test_single_none():
     '''Test the linkedlist remove function with an empty remove value'''
     from linked_list import LinkedList
@@ -127,3 +141,20 @@ def test_single_none():
     s = l.search([])
     with pytest.raises(AttributeError):
         assert l.remove([])
+
+
+def test_iter():
+    from linked_list import LinkedList
+    with pytest.raises(TypeError):
+        assert (LinkedList(1))
+
+
+def test_single_int2():
+    '''Test linkedlist __init__ with a single integer'''
+    from linked_list import LinkedList
+    l = LinkedList([2, 1])
+    print(l)
+    s = l.search(2)
+    l.remove(s)
+    print(l)
+    assert l.size() == 1
