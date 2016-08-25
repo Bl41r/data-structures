@@ -15,8 +15,7 @@ class Queue(object):
 
     def __repr__(self):
         """Represent self."""
-        s = self._queue.__repr__()
-        return str(s)
+        return '(' + repr(self.head) + ')'
 
     def enqueue(self, val):
         """Push value onto teh stack."""
@@ -33,7 +32,7 @@ class Queue(object):
 
     def peek(self):
         """Peek at next value without dequeing it."""
-        if self._queue.length > 0:
+        if self.size() > 0:
             return self._queue.tail.data
         else:
             return None

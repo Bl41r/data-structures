@@ -74,3 +74,10 @@ def test_dequeue(queue):
 def test_enqueue(queue):
     assert queue.instance.enqueue(8)._queue.head.data == 8
     assert queue.instance.size() == queue.size + 1
+
+
+def test_peek(queue):
+    if queue.size > 0:
+        assert queue.instance.peek() == queue.first
+    else:
+        assert queue.instance.peek() is None
