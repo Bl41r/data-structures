@@ -14,6 +14,7 @@ class Node(object):
             raise TypeError('Name must be a string.')
         self.name = name
         self.data = data
+        self.neighbors = []
 
         try:
             self.neighbors = list(set(neighbors))
