@@ -69,11 +69,19 @@ def deque(request):
 
 
 def test_deque_pop(deque):
-    assert deque.instance.pop() == deque.first
+    if deque.pop_error is None:
+        assert deque.instance.pop() == deque.first
+    else:
+        with pytest.raises(deque.pop_error):
+            deque.instance.pop()
 
 
 def test_deque_popleft(deque):
-    assert deque.instance.popleft() == deque.last
+    if deque.pop_error is None:
+        assert deque.instance.popleft() == deque.last
+    else:
+        with pytest.raises(deque.pop_error):
+            deque.instance.popleft()
 
 
 def test_append(deque):
