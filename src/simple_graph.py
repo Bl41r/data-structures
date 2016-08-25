@@ -1,6 +1,6 @@
-"""Implementation of a simple graph data type in Python containing 
+"""Simple graph implementation.
 
-nodes.
+Simple graph data type which contains a list of nodes.a
 """
 
 from __future__ import unicode_literals
@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 class Node(object):
     """Node class which has data, a unique name(string), and a list of neighboring nodes."""
+
     def __init__(self, name, data=None, neighbors=[]):
         """Initialize the Node instance."""
         if type(name) != str:
@@ -33,6 +34,10 @@ class Node(object):
 
     def output_neighbors(self):
         """Return a list of strings indicating its neighbors."""
+        output = []
+        for n in self.neighbors:
+            output.append("{} to {}".format(self.name, n.name))
+        return output
 
 
 class SimpleGraph(object):
