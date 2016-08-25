@@ -2,8 +2,8 @@
 from setuptools import setup
 
 setup(
-    name="linked-list",
-    description="Implementation of a linked list",
+    name="Data Structures",
+    description="Implementation of a variety of data structures",
     version='0.1.0',
     author="David Smith, Jeff Torres",
     author_email="dbsmith.dbs83@gmail.com, jeffrey.n.torres@gmail.com",

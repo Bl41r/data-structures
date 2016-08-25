@@ -78,28 +78,34 @@ def ll(request):
 
 
 def test_push(ll):
+    '''Test the push function'''
     ll.instance.push(ll.size)
     assert ll.instance.head.data == ll.size
 
 
 def test_display(ll):
+    '''Test the display function'''
     assert ll.instance.display() == str(ll.instance)
 
 
 def test_pop(ll):
+    '''Test the pop function'''
     assert ll.instance.pop() == ll.last
 
 
 def test_search(ll):
+    '''Test the search function'''
     if ll.instance.head is not None:
         assert ll.instance.search(ll.first).data == ll.first
 
 
 def test_size(ll):
+    '''Test the size function'''
     assert ll.instance.size() == ll.size
 
 
 def test_remove_valid(ll):
+    '''Test the remove function'''
     if ll.remove_val is None:
         pytest.skip()
     ll.instance.remove(ll.instance.search(ll.remove_val))
@@ -109,11 +115,13 @@ def test_remove_valid(ll):
 
 
 def test_single_int():
+    '''Test linkedlist __init__ with a single integer'''
     from linked_list import LinkedList
     with pytest.raises(TypeError):
         assert LinkedList(1)
 
 def test_single_none():
+    '''Test the linkedlist remove function with an empty remove value'''
     from linked_list import LinkedList
     l = LinkedList([])
     s = l.search([])
