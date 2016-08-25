@@ -14,9 +14,9 @@ class Node(object):
     def __repr__(self):
         """Display the data in this node."""
         if self.next_node is not None:
-            return str(self.data) + u', ' + str(self.next_node)
+            return repr(self.data) + ', ' + repr(self.next_node)
         else:
-            return str(self.data)
+            return repr(self.data)
 
 
 class LinkedList(object):
@@ -35,7 +35,7 @@ class LinkedList(object):
 
     def __repr__(self):
         """Display the linked list."""
-        return u'(' + str(self.head) + u')'
+        return '(' + repr(self.head) + ')'
 
     def __len__(self):
         """Return length of list."""
@@ -43,7 +43,7 @@ class LinkedList(object):
 
     def display(self):
         """Return a unicode string representing the list as if it were a Python tuple."""
-        return u'(' + str(self.head) + u')'
+        return '(' + repr(self.head) + ')'
 
     def push(self, val):
         """Insert the value val at the head of the list."""
