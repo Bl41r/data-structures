@@ -10,24 +10,13 @@ from __future__ import unicode_literals
 class Node(object):
     """Node class which has data, a unique name(string), and a list of neighboring node names."""
 
-    def __init__(self, name, data=None, neighbors=[]):
+    def __init__(self, name, data=None):
         """Initialize the Node instance."""
         if type(name) != str:
             raise TypeError('Name must be a string.')
         self.name = name
         self.data = data
         self.neighbors = []
-
-        try:
-            self.neighbors = list(set(neighbors))
-            for n in neighbors:
-                if type(n) == str:
-                    self.neighbors.append(n)
-                raise TypeError('Neighbors must be a list of node names.')
-
-        except TypeError:
-            if neighbors is not None:
-                raise TypeError('This function requires an iterable value.')
 
     def __repr__(self):
         """Display the data in this node."""
