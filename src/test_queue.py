@@ -37,7 +37,7 @@ MyQueueFix = namedtuple(
 @pytest.fixture(scope='function', params=TEST_CASES)
 def queue(request):
     '''Return an empty queue'''
-    from dbl_lnk_lst import Queue
+    from queue import Queue
     instance = Queue()
     seq = request.param
     size = len(seq)
@@ -50,7 +50,7 @@ def queue(request):
         pop_error = IndexError
         last = None
     for val in request.param:
-        instance.push(val)
+        instance.enqueue(val)
     return MyQueueFix(instance, first, seq, pop_error, size, last)
 
 
@@ -62,27 +62,15 @@ def test_size(queue):
     assert queue.instance.size() == queue.size
 
 
-def test_display(queue):
-    assert queue.instance.display() == str(queue.instance)
-
-
-def test_pop(queue):
+def test_dequeue(queue):
     if queue.pop_error is None:
-        assert queue.instance.pop() == queue.last
-    else:
-        with pytest.raises(queue.pop_error):
-            queue.instance.pop()
-
-
-def test_shift(queue):
-    if queue.pop_error is None:
-        assert queue.instance.shift() == queue.first
+        assert queue.instance.dequeue() == queue.first
         assert queue.instance.size() == queue.size - 1
     else:
         with pytest.raises(queue.pop_error):
-            queue.instance.shift()
+            queue.instance.dequeue()
 
 
-def test_push(queue):
-    assert queue.instance.push(8).head.data == 8
+def test_enqueue(queue):
+    assert queue.instance.enqueue(8)._queue.head.data == 8
     assert queue.instance.size() == queue.size + 1

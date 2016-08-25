@@ -12,7 +12,6 @@ class Queue(object):
     def __init__(self, iter=None):
         """Init instance of Queue."""
         self._queue = Dll(iter)
-        self.size()
 
     def __repr__(self):
         """Represent self."""
@@ -26,7 +25,7 @@ class Queue(object):
 
     def dequeue(self):
         """Remove and return value from the queue."""
-        if self.length > 0:
+        if self.size() > 0:
             val = self._queue.shift()
             return val
         else:
@@ -41,11 +40,4 @@ class Queue(object):
 
     def size(self):
         """Return size of queue."""
-        current = self.head
-        inc = 0
-        while True:
-            try:
-                current = current.next_node
-            except AttributeError:
-                return inc
-            inc += 1
+        return self._queue.size()
