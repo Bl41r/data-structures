@@ -14,7 +14,17 @@ class Node(object):
             raise TypeError('Name must be a string.')
         self.name = name
         self.data = data
-        self.neighbors = neighbors
+
+        try:
+            self.neighbors = list(set(neighbors))
+            for n in neighbors:
+                if type(n) == Node:
+                    self.neighbors.append(n)
+                raise TypeError('Neighbors must be a list of nodes.')
+
+        except TypeError:
+            if neighbors is not None:
+                raise TypeError('This function requires an iterable value.')
 
     def __repr__(self):
         """Display the data in this node."""
