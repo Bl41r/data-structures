@@ -56,10 +56,10 @@ class SimpleGraph(object):
 
         Node must have a unique name.
         """
+        if type(n) is not Node:
+            raise TypeError('Arguments passed must be a Node instance.')
         if n.name in self.node_dict:
             raise KeyError('Node {} already exists as {}'.format(n.name, self))
-        if type(n) is not Node:
-            raise TypeError('Argument passed must be a Node instance.')
         self.node_dict[n.name] = n
 
     def add_edge(self, n1, n2):
@@ -70,17 +70,15 @@ class SimpleGraph(object):
         If n1 already contains n2 as a neighbor, n2 will not be appended
         again.
         """
-        if type(n1) is not Node or type(n2) is not Node:
+        try:
+            if n1.name not in self.node_dict:
+                self.add_node(n1)
+            if n2.name not in self.node_dict:
+                self.add_node(n2)
+        except AttributeError:
             raise TypeError('Arguments must be Node instances.')
-        # if node name exists, but diff data/neighbors, error
-        # add/error here
-        if n1.name not in self.node_dict:
-            self.add_node(n1)
-        if n2.name not in self.node_dict:
-            self.add_node(n2)
 
-        if n1 is not self.node_dict[n1.name] or 
-                n2 is not self.node_dict[n2.name]:
+        if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
             raise ValueError('Cannot Overwrite existing nodes in graph.')
 
         n1.neighbors.append(n2.name)
