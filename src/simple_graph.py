@@ -43,21 +43,41 @@ class SimpleGraph(object):
 
     def __repr__(self):
         """Display the list of nodes."""
-        return repr(self.node_list)
+        return repr(self.node_dict)
 
     def add_node(self, n):
         """Add a node instance to the graph.
 
         Node must have a unique name.
         """
-        pass
+        if n.name in self.node_dict:
+            raise KeyError('Node {} already exists as {}'.format(n.name, self))
+        if type(n) is not Node:
+            raise TypeError('Argument passed must be a Node instance.')
+        self.node_dict[n.name] = n
 
     def add_edge(self, n1, n2):
-        """Add n2 to n1.neighbors.  If either don't exist, add to graph.
+        """Add n2.name to n1.neighbors.
 
-        n1 and n2 are Node instances.
+        If either don't exist, add to graph.  n1 and n2 are Node
+        instances which should be contained in the graph's node_dict.
+        If n1 already contains n2 as a neighbor, n2 will not be appended
+        again.
         """
-        pass
+        if type(n1) is not Node or type(n2) is not Node:
+            raise TypeError('Arguments must be Node instances.')
+        # if node name exists, but diff data/neighbors, error
+        # add/error here
+        if n1.name not in self.node_dict:
+            self.add_node(n1)
+        if n2.name not in self.node_dict:
+            self.add_node(n2)
+
+        if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
+            raise ValueError('Cannot Overwrite existing nodes in graph.')
+
+        n1.neighbors.append(n2.name)
+        n1.neighbors = list(set(n1.neighbors))
 
     def del_node(self, n):
         """Delete node from graph.
