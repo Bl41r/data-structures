@@ -10,7 +10,11 @@ from __future__ import unicode_literals
 
 
 class Node(object):
-    """Node class which has data, a unique name(string), and a list of neighboring node names."""
+    """Node class.
+
+    Has data, a unique name(string), and a list of neighboring
+    node names.
+    """
 
     def __init__(self, name, data=None):
         """Initialize the Node instance."""
@@ -75,7 +79,8 @@ class SimpleGraph(object):
         if n2.name not in self.node_dict:
             self.add_node(n2)
 
-        if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
+        if n1 is not self.node_dict[n1.name] or 
+                n2 is not self.node_dict[n2.name]:
             raise ValueError('Cannot Overwrite existing nodes in graph.')
 
         n1.neighbors.append(n2.name)
