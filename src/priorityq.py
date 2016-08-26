@@ -6,22 +6,22 @@ value, each QNode in the queue has a “priority”. When you pop a QNode
 off of the queue, you always get the highest priority QNode.
 """
 
-
+# note:  consider using bheap? ask
 class QNode(object):
     """QNode class.
 
-    Has data and a priority, with 0 indicating no/lowest priority, 1 
-    indicating the highest, and priority decreasing as the number 
+    Has data and a priority, with a lower number indicating indicating 
+    the highest, and priority decreasing as the number 
     increases.
     """
 
     def __init__(self, value=None, priority=0):
         """Initialize the Node instance.
 
-        Highest priority is 1.  As the number increases, the priority
-        goes down, with 0 indicating the lowest, or no priority.
+        As the number(int) increases, the priority
+        goes down.
         """
-        if type(priority) != int or priority < 0:
+        if type(priority) != int:
             raise ValueError('Invalid priority value.')
         self.priority = priority
         self.value = value
