@@ -111,7 +111,7 @@ class SimpleGraph(object):
         pass
 
     def adjacent(self, n1, n2):
-        """Return True if there is an edge connecting n1 and n2.
+        """Return True if there is an edge connecting n1 -> n2.
 
         False if not, raises an error if either of the supplied nodes
         are not in g.
