@@ -28,9 +28,17 @@ class MinHeap(object):
     def push(self, val):
         """Push an integer onto the heap."""
         try:
-            self.head.append(int(val))
+            self.heap.append(int(val))
         except TypeError:
             raise TypeError('Must push an integer value.')
+
+        ## while self.head.indexOf(val) > 0:
+        #    if val > parent_value@pindex --> swap
+        #        pindex = parent_index(pindex)
+        #        continue
+        #    else:
+        #        break
+
 
     def pop(self):
         """Pop the root of the tree and return the value."""
@@ -42,7 +50,7 @@ class MinHeap(object):
 
     def parent_index(self, child_idx):
         """Return index of parent. Negative 1 indicates idx is root."""
-        return int(child_idx + 1 // 2) - 1
+        return (child_idx + 1 // 2) - 1
 
     def first_child(self, parent_idx):
         """Return index of left child."""
