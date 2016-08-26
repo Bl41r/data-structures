@@ -85,7 +85,14 @@ class SimpleGraph(object):
         Also removes the node from the neighbors list from other nodes
         contained in the the node_dict.
         """
-        pass
+        try:
+            del self.node_dict[n.name]
+        except KeyError:
+            raise KeyError('Node does not exist in graph.')
+
+        for key in self.node_dict:
+            if n.name in self.node_dict[key].neighbors:
+                del n.name
 
     def has_node(self, n):
         """True if Node ‘n’ inst is contained in the graph.  Else false."""
