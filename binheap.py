@@ -11,7 +11,15 @@ class MinHeap(object):
 
     def __init__(self, heap=[]):
         """Initialize the heap with optional heap(list) of integers."""
-        pass
+        if type(heap) is not list:
+            raise TypeError('Heap must be a list of integers.')
+
+        try:
+            self.heap = sorted(heap)
+            for num in heap:
+                self.push(int(num))
+        except (ValueError, TypeError):
+            raise TypeError('Heap must contain integers only.')
 
     def __repr__(self):
         """Display the heap in list form."""
