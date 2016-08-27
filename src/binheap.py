@@ -32,13 +32,25 @@ class MinHeap(object):
         except TypeError:
             raise TypeError('Must push an integer value.')
 
-        
-        ## while self.head.indexOf(val) > 0:
-        #    if val > parent_value@pindex --> swap
-        #        pindex = parent_index(pindex)
-        #        continue
-        #    else:
-        #        break
+        i = 0
+        length = len(self.heap)
+        new_val_idx = length
+        parent_idx = self._parent_idx(new_val_idx)
+
+        while True:
+            i += 1
+            if val <= self.heap[parent_idx] and new_val_idx != 0:
+                self._swap(self.heap[parent_idx], self.heap[new_val_idx])
+                new_val_idx = parent_idx
+                parent_idx = self._parent_idx(new_val_idx)
+            else:
+                print('done swapping vals')
+                print('heap: ', self.heap)
+                break
+
+            if i == 1000:
+                print('i reached 1000')
+                break
 
     def pop(self):
         """Pop the root of the tree and return the value."""
