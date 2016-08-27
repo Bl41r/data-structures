@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """Simple graph implementation.
 
-Simple graph data type which contains a list of nodes.  Nodes are a
-class, which makes them adaptable for additional attributes to be added
-onto.
+Simple graph data type which contains a dict of nodes.  Nodes are a
+class, which makes them adaptable for additional attributes to be added.
 """
 
 from __future__ import unicode_literals
