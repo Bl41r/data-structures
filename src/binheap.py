@@ -23,6 +23,20 @@ class MinHeap(object):
         """Display the heap in list form."""
         return repr(self.heap)
 
+    # Internal methods
+    def _swap(self, a, b):
+        """Swap 2 values in heap."""
+        print('swap: ', a, b)
+        self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
+
+    def _parent_index(self, child_idx):
+        """Return index of parent. Negative 1 indicates idx is root."""
+        return ((child_idx - 1) // 2)
+
+    def _first_child(self, parent_idx):
+        """Return index of left child."""
+        return 2 * parent_idx + 1
+
     def push(self, val):
         """Push an integer onto the heap."""
         try:
@@ -32,15 +46,16 @@ class MinHeap(object):
 
         i = 0
         length = len(self.heap)
-        new_val_idx = length
-        parent_idx = self._parent_idx(new_val_idx)
+        new_val_idx = length - 1
+        parent_idx = self._parent_index(new_val_idx)
 
         while True:
             i += 1
             if val <= self.heap[parent_idx] and new_val_idx != 0:
+                print('heap b4: ', self.heap)
                 self._swap(parent_idx, new_val_idx)
                 new_val_idx = parent_idx
-                parent_idx = self._parent_idx(new_val_idx)
+                parent_idx = self._parent_index(new_val_idx)
             else:
                 print('done swapping vals')
                 print('heap: ', self.heap)
@@ -54,18 +69,6 @@ class MinHeap(object):
         """Pop the root of the tree and return the value."""
         pass
 
-    # Internal methods
-    def _swap(self, a, b):
-        """Swap 2 values in heap."""
-        self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
-
-    def _parent_index(self, child_idx):
-        """Return index of parent. Negative 1 indicates idx is root."""
-        return ((child_idx - 1) // 2)
-
-    def _first_child(self, parent_idx):
-        """Return index of left child."""
-        return 2 * parent_idx + 1
 
 """
              0
