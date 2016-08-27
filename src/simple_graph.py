@@ -126,4 +126,10 @@ class SimpleGraph(object):
         False if not, raises an error if either of the supplied nodes
         are not in g.
         """
-        pass
+        try:
+            n_adjacent = self.node_dict[n2.name].name in self.node_dict[n1.name].neighbors
+        except KeyError:
+            raise ValueError('Graph does not contain both nodes.  Use has_node method.')
+        except AttributeError:
+            raise TypeError('Must pass node types to adjacent method.')
+        return n_adjacent
