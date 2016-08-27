@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 """Simple graph implementation.
 
-Simple graph data type which contains a list of nodes.
+Simple graph data type which contains a dict of nodes.  Nodes are a
+class, which makes them adaptable for additional attributes to be added.
 """
 
 from __future__ import unicode_literals
 
 
 class Node(object):
-    """Node class which has data, a unique name(string), and a list of neighboring node names."""
+    """Node class.
+
+    Has data, a unique name(string), and a list of neighboring
+    node names.
+    """
 
     def __init__(self, name, data=None):
         """Initialize the Node instance."""
@@ -43,21 +48,40 @@ class SimpleGraph(object):
 
     def __repr__(self):
         """Display the list of nodes."""
-        return repr(self.node_list)
+        return repr(self.node_dict)
 
     def add_node(self, n):
         """Add a node instance to the graph.
 
         Node must have a unique name.
         """
-        pass
+        if type(n) is not Node:
+            raise TypeError('Arguments passed must be a Node instance.')
+        if n.name in self.node_dict:
+            raise KeyError('Node {} already exists as {}'.format(n.name, self))
+        self.node_dict[n.name] = n
 
     def add_edge(self, n1, n2):
-        """Add n2 to n1.neighbors.  If either don't exist, add to graph.
+        """Add n2.name to n1.neighbors.
 
-        n1 and n2 are Node instances.
+        If either don't exist, add to graph.  n1 and n2 are Node
+        instances which should be contained in the graph's node_dict.
+        If n1 already contains n2 as a neighbor, n2 will not be appended
+        again.
         """
-        pass
+        try:
+            if n1.name not in self.node_dict:
+                self.add_node(n1)
+            if n2.name not in self.node_dict:
+                self.add_node(n2)
+        except AttributeError:
+            raise TypeError('Arguments must be Node instances.')
+
+        if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
+            raise ValueError('Cannot Overwrite existing nodes in graph.')
+
+        n1.neighbors.append(n2.name)
+        n1.neighbors = list(set(n1.neighbors))
 
     def del_node(self, n):
         """Delete node from graph.
@@ -65,23 +89,46 @@ class SimpleGraph(object):
         Also removes the node from the neighbors list from other nodes
         contained in the the node_dict.
         """
-        pass
+        try:
+            del self.node_dict[n.name]
+        except KeyError:
+            raise KeyError('Node does not exist in graph.')
+
+        for key in self.node_dict:
+            if n.name in self.node_dict[key].neighbors:
+                del n.name
 
     def has_node(self, n):
         """True if Node ‘n’ inst is contained in the graph.  Else false."""
-        pass
+        try:
+            node_in_graph = n.name in self.node_dict
+        except AttributeError:
+            raise TypeError('Must pass a node to has_node method.')
+        return node_in_graph
 
     def neighbors(self, n):
         """Return the list of all nodes connected to ‘n’ by edges.
 
         Raises an error if n is not in g.
         """
-        pass
+        try:
+            node_list = self.node_dict[n.name].neighbors
+        except AttributeError:
+            raise TypeError('Must pass a node to neighbors method.')
+        except KeyError:
+            raise ValueError('Node is not contained within graph.')
+        return node_list
 
     def adjacent(self, n1, n2):
-        """Return True if there is an edge connecting n1 and n2.
+        """Return True if there is an edge connecting n1 -> n2.
 
         False if not, raises an error if either of the supplied nodes
         are not in g.
         """
-        pass
+        try:
+            n_adjacent = self.node_dict[n2.name].name in self.node_dict[n1.name].neighbors
+        except KeyError:
+            raise ValueError('Graph does not contain both nodes.  Use has_node method.')
+        except AttributeError:
+            raise TypeError('Must pass node types to adjacent method.')
+        return n_adjacent
