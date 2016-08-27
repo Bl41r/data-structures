@@ -101,7 +101,11 @@ class SimpleGraph(object):
 
     def has_node(self, n):
         """True if Node ‘n’ inst is contained in the graph.  Else false."""
-        pass
+        try:
+            node_in_graph = n.name in self.node_dict
+        except AttributeError:
+            raise TypeError('Must pass a node to has_node method.')
+        return node_in_graph
 
     def neighbors(self, n):
         """Return the list of all nodes connected to ‘n’ by edges.
