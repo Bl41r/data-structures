@@ -112,7 +112,13 @@ class SimpleGraph(object):
 
         Raises an error if n is not in g.
         """
-        pass
+        try:
+            node_list = self.node_dict[n.name].neighbors
+        except AttributeError:
+            raise TypeError('Must pass a node to neighbors method.')
+        except KeyError:
+            raise ValueError('Node is not contained within graph.')
+        return node_list
 
     def adjacent(self, n1, n2):
         """Return True if there is an edge connecting n1 -> n2.
