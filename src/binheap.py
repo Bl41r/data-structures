@@ -39,7 +39,6 @@ class MinHeap(object):
         #    else:
         #        break
 
-
     def pop(self):
         """Pop the root of the tree and return the value."""
         pass
@@ -50,7 +49,7 @@ class MinHeap(object):
 
     def parent_index(self, child_idx):
         """Return index of parent. Negative 1 indicates idx is root."""
-        return (child_idx + 1 // 2) - 1
+        return ((child_idx + 1) // 2)
 
     def first_child(self, parent_idx):
         """Return index of left child."""
@@ -68,3 +67,10 @@ class MinHeap(object):
                                                      2 3
                                                     54 7
 """
+
+    def parent_index(child_idx):
+        """Return index of parent. Negative 1 indicates idx is root."""
+        return ((child_idx - 1) // 2)
+
+
+
