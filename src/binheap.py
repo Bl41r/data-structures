@@ -16,8 +16,6 @@ class MinHeap(object):
 
         try:
             self.heap = sorted(heap)
-            for num in heap:
-                self.heap.append(int(num))
         except (ValueError, TypeError):
             raise TypeError('Heap must contain only integers.')
 
@@ -40,7 +38,7 @@ class MinHeap(object):
         while True:
             i += 1
             if val <= self.heap[parent_idx] and new_val_idx != 0:
-                self._swap(self.heap[parent_idx], self.heap[new_val_idx])
+                self._swap(parent_idx, new_val_idx)
                 new_val_idx = parent_idx
                 parent_idx = self._parent_idx(new_val_idx)
             else:
