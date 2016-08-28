@@ -110,7 +110,7 @@ class PriorityQueue(object):
                 break
 
     def pop(self):
-        """Pop the root of the tree and return the value."""
+        """Pop the root of the tree and return the PNode value."""
         try:
             popped_val = self.heap[0].value
         except IndexError:
@@ -132,7 +132,7 @@ class PriorityQueue(object):
         return popped_val
 
     def peek(self):
-        """Peek at the next item(node) value to be popped."""
+        """Peek at the next item(PNode) to be popped."""
         try:
             return self.heap[0]
         except IndexError:
