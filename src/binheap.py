@@ -5,8 +5,6 @@ It uses a list to maintain the values and their parent-child
 relationships.
 """
 
-import math
-
 
 class MinHeap(object):
     """Min heap class with push and pop methods."""
@@ -38,18 +36,23 @@ class MinHeap(object):
     def _min_child(self, parent_idx):
         """Return index of min child value."""
         left_index = 2 * parent_idx + 1
+        print('left index', left_index)
         try:
             left = self.heap[left_index]
         except IndexError:
             return None
+
         try:
             right = self.heap[left_index + 1]
+            print('right index', right)
         except IndexError:
             return None
 
         if left < right:
+            print('returning left')
             return left_index
         if right <= left:
+            print('returning right')
             return right
 
     def push(self, val):
@@ -72,6 +75,7 @@ class MinHeap(object):
                 break
 
     def get_last_index_top(self, l):
+        """Get last index before final branch layer."""
         n = 1
         while l > n - 1:
             t = n - 1
@@ -80,22 +84,26 @@ class MinHeap(object):
 
     def pop(self):
         """Pop the root of the tree and return the value."""
-        popped_val = self.heap[0]
+        try:
+            popped_val = self.heap[0]
+        except IndexError:
+            raise IndexError('Cannot pop an empty heap.')
         popped_idx = 0
         last_index_top = self.get_last_index_top(len(self.heap))
 
         while popped_idx < last_index_top:
             try:
-                self._swap(popped_idx, self._min_child(popped_idx))
-                popped_idx = self._min_child(popped_idx)
-            except IndexError:
+                min_child_idx = self._min_child(popped_idx)
+                self._swap(popped_idx, min_child_idx)
+                popped_idx = min_child_idx
+                print('index min child was: ', min_child_idx)
+                print('----')
+            except TypeError:
                 self._swap(popped_idx, last_index_top + 1)
                 popped_idx = last_index_top + 1
+                break
         del self.heap[popped_idx]
         return popped_val
-
-
-
 
 """
              0
