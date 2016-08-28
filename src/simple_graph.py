@@ -98,6 +98,13 @@ class SimpleGraph(object):
             if n.name in self.node_dict[key].neighbors:
                 del n.name
 
+    def edges(self):
+        """Return a list of all edges."""
+        edges = []
+        for node in self.node_dict:
+            edges.extend(self.node_dict[node].output_neighbors())
+        return edges
+
     def has_node(self, n):
         """True if Node ‘n’ inst is contained in the graph.  Else false."""
         try:
