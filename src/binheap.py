@@ -25,7 +25,6 @@ class MinHeap(object):
     # Internal methods
     def _swap(self, a, b):
         """Swap 2 values in heap."""
-        print('swap: ', a, b)
         self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
 
     def _parent_index(self, child_idx):
