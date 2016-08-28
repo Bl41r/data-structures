@@ -5,6 +5,8 @@ It uses a list to maintain the values and their parent-child
 relationships.
 """
 
+import math
+
 
 class MinHeap(object):
     """Min heap class with push and pop methods."""
@@ -33,9 +35,22 @@ class MinHeap(object):
         """Return index of parent. Negative 1 indicates idx is root."""
         return ((child_idx - 1) // 2)
 
-    def _first_child(self, parent_idx):
-        """Return index of left child."""
-        return 2 * parent_idx + 1
+    def _min_child(self, parent_idx):
+        """Return index of min child value."""
+        left_index = 2 * parent_idx + 1
+        try:
+            left = self.heap[left_index]
+        except IndexError:
+            return None
+        try:
+            right = self.heap[left_index + 1]
+        except IndexError:
+            return None
+
+        if left < right:
+            return left_index
+        if right <= left:
+            return right
 
     def push(self, val):
         """Push an integer onto the heap."""
@@ -44,30 +59,42 @@ class MinHeap(object):
         except TypeError:
             raise TypeError('Must push an integer value.')
 
-        i = 0
         length = len(self.heap)
         new_val_idx = length - 1
         parent_idx = self._parent_index(new_val_idx)
 
         while True:
-            i += 1
             if val <= self.heap[parent_idx] and new_val_idx != 0:
-                print('heap b4: ', self.heap)
                 self._swap(parent_idx, new_val_idx)
                 new_val_idx = parent_idx
                 parent_idx = self._parent_index(new_val_idx)
             else:
-                print('done swapping vals')
-                print('heap: ', self.heap)
                 break
 
-            if i == 1000:
-                print('i reached 1000')
-                break
+    def get_last_index_top(self, l):
+        n = 1
+        while l > n - 1:
+            t = n - 1
+            n *= 2
+        return t - 1
 
     def pop(self):
         """Pop the root of the tree and return the value."""
-        pass
+        popped_val = self.heap[0]
+        popped_idx = 0
+        last_index_top = self.get_last_index_top(len(self.heap))
+
+        while popped_idx < last_index_top:
+            try:
+                self._swap(popped_idx, self._min_child(popped_idx))
+                popped_idx = self._min_child(popped_idx)
+            except IndexError:
+                self._swap(popped_idx, last_index_top + 1)
+                popped_idx = last_index_top + 1
+        del self.heap[popped_idx]
+        return popped_val
+
+
 
 
 """
