@@ -1,52 +1,23 @@
 # -*- coding: utf-8 -*-
-"""This is a module for a priority queue.
+"""This is a module for a binary heap.
 
-A Priority Queue is similar to a queue, except that in addition to a
-value, each PNode in the queue has a “priority”. When you pop a PNode
-off of the queue, you always get the highest priority PNode.
+It uses a list to maintain the values and their relationships.  Use push
+to insert a value into the heap, and pop to remove and return the root.
 """
 
 
-class PNode(object):
-    """PNode class.
-
-    Has data and a priority, with a lower number indicating indicating 
-    the highest, and priority decreasing as the number 
-    increases.
-    """
-
-    def __init__(self, value=None, priority=0):
-        """Initialize the Node instance.
-
-        As the number(int) increases, the priority
-        goes down.
-        """
-        if type(priority) != int:
-            raise ValueError('Invalid priority value.')
-        self.priority = priority
-        self.value = value
-
-
-    def __repr__(self):
-        """Display the data in this node."""
-        return repr((self.data, self.priority)
-
-
-class PriorityQueue(object):
-    """Priority queue class with insert, peek, and pop methods."""
+class MinHeap(object):
+    """Min heap class with push and pop methods."""
 
     def __init__(self, heap=[]):
-        """Initialize the heap with optional queue(list) of PNodes."""
+        """Initialize the heap with optional heap(list) of integers."""
         if type(heap) is not list:
             raise TypeError('Heap argument must be list type.')
 
-        def getKey(item):
-            return item.priority
-
         try:
-            self.heap = sorted(heap, key=getkey)
+            self.heap = sorted(heap)
         except (ValueError, TypeError):
-            raise TypeError('Heap must contain only PNodes.')
+            raise TypeError('Heap must contain only integers.')
 
     def __repr__(self):
         """Display the heap in list form."""
@@ -91,10 +62,10 @@ class PriorityQueue(object):
         return t - 1
 
     # User methods
-    def insert(self, pnode):
-        """Push a PNode onto the heap."""
+    def push(self, val):
+        """Push an integer onto the heap."""
         try:
-            self.heap.append(pnode)
+            self.heap.append(int(val))
         except TypeError:
             raise TypeError('Must push an integer value.')
 
@@ -103,7 +74,7 @@ class PriorityQueue(object):
         parent_idx = self._parent_index(new_val_idx)
 
         while True:
-            if pnode.priority <= self.heap[parent_idx].priority and new_val_idx != 0:
+            if val <= self.heap[parent_idx] and new_val_idx != 0:
                 self._swap(parent_idx, new_val_idx)
                 new_val_idx = parent_idx
                 parent_idx = self._parent_index(new_val_idx)
@@ -113,7 +84,7 @@ class PriorityQueue(object):
     def pop(self):
         """Pop the root of the tree and return the value."""
         try:
-            popped_val = self.heap[0].value
+            popped_val = self.heap[0]
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
         popped_idx = 0
@@ -131,8 +102,3 @@ class PriorityQueue(object):
 
         del self.heap[popped_idx]
         return popped_val
-
-    def peek(self):
-        """Peek at the next item(node) value to be popped."""
-        pass
-
