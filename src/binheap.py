@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """This is a module for a binary heap.
 
-It uses a list to maintain the values and their relationships.
+It uses a list to maintain the values and their relationships.  Use push
+to insert a value into the heap, and pop to remove and return the root.
 """
 
 
@@ -50,7 +51,10 @@ class MinHeap(object):
             return right
 
     def _get_last_index_top(self, l):
-        """Get last index before final branch layer."""
+        """Get last index before final branch layer.
+
+        Future:  use math, still working on formula.
+        """
         n = 1
         while l > n - 1:
             t = n - 1
@@ -98,16 +102,3 @@ class MinHeap(object):
 
         del self.heap[popped_idx]
         return popped_val
-
-"""
-             0
-          1     3
-        2   5  4  7  ---> Pop   1
-                               0 3
-                              2 54 7 --->
-                                            1
-                                           2   3
-                                          0 5 4 7 ---> 1
-                                                     2   3
-                                                    5 4 7
-"""
