@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """This is a module for a binary heap.
 
-It uses a list to maintain the values and their parent-child
-relationships.
+It uses a list to maintain the values and their relationships.
 """
 
 
@@ -36,7 +35,6 @@ class MinHeap(object):
     def _min_child(self, parent_idx):
         """Return index of min child value."""
         left_index = 2 * parent_idx + 1
-        print('left index', left_index)
         try:
             left = self.heap[left_index]
         except IndexError:
@@ -44,17 +42,23 @@ class MinHeap(object):
 
         try:
             right = self.heap[left_index + 1]
-            print('right index', right)
         except IndexError:
             return None
 
         if left < right:
-            print('returning left')
             return left_index
         if right <= left:
-            print('returning right')
             return right
 
+    def _get_last_index_top(self, l):
+        """Get last index before final branch layer."""
+        n = 1
+        while l > n - 1:
+            t = n - 1
+            n *= 2
+        return t - 1
+
+    # User methods
     def push(self, val):
         """Push an integer onto the heap."""
         try:
@@ -74,14 +78,6 @@ class MinHeap(object):
             else:
                 break
 
-    def get_last_index_top(self, l):
-        """Get last index before final branch layer."""
-        n = 1
-        while l > n - 1:
-            t = n - 1
-            n *= 2
-        return t - 1
-
     def pop(self):
         """Pop the root of the tree and return the value."""
         try:
@@ -89,19 +85,18 @@ class MinHeap(object):
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
         popped_idx = 0
-        last_index_top = self.get_last_index_top(len(self.heap))
+        last_index_top = self._get_last_index_top(len(self.heap))
 
         while popped_idx < last_index_top:
             try:
                 min_child_idx = self._min_child(popped_idx)
                 self._swap(popped_idx, min_child_idx)
                 popped_idx = min_child_idx
-                print('index min child was: ', min_child_idx)
-                print('----')
             except TypeError:
                 self._swap(popped_idx, last_index_top + 1)
                 popped_idx = last_index_top + 1
                 break
+
         del self.heap[popped_idx]
         return popped_val
 
@@ -112,8 +107,8 @@ class MinHeap(object):
                                0 3
                               2 54 7 --->
                                             1
-                                           2  3
-                                          0 54 7 ---> 1
-                                                     2 3
-                                                    54 7
+                                           2   3
+                                          0 5 4 7 ---> 1
+                                                     2   3
+                                                    5 4 7
 """
