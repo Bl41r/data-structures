@@ -10,8 +10,8 @@ off of the queue, you always get the highest priority PNode.
 class PNode(object):
     """PNode class.
 
-    Has data and a priority, with a lower number indicating indicating 
-    the highest, and priority decreasing as the number 
+    Has data and a priority, with a lower number indicating indicating
+    the highest, and priority decreasing as the number
     increases.
     """
 
@@ -26,10 +26,9 @@ class PNode(object):
         self.priority = priority
         self.value = value
 
-
     def __repr__(self):
         """Display the data in this node."""
-        return repr((self.data, self.priority)
+        return "({},{})".format(self.value, self.priority)
 
 
 class PriorityQueue(object):
@@ -40,7 +39,7 @@ class PriorityQueue(object):
         if type(heap) is not list:
             raise TypeError('Heap argument must be list type.')
 
-        def getKey(item):
+        def getkey(item):
             return item.priority
 
         try:
@@ -93,10 +92,10 @@ class PriorityQueue(object):
     # User methods
     def insert(self, pnode):
         """Push a PNode onto the heap."""
-        try:
+        if type(pnode) is PNode:
             self.heap.append(pnode)
-        except TypeError:
-            raise TypeError('Must push an integer value.')
+        else:
+            raise TypeError('Must push a PNode type.')
 
         length = len(self.heap)
         new_val_idx = length - 1
@@ -134,5 +133,7 @@ class PriorityQueue(object):
 
     def peek(self):
         """Peek at the next item(node) value to be popped."""
-        pass
-
+        try:
+            return self.heap[0]
+        except IndexError:
+            return None
