@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 from collections import namedtuple
 import pytest
 import random
+import string
 
 
 '''
@@ -34,63 +35,55 @@ False if not, raises an error if either of the supplied nodes are not in g
 '''
 
 
-
-TEST_CASES = [
-    [],
-    [1],
-    [1, 2],
-    [1, 3, 5],
-    [-50, 0, 50],
-    [-50, 25, -25, 0],
-    ['a', 'b', 'c'],
-    ['abc'],
-    ['¡', '¢', '£'],
-    ['¡¢£'],
-    ['a¡', 2],
-    ['', None, 0],
-    [(), (), ()],
-    [(1, 2), (3, 4), 4, 'string'],
-    [{}, {}, {}],
-    [{'key': 'value', 'key2': 'value2', 'key3': 'value3'},
-     {'key4': 'value4', 'key5': 'value5', 'key6': 'value6'}],
+EDGE_CASES = [
     {},
-    'string',
-    'a',
+    [],
+    {'a': 0},
+    [1, 2, 3],
+    'Æ',
+    ''
 ]
+
+INT_CASES = [random.sample(range(1000),
+             random.randrange(2, 100)) for n in range(10)
+             ]
+
+
+STR_CASES = [random.sample(string.printable,
+             random.randrange(2, 100)) for n in range(10)
+             ]
+
+TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
 
 MySGFix = namedtuple(
     'SGFixture',
-    ('instance', 'first', 'seq', 'none_error', 'size', 'last', 'remove_val', 'sequence_after_remove', 'remove_error')
+    ('graph', 'input_val', 'length', 'type_err')
 )
 
 
 @pytest.fixture(scope='function', params=TEST_CASES)
 def sg(request):
-    '''return an empty LinkedList'''
-    from linked_list import LinkedList
-    instance = SimpleGraph()
-    seq = request.param
-    size = len(seq)
-    if seq:
-        first = seq[0]
-        pop_error = None
-        remove_error = None
-        last = seq[-1]
-        random_idx = random.randrange(len(seq))
-        remove_val = seq[random_idx]
-        sequence_after_remove = seq[:random_idx] + seq[random_idx + 1:]
-    else:
-        first = None
-        pop_error = IndexError
-        remove_error = TypeError
-        last = None
-        remove_val = None
-        sequence_after_remove = None
+    '''return an empty Simple Graph'''
+    from simple_graph import SimpleGraph
+    graph = SimpleGraph()
+    if type(request.param) is not int():
+        length = len(request.param)
+    type_err = None
+    if type(request.param) is not str():
+        type_err = TypeError
     for val in request.param:
-        instance.push(val)
-    return MySGFix(instance, first, seq, pop_error, size, last, remove_val, sequence_after_remove, remove_error)
+        try:
+            input_val = val
+        except:
+            pass
+    return MySGFix(graph, input_val, length, type_err)
 
 
-def test_push()
-    with pytest.raises(AttributeError):
-        assert l.remove([])
+def test_node_init(sg):
+    from simple_graph import Node
+    try:
+        a = Node(sg.input_val)
+        assert a.name == sg.input_val
+    except TypeError:
+        with pytest.raises(TypeError):
+            Node(sg.input_val)
