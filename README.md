@@ -11,3 +11,7 @@ This branch features the graph data type
 - g.has_node(n): True if node ‘n’ is contained in the graph, False if not.
 - g.neighbors(n): returns the list of all nodes connected to ‘n’ by edges, raises an error if n is not in g
 - g.adjacent(n1, n2): returns True if there is an edge connecting n1 and n2, False if not, raises an error if either of the supplied nodes are not in g
+
+
+- g.depth_first_traversal(start): Perform a full depth-first traversal of the graph beginning at start. Return the full visited path when traversal is complete.
+- g.breadth_first_traversal(start): Perform a full breadth-first traversal of the graph, beginning at start. Return the full visited path when traversal is complete.
