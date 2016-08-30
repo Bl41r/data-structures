@@ -158,13 +158,13 @@ class SimpleGraph(object):
             print('ret:', ret)
             print('curr:')
             self.print_node_list(curr)
-            ret.append(curr[0].name)
-            c = curr.pop(0)
+            c = curr.pop()
+            ret.append(c.name)
             print('popped current name:', c.name)
             for n in c.neighbors:
                 print('c neighbor:', n)
                 if self.node_dict[n].name not in ret:
-                    curr.insert(0, self.node_dict[n])
+                    curr.append(self.node_dict[n])
                     print('inserting:', self.node_dict[n].name)
         return ret
 
