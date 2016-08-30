@@ -226,3 +226,97 @@ def test_del_node_and_edge(sg):
     sg.graph.add_edge(a, b)
     sg.graph.del_node(b)
     assert len(a.neighbors) == 0
+
+
+def test_sg_edges(sg):
+    """
+    Test display of all edges in simple_graph. Node b is expected to be in node
+    a's neighbors list
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    c = Node(strung_input * 3)
+    d = Node(strung_input * 4)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_node(c)
+    sg.graph.add_node(d)
+    sg.graph.add_edge(a, c)
+    sg.graph.add_edge(b, d)
+    sg.graph.add_edge(a, d)
+    e = a.output_neighbors()
+    f = b.output_neighbors()
+    g = e + f
+    h = sg.graph.edges()
+    assert len(g) == len(h)
+
+
+def test_has_node(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    sg.graph.add_node(a)
+    assert sg.graph.has_node(a)
+
+
+def test_has_node_non_node(sg):
+    with pytest.raises(TypeError):
+        sg.graph.has_node(sg.input_val)
+
+
+def test_neighbors(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b)
+    c = sg.graph.neighbors(a)
+    assert b.name in c
+
+
+def test_neighbors_no_arg(sg):
+    strung_input = str(sg.input_val)
+    with pytest.raises(TypeError):
+        sg.graph.neighbors(strung_input)
+
+
+def test_neighbors_no_node(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    with pytest.raises(ValueError):
+        sg.graph.neighbors(a)
+
+
+def test_adjacent(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b)
+    assert sg.graph.adjacent(a, b)
+
+
+def test_adjacent_missing_node(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    with pytest.raises(ValueError):
+        assert sg.graph.adjacent(a, b)
+
+
+def test_adjacent_non_node(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    sg.graph.add_node(a)
+    with pytest.raises(TypeError):
+        assert sg.graph.adjacent(a, strung_input)

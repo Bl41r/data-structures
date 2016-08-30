@@ -86,19 +86,12 @@ class SimpleGraph(object):
         Also removes the node from the neighbors list from other nodes
         contained in the the node_dict.
         """
-        try:
-            self.node_dict.pop(n.name)
-        except AttributeError:
+        if self.node_dict.pop(n.name) is None:
             raise KeyError('Node does not exist in graph.')
 
         for key in self.node_dict:
             if n.name in self.node_dict[key].neighbors:
                 self.node_dict[key].neighbors.remove(n.name)
-
-        # 
-        # for key in self.node_dict:
-        #     if n.name in self.node_dict[key].neighbors:
-        #         del n.name
 
     def edges(self):
         """Return a list of all edges."""
