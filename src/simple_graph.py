@@ -77,9 +77,6 @@ class SimpleGraph(object):
         except AttributeError:
             raise TypeError('Arguments must be Node instances.')
 
-        if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
-            raise ValueError('Cannot Overwrite existing nodes in graph.')
-
         n1.neighbors.append(n2.name)
         n1.neighbors = list(set(n1.neighbors))
 
@@ -90,13 +87,18 @@ class SimpleGraph(object):
         contained in the the node_dict.
         """
         try:
-            del self.node_dict[n.name]
-        except KeyError:
+            self.node_dict.pop(n.name)
+        except AttributeError:
             raise KeyError('Node does not exist in graph.')
 
         for key in self.node_dict:
             if n.name in self.node_dict[key].neighbors:
-                del n.name
+                self.node_dict[key].neighbors.remove(n.name)
+
+        # 
+        # for key in self.node_dict:
+        #     if n.name in self.node_dict[key].neighbors:
+        #         del n.name
 
     def edges(self):
         """Return a list of all edges."""

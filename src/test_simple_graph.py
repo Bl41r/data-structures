@@ -69,17 +69,20 @@ def sg(request):
     if type(request.param) is not int():
         length = len(request.param)
     type_err = None
+    input_val = None
     if type(request.param) is not str():
         type_err = TypeError
     for val in request.param:
-        try:
-            input_val = val
-        except:
-            pass
+        input_val = val
     return MySGFix(graph, input_val, length, type_err)
 
 
+# Testing basic Node object creation
+
 def test_node_init(sg):
+    """
+    Create node from random inputs ensuring only string inputs create nodes
+    """
     from simple_graph import Node
     try:
         a = Node(sg.input_val)
@@ -87,3 +90,139 @@ def test_node_init(sg):
     except TypeError:
         with pytest.raises(TypeError):
             Node(sg.input_val)
+
+
+def test_node_repr(sg):
+    """
+    Test implementation of the repr builtin to return stringified node.data
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input, strung_input)
+    if a.data:
+        assert repr(a) == repr(strung_input)
+
+# Test all add node to graph functions
+
+
+def test_sg_add_new_node(sg):
+    """
+    Test addition of single node to simple_graph. Non-node type objects should
+    raise a type error.
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    sg.graph.add_node(a)
+    assert a.name in sg.graph.node_dict
+
+
+def test_sg_add_existing_node(sg):
+    """
+    Test addition of an existing node to simple_graph. Expected KeyError
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input)
+    sg.graph.add_node(a)
+    with pytest.raises(KeyError):
+        sg.graph.add_node(b)
+
+
+def test_sg_add_nonnode(sg):
+    """
+    Test addition of a non-node-type to simple_graph. Expected ValueError
+    """
+    strung_input = str(sg.input_val)
+    with pytest.raises(TypeError):
+        sg.graph.add_node(strung_input)
+
+# Test all add edge to graph functions
+
+
+def test_sg_add_edge_create_node(sg):
+    """
+    Test addition of an edge to simple_graph. Nodes are expected to be created
+    if they don't exist already
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_edge(a, b)
+    assert a.name in sg.graph.node_dict and b.name in sg.graph.node_dict
+
+
+def test_sg_add_edge(sg):
+    """
+    Test addition of an edge to simple_graph. Node b is expected to be in node
+    a's neighbors list
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b)
+    assert a.neighbors[0] == b.name
+
+
+def test_sg_add_edge_nonnode(sg):
+    """
+    Test addition of an edge to simple_graph with a non-node-type.
+    TypeError expected
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = strung_input
+    sg.graph.add_node(a)
+    with pytest.raises(TypeError):
+        sg.graph.add_edge(a, b)
+
+
+# Test delete node functions
+
+
+def test_del_node(sg):
+    """
+    Test deletion of node from simple_graph.
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.del_node(a)
+    assert a.name not in sg.graph.node_dict
+
+
+def test_del_nonexist_node(sg):
+    """
+    Test deletion of node from simple_graph.
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    sg.graph.add_node(a)
+    sg.graph.del_node(a)
+    with pytest.raises(KeyError):
+        sg.graph.del_node(a)
+
+
+def test_del_node_and_edge(sg):
+    """
+    Test deletion of node from simple_graph.
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b)
+    sg.graph.del_node(b)
+    assert len(a.neighbors) == 0
