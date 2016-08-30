@@ -140,13 +140,33 @@ class SimpleGraph(object):
             raise TypeError('Must pass node types to adjacent method.')
         return n_adjacent
 
-    # Traversal methods
-    #def depth_first_traversal(self, start):
-    #    Perform a depth traversal.  'start' is a node name.
-    #    depth_list = self.neighbors(start)
-    #    for edge in breadth_list:
-    #        tmp = []
+    def print_node_list(self, node_list):
+        tmp = []
+        for n in node_list:
+            tmp.append(n.name)
+        print(tmp)
 
+    # Traversal methods
+    def depth_first_traversal(self, start):
+        """Perform a depth traversal.  'start' is a node."""
+        print('start name:', start.name)
+        curr = [start]
+        ret = []
+
+        while len(curr):
+            print('---loop---')
+            print('ret:', ret)
+            print('curr:')
+            self.print_node_list(curr)
+            ret.append(curr[0].name)
+            c = curr.pop(0)
+            print('popped current name:', c.name)
+            for n in c.neighbors:
+                print('c neighbor:', n)
+                if self.node_dict[n].name not in ret:
+                    curr.insert(0, self.node_dict[n])
+                    print('inserting:', self.node_dict[n].name)
+        return ret
 
     def breadth_first_traversal(self, start):
         """Perform a breadth traversal.  'start' is a node."""
