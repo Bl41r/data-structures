@@ -36,33 +36,29 @@ TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
 
 MyBHFix = namedtuple(
     'BHFixture',
-    ('heap', 'input_val', 'length', 'type_err')
+    ('binheap', 'input_val', 'int_list', 'str_list')
 )
 
 
 @pytest.fixture(scope='function', params=TEST_CASES)
 def bin(request):
-    '''return an empty Simple Graph'''
-    from bin import bin
-
-    if type(request.param) is not int():
-        length = len(request.param)
-    type_err = None
-    if type(request.param) is not str():
-        type_err = TypeError
+    '''return an empty BinHeap'''
+    from binheap import MinHeap
+    binheap = MinHeap()
+    int_list = []
+    str_list = []
     for val in request.param:
         try:
             input_val = val
+            if val is type(int):
+                int_list.append(val)
+            elif val is type(str):
+                str_list.append(val)
         except:
             pass
-    return MyBINFix(graph, input_val, length, type_err)
+    return MyBHFix(binheap, input_val, int_list, str_list)
 
 
 def test_node_init(bin):
-    from simple_graph import Node
-    try:
-        a = Node(bin.input_val)
-        assert a.name == pq.input_val
-    except TypeError:
-        with pytest.raises(TypeError):
-            Node(bin.input_val)
+    a = bin.binheap(bin.int_list)
+    assert len(a) == len(bin.int_list)
