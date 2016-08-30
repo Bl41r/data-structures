@@ -141,15 +141,24 @@ class SimpleGraph(object):
         return n_adjacent
 
     # Traversal methods
-    def depth_first_traversal(self, start):
-        """Perform a depth traversal.  'start' is a node name."""
-        pass
+    #def depth_first_traversal(self, start):
+    #    Perform a depth traversal.  'start' is a node name.
+    #    depth_list = self.neighbors(start)
+    #    for edge in breadth_list:
+    #        tmp = []
+
 
     def breadth_first_traversal(self, start):
         """Perform a breadth traversal.  'start' is a node."""
-        breadth_list = self.neighbors(start)
+        # will cause inf. loop if circular
+        breadth_list = [start.name]
         for edge in breadth_list:
-            tmp = self.node_dict[start.name].neighbors
+            print('edge is:', edge)
+            tmp = self.neighbors(self.node_dict[edge])
+            print('edge neighbors are:', tmp)
             for e in tmp:
-                breadth_list.extend(self.node_dict[e].neighbors)
-        return list(set(breadth_list))
+                print('e', e)
+                if e not in breadth_list:
+                    breadth_list.append(e)
+                    print('appending', e)
+        return breadth_list
