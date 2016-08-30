@@ -4,7 +4,7 @@
 Simple graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
 """
-from __future__ import unicode_literals
+
 import sys
 
 
@@ -17,7 +17,7 @@ class Node(object):
 
     def __init__(self, name, data=None):
         """Initialize the Node instance."""
-        if type(name) != str:
+        if not isinstance(name, type('')):
             raise TypeError('Name must be a string.')
         self.name = name
         self.data = data
@@ -25,7 +25,9 @@ class Node(object):
 
     def __repr__(self):
         """Display the data in this node."""
-        return repr(self.data)
+        if hasattr(self, 'data'):
+            return repr(self.data)
+        return 'No data'
 
     def output_neighbors(self):
         """Return a list of strings indicating its neighbors."""
@@ -90,13 +92,14 @@ class SimpleGraph(object):
         contained in the the node_dict.
         """
         try:
+            name = n.name
             del self.node_dict[n.name]
         except KeyError:
             raise KeyError('Node does not exist in graph.')
 
         for key in self.node_dict:
-            if n.name in self.node_dict[key].neighbors:
-                del n.name
+            if name in self.node_dict[key].neighbors:
+                del name
 
     def edges(self):
         """Return a list of all edges."""
@@ -140,47 +143,28 @@ class SimpleGraph(object):
             raise TypeError('Must pass node types to adjacent method.')
         return n_adjacent
 
-    def print_node_list(self, node_list):
-        tmp = []
-        for n in node_list:
-            tmp.append(n.name)
-        #print(tmp)
-
     # Traversal methods
     def depth_first_traversal(self, start):
         """Perform a depth traversal.  'start' is a node."""
-        #print('start name:', start.name)
         curr = [start]
         ret = []
 
         while len(curr):
-            #print('---loop---')
-            #print('ret:', ret)
-            #print('curr:')
-            self.print_node_list(curr)
             c = curr.pop()
             ret.append(c.name)
-            #print('popped current name:', c.name)
             for n in c.neighbors:
-                #print('c neighbor:', n)
                 if self.node_dict[n].name not in ret:
                     curr.append(self.node_dict[n])
-                    #print('inserting:', self.node_dict[n].name)
         return ret
 
     def breadth_first_traversal(self, start):
         """Perform a breadth traversal.  'start' is a node."""
-        # will cause inf. loop if circular
         breadth_list = [start.name]
         for edge in breadth_list:
-            #print('edge is:', edge)
             tmp = self.neighbors(self.node_dict[edge])
-            #print('edge neighbors are:', tmp)
             for e in tmp:
-                #print('e', e)
                 if e not in breadth_list:
                     breadth_list.append(e)
-                    #print('appending', e)
         return breadth_list
 
 if __name__ == '__main__':
