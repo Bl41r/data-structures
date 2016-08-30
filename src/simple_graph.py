@@ -4,8 +4,8 @@
 Simple graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
 """
-
 from __future__ import unicode_literals
+import sys
 
 
 class Node(object):
@@ -144,28 +144,28 @@ class SimpleGraph(object):
         tmp = []
         for n in node_list:
             tmp.append(n.name)
-        print(tmp)
+        #print(tmp)
 
     # Traversal methods
     def depth_first_traversal(self, start):
         """Perform a depth traversal.  'start' is a node."""
-        print('start name:', start.name)
+        #print('start name:', start.name)
         curr = [start]
         ret = []
 
         while len(curr):
-            print('---loop---')
-            print('ret:', ret)
-            print('curr:')
+            #print('---loop---')
+            #print('ret:', ret)
+            #print('curr:')
             self.print_node_list(curr)
             c = curr.pop()
             ret.append(c.name)
-            print('popped current name:', c.name)
+            #print('popped current name:', c.name)
             for n in c.neighbors:
-                print('c neighbor:', n)
+                #print('c neighbor:', n)
                 if self.node_dict[n].name not in ret:
                     curr.append(self.node_dict[n])
-                    print('inserting:', self.node_dict[n].name)
+                    #print('inserting:', self.node_dict[n].name)
         return ret
 
     def breadth_first_traversal(self, start):
@@ -173,12 +173,69 @@ class SimpleGraph(object):
         # will cause inf. loop if circular
         breadth_list = [start.name]
         for edge in breadth_list:
-            print('edge is:', edge)
+            #print('edge is:', edge)
             tmp = self.neighbors(self.node_dict[edge])
-            print('edge neighbors are:', tmp)
+            #print('edge neighbors are:', tmp)
             for e in tmp:
-                print('e', e)
+                #print('e', e)
                 if e not in breadth_list:
                     breadth_list.append(e)
-                    print('appending', e)
+                    #print('appending', e)
         return breadth_list
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print('usage: "python3 simple_graph.py <demo-type>" <demo-type> can be either circular, tree, or struct.')
+        sys.exit(1)
+
+    # build graph with nodes
+    a = Node('a_node')
+    b = Node('b_node')
+    c = Node('c_node')
+    d = Node('d_node')
+    e = Node('e_node')
+    f = Node('f_node')
+    g = Node('g_node')
+    h = Node('h_node')
+    i = Node('i_node')
+    gr = SimpleGraph()
+    gr.add_node(a)
+    gr.add_node(b)
+    gr.add_node(c)
+    gr.add_node(d)
+    gr.add_node(e)
+    gr.add_node(f)
+    gr.add_node(g)
+    gr.add_node(h)
+    gr.add_node(i)
+    gr.add_edge(a, b)
+    gr.add_edge(a, c)
+    gr.add_edge(b, d)
+    gr.add_edge(b, e)
+    gr.add_edge(c, f)
+    gr.add_edge(c, g)
+    gr.add_edge(e, h)
+    gr.add_edge(e, i)
+
+    if sys.argv[1] == 'circular':
+        gr.add_edge(d, a)
+        print('depth:', gr.depth_first_traversal(a))
+        print('breadth', gr.breadth_first_traversal(a))
+        sys.exit(0)
+
+    if sys.argv[1] == 'tree':
+        print('depth:', gr.depth_first_traversal(a))
+        print('breadth', gr.breadth_first_traversal(a))
+        sys.exit(0)
+
+    if sys.argv[1] == 'struct':
+        print('-- graph nodes ' + ('-----' * 7))
+        for n in gr.node_dict:
+            print('node name:', n, 'neighbors:', gr.node_dict[n].neighbors)
+        print('-----' * 10)
+        print('With tree chosen, no nodes are connected circularly.')
+        print('If circular chosen, d_node connects to a_node.')
+        sys.exit(0)
+
+    print('expecting "circular", "tree", or "struct".')
+    sys.exit(1)
