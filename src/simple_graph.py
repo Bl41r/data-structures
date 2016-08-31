@@ -139,3 +139,10 @@ class SimpleGraph(object):
         except AttributeError:
             raise TypeError('Must pass node types to adjacent method.')
         return n_adjacent
+
+    def nodes(self):
+        """Return a list of all node names contained in graph."""
+        tmp = []
+        for key in self.node_dict:
+            tmp.append(key)
+        return tmp
