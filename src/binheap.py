@@ -87,11 +87,33 @@ class MinHeap(object):
 
     def pop(self):
         """Pop the root of the tree and return the value."""
+        #try:
+        #    popped_val = self.heap[0]
+        #except IndexError:
+        #    raise IndexError('Cannot pop an empty heap.')
+        #popped_idx = 0
+        #last_index_top = self._get_last_index_top(len(self.heap))
+
+        #while popped_idx <= last_index_top:
+        #    try:
+        #        min_child_idx = self._min_child(popped_idx)
+        #        self._swap(popped_idx, min_child_idx)
+        #        popped_idx = min_child_idx
+        #    except TypeError:
+        #        self._swap(popped_idx, last_index_top + 1)
+        #        popped_idx = last_index_top + 1
+        #        break
+
+        #del self.heap[popped_idx]
+        #return popped_val
+
         try:
             popped_val = self.heap[0]
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
         popped_idx = 0
+        self.heap[0] = self.heap[-1]
+        del self.heap[-1]
         last_index_top = self._get_last_index_top(len(self.heap))
 
         while popped_idx <= last_index_top:
@@ -104,5 +126,4 @@ class MinHeap(object):
                 popped_idx = last_index_top + 1
                 break
 
-        del self.heap[popped_idx]
         return popped_val
