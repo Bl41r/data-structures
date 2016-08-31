@@ -6,6 +6,7 @@ class, which makes them adaptable for additional attributes to be added.
 """
 
 import sys
+import timeit
 
 
 class Node(object):
@@ -205,11 +206,21 @@ if __name__ == '__main__':
         gr.add_edge(d, a)
         print('depth:', gr.depth_first_traversal(a))
         print('breadth', gr.breadth_first_traversal(a))
+        print('10,000 times')
+        t = timeit.timeit(lambda: gr.depth_first_traversal(a), number=10000)
+        print('time for depth:', t)
+        t = timeit.timeit(lambda: gr.breadth_first_traversal(a), number=10000)
+        print('time for breadth:', t)
         sys.exit(0)
 
     if sys.argv[1] == 'tree':
         print('depth:', gr.depth_first_traversal(a))
         print('breadth', gr.breadth_first_traversal(a))
+        print('10,000 times')
+        t = timeit.timeit(lambda: gr.depth_first_traversal(a), number=10000)
+        print('time for depth:', t)
+        t = timeit.timeit(lambda: gr.breadth_first_traversal(a), number=10000)
+        print('time for breadth:', t)
         sys.exit(0)
 
     if sys.argv[1] == 'struct':
