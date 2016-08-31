@@ -26,7 +26,6 @@ class MinHeap(object):
     # Internal methods
     def _swap(self, a, b):
         """Swap 2 values in heap."""
-        print('swapping vals:', self.heap[a], self.heap[b])
         self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
 
     def _parent_index(self, child_idx):
@@ -47,10 +46,8 @@ class MinHeap(object):
             return None
 
         if left < right:
-            print('min child, index left:', left_index)
             return left_index
         if right <= left:
-            print('min child, index right:', left_index + 1)
             return left_index + 1
 
     def _get_last_index_top(self, l):
@@ -62,7 +59,6 @@ class MinHeap(object):
         while l > n - 1:
             t = n - 1
             n *= 2
-        print('get last index returned:', t - 1)
         return t - 1
 
     # User methods
@@ -87,26 +83,6 @@ class MinHeap(object):
 
     def pop(self):
         """Pop the root of the tree and return the value."""
-        #try:
-        #    popped_val = self.heap[0]
-        #except IndexError:
-        #    raise IndexError('Cannot pop an empty heap.')
-        #popped_idx = 0
-        #last_index_top = self._get_last_index_top(len(self.heap))
-
-        #while popped_idx <= last_index_top:
-        #    try:
-        #        min_child_idx = self._min_child(popped_idx)
-        #        self._swap(popped_idx, min_child_idx)
-        #        popped_idx = min_child_idx
-        #    except TypeError:
-        #        self._swap(popped_idx, last_index_top + 1)
-        #        popped_idx = last_index_top + 1
-        #        break
-
-        #del self.heap[popped_idx]
-        #return popped_val
-
         try:
             popped_val = self.heap[0]
         except IndexError:
