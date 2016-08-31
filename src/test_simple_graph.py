@@ -55,7 +55,7 @@ TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
 
 MySGFix = namedtuple(
     'SGFixture',
-    ('graph', 'input_val', 'length', 'type_err')
+    ('graph', 'input_val', 'weight', 'length', 'type_err')
 )
 
 
@@ -72,7 +72,8 @@ def sg(request):
         type_err = TypeError
     for val in request.param:
         input_val = val
-    return MySGFix(graph, input_val, length, type_err)
+    weight = 5
+    return MySGFix(graph, input_val, weight, length, type_err)
 
 
 # Testing basic Node object creation
@@ -83,7 +84,7 @@ def test_node_init(sg):
     """
     from simple_graph import Node
     try:
-        a = Node(sg.input_val)
+        a = Node(sg.input_val, sg.weight)
         assert a.name == sg.input_val
     except TypeError:
         with pytest.raises(TypeError):
@@ -96,7 +97,7 @@ def test_node_repr(sg):
     """
     from simple_graph import Node
     strung_input = str(sg.input_val)
-    a = Node(strung_input, strung_input)
+    a = Node(strung_input)
     if a.data:
         assert repr(a) == repr(strung_input)
 
@@ -335,14 +336,15 @@ def build_test_graph(type='tree'):
     from simple_graph import Node
 
     a = Node('a_node')
-    b = Node('b_node')
-    c = Node('c_node')
-    d = Node('d_node')
-    e = Node('e_node')
-    f = Node('f_node')
-    g = Node('g_node')
-    h = Node('h_node')
-    i = Node('i_node')
+    b = Node('b_node', 1)
+    c = Node('c_node', 2)
+    d = Node('d_node', 3)
+    e = Node('e_node', 4)
+    f = Node('f_node', 5)
+    g = Node('g_node', 6)
+    h = Node('h_node', 7)
+    i = Node('i_node', 8)
+
     gr = SimpleGraph()
     gr.add_node(a)
     gr.add_node(b)
@@ -449,3 +451,23 @@ def test_depth_ft():
     assert i == e + 1 or h + 1
 
     assert len(tree) == len(circ)
+
+
+def test_weights():
+    """Test weight functionality."""
+    from simple_graph import Node
+    gr = build_test_graph()
+    j = Node('j_node', 9)   # not in graph
+
+    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['b_node']) == 1
+    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['c_node']) == 2
+    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['d_node']) == 3
+    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['d_node']) == 2
+    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['e_node']) == 3
+
+    f = 3
+    with pytest.raises(AttributeError):
+        assert gr.weight(gr.node_dict['a_node'], f)
+
+    with pytest.raises(KeyError):
+        assert gr.weight(gr.node_dict['a_node'], j)
