@@ -4,12 +4,13 @@
 Simple graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
 In this implementation, weight is an integer, and the weight of an edge
-is calculated to be the abs value of the difference between the weights 
+is calculated to be the abs value of the difference between the weights
 of two nodes.
 """
 
 import sys
 import timeit
+
 
 class Node(object):
     """Node class.
@@ -148,6 +149,15 @@ class SimpleGraph(object):
         except AttributeError:
             raise TypeError('Must pass node types to adjacent method.')
         return n_adjacent
+
+    def weight(self, n1, n2):
+        """Return the relative weight of an edge.  n1 and n2 are nodes."""
+        try:
+            return abs(self.node_dict[n1.name].weight - self.node_dict[n2.name].weight)
+        except AttributeError:
+            raise AttributeError('n1 and n2 must be nodes.')
+        except KeyError:
+            raise KeyError('Nodes must be contained in the graph.')
 
     # Traversal methods
     def depth_first_traversal(self, start):
