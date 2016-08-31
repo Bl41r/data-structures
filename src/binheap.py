@@ -94,7 +94,7 @@ class MinHeap(object):
         popped_idx = 0
         last_index_top = self._get_last_index_top(len(self.heap))
 
-        while popped_idx < last_index_top:
+        while popped_idx <= last_index_top:
             try:
                 min_child_idx = self._min_child(popped_idx)
                 self._swap(popped_idx, min_child_idx)
