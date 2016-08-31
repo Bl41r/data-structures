@@ -366,7 +366,29 @@ def build_test_graph(type='tree'):
         gr.add_edge(d, a)
     return gr
 
+
+def test_one_node_trav():
+    """Assert both breadth and depth traversal return correct list.
+
+    This graph has one node that is connected to itself.
+    """
+    from simple_graph import SimpleGraph
+    from simple_graph import Node
+
+    a = Node('a_node')
+    gr = SimpleGraph()
+    gr.add_node(a)
+    gr.add_edge(a, a)
+    depth = gr.breadth_first_traversal(gr.node_dict['a_node'])
+    breadth = gr.depth_first_traversal(gr.node_dict['a_node'])
+    assert len(depth) == len(breadth) == 1
+
+
 def test_breadth_ft():
+    """Test breadth traverse on more complicated graphs.
+
+    One graph contains an edge from d to a, making it circular.
+    """
     gr_tree = build_test_graph()
     gr_circ = build_test_graph('circular')
 
@@ -387,5 +409,43 @@ def test_breadth_ft():
     assert b == 1 or b == 2
     assert c == 1 or c == 2
     assert d == 3 or d == 4 or d == 5 or d == 6
+    assert g == 3 or g == 4 or g == 5 or g == 6
+    assert f == 3 or f == 4 or f == 5 or f == 6
+    assert e == 3 or e == 4 or e == 5 or e == 6
     assert h == 7 or h == 8
     assert i == 7 or i == 8
+
+    assert len(tree) == len(circ)
+
+def test_depth_ft():
+    """Test depth traverse on more complicated graphs.
+
+    One graph contains an edge from d to a, making it circular.
+    """
+    gr_tree = build_test_graph()
+    gr_circ = build_test_graph('circular')
+
+    tree = gr_tree.depth_first_traversal(gr_tree.node_dict['a_node'])
+    circ = gr_circ.depth_first_traversal(gr_circ.node_dict['a_node'])
+
+    a = tree.index('a_node')
+    b = tree.index('b_node')
+    c = tree.index('c_node')
+    d = tree.index('d_node')
+    e = tree.index('e_node')
+    f = tree.index('f_node')
+    g = tree.index('g_node')
+    h = tree.index('h_node')
+    i = tree.index('i_node')
+
+    assert a == 0
+    assert b == 1 or 2
+    assert c == 1 or c == 6
+    assert d == b + 1 or d == b + 4
+    assert e == b + 1 or b + 2
+    assert f == c + 1 or c + 2
+    assert g == c + 1 or f + 1
+    assert h == e + 1 or h == e + 2
+    assert i == e + 1 or h + 1
+
+    assert len(tree) == len(circ)
