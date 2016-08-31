@@ -3,11 +3,13 @@
 
 Simple graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
+In this implementation, weight is an integer, and the weight of an edge
+is calculated to be the abs value of the difference between the weights 
+of two nodes.
 """
 
 import sys
 import timeit
-
 
 class Node(object):
     """Node class.
@@ -16,11 +18,14 @@ class Node(object):
     node names.
     """
 
-    def __init__(self, name, data=None):
+    def __init__(self, name, weight=0, data=None):
         """Initialize the Node instance."""
         if not isinstance(name, type('')):
             raise TypeError('Name must be a string.')
+        if not isinstance(weight, int):
+            raise TypeError('Weight must be an integer.')
         self.name = name
+        self.weight = abs(weight)
         self.data = data
         self.neighbors = []
 
