@@ -13,6 +13,7 @@ import string
 
 '''
 
+# Test Cases
 
 EDGE_CASES = [
     {},
@@ -24,19 +25,21 @@ EDGE_CASES = [
 ]
 
 INT_CASES = [random.sample(range(1000),
-             random.randrange(2, 100)) for n in range(10)
+             random.randrange(10)) for n in range(10)
              ]
 
 
 STR_CASES = [random.sample(string.printable,
-             random.randrange(2, 100)) for n in range(10)
+             random.randrange(10)) for n in range(10)
              ]
 
 TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
 
+# Binheap test fixture
+
 MyBHFix = namedtuple(
     'BHFixture',
-    ('binheap', 'input_val', 'int_list', 'str_list')
+    ('binheap', 'input_val', 'int_list', 'str_list', 'len_int', 'len_str')
 )
 
 
@@ -47,18 +50,63 @@ def bin(request):
     binheap = MinHeap()
     int_list = []
     str_list = []
+    input_val = None
     for val in request.param:
         try:
             input_val = val
-            if val is type(int):
+            if type(val) is int:
                 int_list.append(val)
-            elif val is type(str):
+            elif type(val) is str:
                 str_list.append(val)
         except:
             pass
-    return MyBHFix(binheap, input_val, int_list, str_list)
+    len_int = len(int_list)
+    len_str = len(str_list)
+    return MyBHFix(binheap, input_val, int_list, str_list, len_int, len_str)
+
+# MinHeap init tests
+
+def test_bin_init(bin):
+    """
+    Tests the instantiation of the binheap. Checks to see if the length of the
+    heap property is same as the length of the input list.
+    """
+    from binheap import MinHeap
+    a = MinHeap(bin.int_list)
+    assert len(a.heap) == bin.len_int
 
 
-def test_node_init(bin):
-    a = bin.binheap(bin.int_list)
-    assert len(a) == len(bin.int_list)
+def test_bin_no_list(bin):
+    """
+    Tests MinHeap to ensure that a TypeError is thrown when any other type but
+    a list is an input.
+    """
+    from binheap import MinHeap
+    if type(bin.input_val) is not int and bin.input_val is not None:
+        with pytest.raises(TypeError):
+            MinHeap(bin.input_val)
+
+
+def test_bin_no_int(bin):
+    """
+    Tests MinHeap to ensure that a TypeError is thrown when attempting to
+    sort a heap not made of integers
+    """
+    from binheap import MinHeap
+    if type(bin.input_val) is not None:
+        with pytest.raises(TypeError):
+            MinHeap(bin.input_val)
+
+
+def test_bin_repr(bin):
+    # come back to this test
+    pass
+
+
+def test_bin__swap(bin):
+    from binheap import MinHeap
+    a = MinHeap(bin.int_list)
+    b = a.heap[0]
+    c = a.heap[1]
+    a._swap(b, c)
+    assert b == a.heap[1]
