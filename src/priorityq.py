@@ -34,16 +34,21 @@ class PNode(object):
 class PriorityQueue(object):
     """Priority queue class with insert, peek, and pop methods."""
 
-    def __init__(self, heap=[]):
+    def __init__(self, heap=None):
         """Initialize the heap with optional queue(list) of PNodes."""
-        if type(heap) is not list:
+        if type(heap) is not list and heap is not None:
             raise TypeError('Heap argument must be list type.')
+
+        if heap is None:
+            self.heap = []
+        else:
+            self.heap = heap
 
         def getkey(item):
             return item.priority
 
         try:
-            self.heap = sorted(heap, key=getkey)
+            self.heap = sorted(self.heap, key=getkey)
         except (ValueError, TypeError):
             raise TypeError('Heap must contain only PNodes.')
 
@@ -71,23 +76,12 @@ class PriorityQueue(object):
         try:
             right = self.heap[left_index + 1]
         except IndexError:
-            return None
-
-        if left < right:
             return left_index
-        if right <= left:
-            return right
 
-    def _get_last_index_top(self, l):
-        """Get last index before final branch layer.
-
-        Future:  use math, still working on formula.
-        """
-        n = 1
-        while l > n - 1:
-            t = n - 1
-            n *= 2
-        return t - 1
+        if (left.priority) < (right.priority):
+            return left_index
+        if (right.priority) <= (left.priority):
+            return left_index + 1
 
     # User methods
     def insert(self, pnode):
@@ -112,23 +106,17 @@ class PriorityQueue(object):
     def pop(self):
         """Pop the root of the tree and return the PNode value."""
         try:
-            popped_val = self.heap[0].value
+            self._swap(0, -1)
+            popped_val = self.heap.pop()
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
-        popped_idx = 0
-        last_index_top = self._get_last_index_top(len(self.heap))
+        curr_idx = 0
 
-        while popped_idx < last_index_top:
-            try:
-                min_child_idx = self._min_child(popped_idx)
-                self._swap(popped_idx, min_child_idx)
-                popped_idx = min_child_idx
-            except TypeError:
-                self._swap(popped_idx, last_index_top + 1)
-                popped_idx = last_index_top + 1
-                break
+        while self._min_child(curr_idx) is not None and self.heap[self._min_child(curr_idx)].priority < self.heap[curr_idx].priority:
+            min_child_idx = self._min_child(curr_idx)
+            self._swap(curr_idx, min_child_idx)
+            curr_idx = min_child_idx
 
-        del self.heap[popped_idx]
         return popped_val
 
     def peek(self):
