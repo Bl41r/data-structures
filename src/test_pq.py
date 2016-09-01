@@ -36,7 +36,7 @@ TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
 
 MyPQFix = namedtuple(
     'pqFixture',
-    ('graph', 'input_val', 'length', 'type_err')
+    ('pqueue', 'input_val', 'length', 'type_err')
 )
 
 
@@ -55,14 +55,14 @@ def pq(request):
             input_val = val
         except:
             pass
-    return MyPQFix(graph, input_val, length, type_err)
+    return MyPQFix(pqueue, input_val, length, type_err)
 
 
 def test_node_init(pq):
-    from simple_graph import Node
+    from priorityq import PNode
     try:
         a = Node(pq.input_val)
         assert a.name == pq.input_val
     except TypeError:
-        with pytest.raises(TypeError):
+        with pytest.raises(ValueError):
             Node(pq.input_val)
