@@ -234,7 +234,7 @@ def test_del_node_and_edge(sg):
 def test_sg_edges(sg):
     """
     Test display of all edges in simple_graph. Node b is expected to be in node
-    a's neighbors list
+    a's neighbors list.
     """
     from simple_graph import Node
     strung_input = str(sg.input_val)
@@ -325,6 +325,23 @@ def test_adjacent_non_node(sg):
     sg.graph.add_node(a)
     with pytest.raises(TypeError):
         assert sg.graph.adjacent(a, strung_input)
+
+
+def test_sg_nodes_in_graph(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    c = Node(strung_input * 5)
+    d = Node(strung_input * 3)
+    e = Node(strung_input * 4)
+    sg.graph.add_node(a)
+    sg.graph.add_node(c)
+    sg.graph.add_node(d)
+    sg.graph.add_node(e)
+    sg.graph.add_node(b)
+    result = sg.graph.nodes()
+    assert len(result) == 5
 
 
 def build_test_graph(type='tree'):
@@ -418,6 +435,7 @@ def test_breadth_ft():
     assert i == 7 or i == 8
 
     assert len(tree) == len(circ)
+
 
 def test_depth_ft():
     """Test depth traverse on more complicated graphs.

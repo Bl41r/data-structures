@@ -150,6 +150,13 @@ class SimpleGraph(object):
             raise TypeError('Must pass node types to adjacent method.')
         return n_adjacent
 
+    def nodes(self):
+        """Return a list of all node names contained in graph."""
+        tmp = []
+        for key in self.node_dict:
+            tmp.append(key)
+        return tmp
+
     def weight(self, n1, n2):
         """Return the relative weight of an edge.  n1 and n2 are nodes."""
         try:
