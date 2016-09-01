@@ -43,30 +43,19 @@ class MinHeap(object):
         try:
             right = self.heap[left_index + 1]
         except IndexError:
-            return None
+            return left_index
 
         if left < right:
             return left_index
         if right <= left:
             return left_index + 1
 
-    def _get_last_index_top(self, l):
-        """Get last index before final branch layer.
-
-        Future:  use math, still working on formula.
-        """
-        n = 1
-        while l > n - 1:
-            t = n - 1
-            n *= 2
-        return t - 1
-
     # User methods
     def push(self, val):
         """Push an integer onto the heap."""
-        try:
-            self.heap.append(int(val))
-        except TypeError:
+        if isinstance(val, int):
+            self.heap.append(val)
+        else:
             raise TypeError('Must push an integer value.')
 
         length = len(self.heap)
@@ -84,22 +73,15 @@ class MinHeap(object):
     def pop(self):
         """Pop the root of the tree and return the value."""
         try:
-            popped_val = self.heap[0]
+            self._swap(0, -1)
+            popped_val = self.heap.pop()
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
-        popped_idx = 0
-        self.heap[0] = self.heap[-1]
-        del self.heap[-1]
-        last_index_top = self._get_last_index_top(len(self.heap))
+        curr_idx = 0
 
-        while popped_idx <= last_index_top:
-            try:
-                min_child_idx = self._min_child(popped_idx)
-                self._swap(popped_idx, min_child_idx)
-                popped_idx = min_child_idx
-            except TypeError:
-                self._swap(popped_idx, last_index_top + 1)
-                popped_idx = last_index_top + 1
-                break
+        while self._min_child(curr_idx) is not None and self.heap[self._min_child(curr_idx)] < self.heap[curr_idx]:
+            min_child_idx = self._min_child(curr_idx)
+            self._swap(curr_idx, min_child_idx)
+            curr_idx = min_child_idx
 
         return popped_val
