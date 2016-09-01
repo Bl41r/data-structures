@@ -65,11 +65,10 @@ class MinHeap(object):
     # User methods
     def push(self, val):
         """Push an integer onto the heap."""
-        try:
-            self.heap.append(int(val))
-        except TypeError:
+        if isinstance(val, int):
+            self.heap.append(val)
+        else:
             raise TypeError('Must push an integer value.')
-
         length = len(self.heap)
         new_val_idx = length - 1
         parent_idx = self._parent_index(new_val_idx)

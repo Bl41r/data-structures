@@ -25,12 +25,12 @@ EDGE_CASES = [
 ]
 
 INT_CASES = [random.sample(range(1000),
-             random.randrange(2, 10)) for n in range(10)
+             random.randrange(2, 15)) for n in range(10)
              ]
 
 
 STR_CASES = [random.sample(string.printable,
-             random.randrange(2, 10)) for n in range(10)
+             random.randrange(2, 15)) for n in range(10)
              ]
 
 TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
@@ -52,14 +52,11 @@ def bin(request):
     str_list = []
     input_val = None
     for val in request.param:
-        try:
-            input_val = val
-            if type(val) is int:
-                int_list.append(val)
-            elif type(val) is str:
-                str_list.append(val)
-        except:
-            pass
+        input_val = val
+        if type(val) is int:
+            int_list.append(val)
+        elif type(val) is str:
+            str_list.append(val)
     len_int = len(int_list)
     len_str = len(str_list)
     int_list = sorted(int_list)
@@ -101,12 +98,31 @@ def test_bin_no_int(bin):
             MinHeap(bin.input_val)
 
 
-def test_bin_repr(bin):
-    # come back to this test
-    pass
-
-
-def test_bin_pop(bin):
+def test_bin_push_heap_length(bin):
     for i in bin.int_list:
         bin.binheap.push(i)
     assert len(bin.binheap.heap) == len(bin.int_list)
+
+
+def test_bin_push_type_err(bin):
+    for i in bin.str_list:
+        with pytest.raises(TypeError):
+            print(i)
+            bin.binheap.push(i)
+
+
+def test_bin_pop_order(bin):
+    for i in bin.int_list:
+        bin.binheap.push(i)
+    print(len(bin.binheap.heap))
+    # for i, num in enumerate(bin.int_list):
+    #     assert bin.binheap.pop() == bin.int_list[i]
+    result = [ bin.binheap.pop() for i in bin.int_list ]
+    print(len(bin.int_list))
+    print('result:', result)
+    print('intlis:', bin.int_list)
+    assert result == bin.int_list
+
+def test_bin_pop_index_err(bin):
+    with pytest.raises(IndexError):
+        bin.binheap.pop()
