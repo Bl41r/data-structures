@@ -26,7 +26,6 @@ class MinHeap(object):
     # Internal methods
     def _swap(self, a, b):
         """Swap 2 values in heap."""
-        print('swapping:', self.heap[a], self.heap[b])
         self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
 
     def _parent_index(self, child_idx):
@@ -50,18 +49,6 @@ class MinHeap(object):
             return left_index
         if right <= left:
             return left_index + 1
-
-    def _get_last_index_top(self, l):
-        """Get last index before final branch layer.
-
-        Future:  use math, still working on formula.
-        """
-        n = 1
-        t = 0
-        while l > n - 1:
-            t = n - 1
-            n *= 2
-        return t - 1
 
     # User methods
     def push(self, val):
