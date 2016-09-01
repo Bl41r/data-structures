@@ -34,16 +34,19 @@ class PNode(object):
 class PriorityQueue(object):
     """Priority queue class with insert, peek, and pop methods."""
 
-    def __init__(self, heap=[]):
+    def __init__(self, heap=None):
         """Initialize the heap with optional queue(list) of PNodes."""
-        if type(heap) is not list:
+        if type(heap) is not list and heap is not None:
             raise TypeError('Heap argument must be list type.')
+
+        if heap is None:
+            self.heap = []
 
         def getkey(item):
             return item.priority
 
         try:
-            self.heap = sorted(heap, key=getkey)
+            self.heap = sorted(self.heap, key=getkey)
         except (ValueError, TypeError):
             raise TypeError('Heap must contain only PNodes.')
 
