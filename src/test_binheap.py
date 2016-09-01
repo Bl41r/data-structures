@@ -9,10 +9,6 @@ import random
 import string
 
 
-'''
-
-'''
-
 # Test Cases
 
 EDGE_CASES = [
@@ -114,13 +110,7 @@ def test_bin_push_type_err(bin):
 def test_bin_pop_order(bin):
     for i in bin.int_list:
         bin.binheap.push(i)
-    print(len(bin.binheap.heap))
-    # for i, num in enumerate(bin.int_list):
-    #     assert bin.binheap.pop() == bin.int_list[i]
     result = [ bin.binheap.pop() for i in bin.int_list ]
-    print(len(bin.int_list))
-    print('result:', result)
-    print('intlis:', bin.int_list)
     assert result == bin.int_list
 
 def test_bin_pop_index_err(bin):
