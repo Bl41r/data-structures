@@ -56,6 +56,7 @@ class MinHeap(object):
         Future:  use math, still working on formula.
         """
         n = 1
+        t = 0
         while l > n - 1:
             t = n - 1
             n *= 2
@@ -89,7 +90,6 @@ class MinHeap(object):
             raise IndexError('Cannot pop an empty heap.')
         popped_idx = 0
         self.heap[0] = self.heap[-1]
-        del self.heap[-1]
         last_index_top = self._get_last_index_top(len(self.heap))
 
         while popped_idx <= last_index_top:
@@ -101,5 +101,5 @@ class MinHeap(object):
                 self._swap(popped_idx, last_index_top + 1)
                 popped_idx = last_index_top + 1
                 break
-
+        self.heap = self.heap[0:-1]
         return popped_val

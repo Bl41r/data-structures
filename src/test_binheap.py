@@ -25,12 +25,12 @@ EDGE_CASES = [
 ]
 
 INT_CASES = [random.sample(range(1000),
-             random.randrange(10)) for n in range(10)
+             random.randrange(2, 10)) for n in range(10)
              ]
 
 
 STR_CASES = [random.sample(string.printable,
-             random.randrange(10)) for n in range(10)
+             random.randrange(2, 10)) for n in range(10)
              ]
 
 TEST_CASES = EDGE_CASES + INT_CASES + STR_CASES
@@ -62,9 +62,12 @@ def bin(request):
             pass
     len_int = len(int_list)
     len_str = len(str_list)
+    int_list = sorted(int_list)
+    str_list = sorted(str_list)
     return MyBHFix(binheap, input_val, int_list, str_list, len_int, len_str)
 
 # MinHeap init tests
+
 
 def test_bin_init(bin):
     """
@@ -103,10 +106,7 @@ def test_bin_repr(bin):
     pass
 
 
-def test_bin__swap(bin):
-    from binheap import MinHeap
-    a = MinHeap(bin.int_list)
-    b = a.heap[0]
-    c = a.heap[1]
-    a._swap(b, c)
-    assert b == a.heap[1]
+def test_bin_pop(bin):
+    for i in bin.int_list:
+        bin.binheap.push(i)
+    assert len(bin.binheap.heap) == len(bin.int_list)
