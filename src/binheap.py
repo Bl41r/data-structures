@@ -9,13 +9,16 @@ to insert a value into the heap, and pop to remove and return the root.
 class MinHeap(object):
     """Min heap class with push and pop methods."""
 
-    def __init__(self, heap=[]):
+    def __init__(self, heap=None):
         """Initialize the heap with optional heap(list) of integers."""
-        if type(heap) is not list:
+        if type(heap) is not list and heap is not None:
             raise TypeError('Heap argument must be list type.')
 
+        if heap is None:
+            self.heap = []
+
         try:
-            self.heap = sorted(heap)
+            self.heap = sorted(self.heap)
         except (ValueError, TypeError):
             raise TypeError('Heap must contain only integers.')
 
@@ -57,7 +60,6 @@ class MinHeap(object):
             self.heap.append(val)
         else:
             raise TypeError('Must push an integer value.')
-
         length = len(self.heap)
         new_val_idx = length - 1
         parent_idx = self._parent_index(new_val_idx)
