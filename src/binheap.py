@@ -44,7 +44,7 @@ class MinHeap(object):
         try:
             right = self.heap[left_index + 1]
         except IndexError:
-            return None
+            return left_index
 
         if left < right:
             return left_index
@@ -92,7 +92,7 @@ class MinHeap(object):
             raise IndexError('Cannot pop an empty heap.')
         curr_idx = 0
 
-        while self._min_child(curr_idx) is not None:
+        while self._min_child(curr_idx) is not None and self.heap[self._min_child(curr_idx)] < self.heap[curr_idx]:
             min_child_idx = self._min_child(curr_idx)
             self._swap(curr_idx, min_child_idx)
             curr_idx = min_child_idx
