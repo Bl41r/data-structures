@@ -43,7 +43,7 @@ MyBHFix = namedtuple(
 def bin(request):
     '''return an empty BinHeap'''
     from binheap import MinHeap
-    binheap = MinHeap()
+    binheap = MinHeap([])
     int_list = []
     str_list = []
     input_val = None
