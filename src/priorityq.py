@@ -41,6 +41,8 @@ class PriorityQueue(object):
 
         if heap is None:
             self.heap = []
+        else:
+            self.heap = heap
 
         def getkey(item):
             return item.priority
@@ -74,23 +76,12 @@ class PriorityQueue(object):
         try:
             right = self.heap[left_index + 1]
         except IndexError:
-            return None
-
-        if left < right:
             return left_index
-        if right <= left:
-            return right
 
-    def _get_last_index_top(self, l):
-        """Get last index before final branch layer.
-
-        Future:  use math, still working on formula.
-        """
-        n = 1
-        while l > n - 1:
-            t = n - 1
-            n *= 2
-        return t - 1
+        if (left.priority) < (right.priority):
+            return left_index
+        if (right.priority) <= (left.priority):
+            return left_index + 1
 
     # User methods
     def insert(self, pnode):
@@ -115,23 +106,17 @@ class PriorityQueue(object):
     def pop(self):
         """Pop the root of the tree and return the PNode value."""
         try:
-            popped_val = self.heap[0].value
+            self._swap(0, -1)
+            popped_val = self.heap.pop()
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
-        popped_idx = 0
-        last_index_top = self._get_last_index_top(len(self.heap))
+        curr_idx = 0
 
-        while popped_idx < last_index_top:
-            try:
-                min_child_idx = self._min_child(popped_idx)
-                self._swap(popped_idx, min_child_idx)
-                popped_idx = min_child_idx
-            except TypeError:
-                self._swap(popped_idx, last_index_top + 1)
-                popped_idx = last_index_top + 1
-                break
+        while self._min_child(curr_idx) is not None and self.heap[self._min_child(curr_idx)].priority < self.heap[curr_idx].priority:
+            min_child_idx = self._min_child(curr_idx)
+            self._swap(curr_idx, min_child_idx)
+            curr_idx = min_child_idx
 
-        del self.heap[popped_idx]
         return popped_val
 
     def peek(self):

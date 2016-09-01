@@ -16,6 +16,8 @@ class MinHeap(object):
 
         if heap is None:
             self.heap = []
+        else:
+            self.heap = heap
 
         try:
             self.heap = sorted(self.heap)
