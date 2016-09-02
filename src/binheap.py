@@ -20,8 +20,11 @@ class MinHeap(object):
             self.heap = heap
 
         try:
-            self.heap = sorted(self.heap)
-        except (ValueError, TypeError):
+            self.heap = sorted(self.heap)   # does not raise error in 2.7
+            for i in self.heap:
+                if type(i) is not int:
+                    raise TypeError('Heap must contain only integers.')
+        except (TypeError):
             raise TypeError('Heap must contain only integers.')
 
     def __repr__(self):
@@ -62,6 +65,7 @@ class MinHeap(object):
             self.heap.append(val)
         else:
             raise TypeError('Must push an integer value.')
+
         length = len(self.heap)
         new_val_idx = length - 1
         parent_idx = self._parent_index(new_val_idx)

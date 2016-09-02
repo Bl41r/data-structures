@@ -107,10 +107,38 @@ def test_bin_push_type_err(bin):
             bin.binheap.push(i)
 
 
+def test_bin_push_list_bad_type():
+    from binheap import MinHeap
+    test_list = [1, 3, 'a', [5, 8], ('b', 3)]
+    with pytest.raises(TypeError):
+        bh = MinHeap()
+        bh.__init__(test_list)
+
+
+def test_bin_push_heapify(bin):
+    test = []
+    for i in bin.int_list:
+        bin.binheap.push(i)
+        test.append(i)
+        assert bin.binheap.heap == sorted(test)
+
+
+def tst_bin_push_while():
+    from binheap import MinHeap
+
+    test_min_heap = MinHeap()
+    test_vals = [0, 2, 4, 6, 5, 3, 1]
+    for num in test_vals:
+        test_min_heap.push(num)
+        assert num in test_min_heap.heap(num)
+
+    assert test_min_heap.heap == sorted(test_vals)
+
+
 def test_bin_pop_order(bin):
     for i in bin.int_list:
         bin.binheap.push(i)
-    result = [ bin.binheap.pop() for i in bin.int_list ]
+    result = [bin.binheap.pop() for i in bin.int_list]
     assert result == bin.int_list
 
 def test_bin_pop_index_err(bin):
