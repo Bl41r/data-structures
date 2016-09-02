@@ -94,6 +94,12 @@ def test_bin_no_int(bin):
             MinHeap(bin.input_val)
 
 
+def test_repr():
+    from binheap import MinHeap
+    bh = MinHeap([1])
+    assert bh.__repr__() == '[1]'
+
+
 def test_bin_push_heap_length(bin):
     for i in bin.int_list:
         bin.binheap.push(i)
@@ -123,16 +129,15 @@ def test_bin_push_heapify(bin):
         assert bin.binheap.heap == sorted(test)
 
 
-def tst_bin_push_while():
+def test_bin_push_while():
     from binheap import MinHeap
 
     test_min_heap = MinHeap()
     test_vals = [0, 2, 4, 6, 5, 3, 1]
     for num in test_vals:
         test_min_heap.push(num)
-        assert num in test_min_heap.heap(num)
-
-    assert test_min_heap.heap == sorted(test_vals)
+        assert num in test_min_heap.heap
+    assert test_min_heap.heap == [0, 2, 1, 6, 5, 4, 3]
 
 
 def test_bin_pop_order(bin):
