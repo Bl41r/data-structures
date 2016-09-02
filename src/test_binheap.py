@@ -89,7 +89,7 @@ def test_bin_no_int(bin):
     sort a heap not made of integers
     """
     from binheap import MinHeap
-    if type(bin.input_val) is not None:
+    if bin.input_val is not None and type(bin.input_val) is not int:
         with pytest.raises(TypeError):
             MinHeap(bin.input_val)
 
