@@ -9,6 +9,7 @@ of two nodes.
 """
 
 import sys
+import math
 import timeit
 
 
@@ -189,6 +190,52 @@ class SimpleGraph(object):
                 if e not in breadth_list:
                     breadth_list.append(e)
         return breadth_list
+
+
+def shortest_path(graph, neighbors):
+    """Return node that is lowest weight."""
+    n_list = []
+    for n in neighbors:
+        n_list.append((graph.node_dict[n].weight, graph.node_dict[n]))
+    print('n_list:', n_list)
+    if len(n_list):
+        print('min:', min(n_list)[1].name)
+        return min(n_list)[1]
+    return None
+
+
+def spt_Dijkstra(graph, start_node_name, end_node_name):
+    """Perform Shortest-Path Tree."""
+    distances = {}
+    visited_set = []
+    for key in graph.node_dict:
+        distances[key] = math.inf
+    curr_node = graph.node_dict[start_node_name]
+    distances[curr_node.name] = 0
+
+    i = 0
+    print('loop start')
+    while curr_node is not None:
+        print('distances:', distances)
+        tmp = []
+        i += 1
+        for n in graph.neighbors(curr_node):
+            if n not in visited_set:
+                tmp.append(n)
+            distances[n] = min(distances[n], distances[curr_node.name] + graph.weight(curr_node, graph.node_dict[n]))
+        visited_set.append(curr_node.name)
+        curr_node = shortest_path(graph, tmp)
+        print('curr node now is:', curr_node)
+
+        if curr_node is not None:
+            if curr_node.name == end_node_name:
+                break
+
+        if i > 1000:
+            print('breaking loop-----')
+            break
+    return distances[end_node_name]
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
