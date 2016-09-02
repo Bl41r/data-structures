@@ -26,7 +26,7 @@ class Node(object):
         if not isinstance(weight, int):
             raise TypeError('Weight must be an integer.')
         self.name = name
-        self.weight = abs(weight)
+        self.weight = weight
         self.data = data
         self.neighbors = []
 
