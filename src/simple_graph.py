@@ -191,9 +191,11 @@ class SimpleGraph(object):
                     breadth_list.append(e)
         return breadth_list
 
+# --------------------------------------------------------------------
+# Shortest path functions
 
 def shortest_path(graph, neighbors):
-    """Return node that is lowest weight."""
+    """Helper function to return node that is lowest weight."""
     n_list = []
     for n in neighbors:
         n_list.append((graph.node_dict[n].weight, graph.node_dict[n]))
@@ -213,12 +215,9 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
     curr_node = graph.node_dict[start_node_name]
     distances[curr_node.name] = 0
 
-    i = 0
-    print('loop start')
     while curr_node is not None:
         print('distances:', distances)
         tmp = []
-        i += 1
         for n in graph.neighbors(curr_node):
             if n not in visited_set:
                 tmp.append(n)
@@ -231,9 +230,8 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
             if curr_node.name == end_node_name:
                 break
 
-        if i > 1000:
-            print('breaking loop-----')
-            break
+    if distances[end_node_name] == math.inf:
+        return None
     return distances[end_node_name]
 
 
