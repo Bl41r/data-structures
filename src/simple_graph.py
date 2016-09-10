@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """Simple graph implementation.
 
-Simple graph data type which contains a dict of nodes.  Nodes are a
+Simple edge-weighted graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
-In this implementation, weight is an integer, and the weight of an edge
-is calculated to be the abs value of the difference between the weights
-of two nodes.
+In this implementation, weight is a positive integer directional edge.
 """
 
 import sys
@@ -19,14 +17,11 @@ class Node(object):
     node names.
     """
 
-    def __init__(self, name, weight=0, data=None):
+    def __init__(self, name, data=None):
         """Initialize the Node instance."""
         if not isinstance(name, type('')):
             raise TypeError('Name must be a string.')
-        if not isinstance(weight, int):
-            raise TypeError('Weight must be an integer.')
         self.name = name
-        self.weight = weight
         self.data = data
         self.neighbors = []
 
@@ -40,7 +35,7 @@ class Node(object):
         """Return a list of strings indicating its neighbors."""
         output = []
         for n in self.neighbors:
-            output.append("{} to {}".format(self.name, n))
+            output.append("{} to {}, weight = {}".format(self.name, n[0], n[1]))
         return output
 
 
@@ -70,13 +65,13 @@ class SimpleGraph(object):
             raise KeyError('Node {} already exists as {}'.format(n.name, self))
         self.node_dict[n.name] = n
 
-    def add_edge(self, n1, n2):
+    def add_edge(self, n1, n2, weight):
         """Add n2.name to n1.neighbors.
 
         If either don't exist, add to graph.  n1 and n2 are Node
         instances which should be contained in the graph's node_dict.
         If n1 already contains n2 as a neighbor, n2 will not be appended
-        again.
+        again.  Weight is a positive integer.
         """
         try:
             if n1.name not in self.node_dict:
@@ -89,8 +84,9 @@ class SimpleGraph(object):
         if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
             raise ValueError('Cannot Overwrite existing nodes in graph.')
 
-        n1.neighbors.append(n2.name)
-        n1.neighbors = list(set(n1.neighbors))
+        if isinstance(weight, int) and weight >= 0:
+            n1.neighbors.append((n2.name, weight))
+            n1.neighbors = list(set(n1.neighbors))
 
     def del_node(self, n):
         """Delete node from graph.
@@ -124,9 +120,9 @@ class SimpleGraph(object):
         return node_in_graph
 
     def neighbors(self, n):
-        """Return the list of all nodes connected to ‘n’ by edges.
+        """Return the list of all nodes connected ‘n’ is connected to 
 
-        Raises an error if n is not in g.
+        by edges and weight of edge.  Raises an error if n is not in g.
         """
         try:
             node_list = self.node_dict[n.name].neighbors
@@ -143,12 +139,16 @@ class SimpleGraph(object):
         are not in g.
         """
         try:
-            n_adjacent = self.node_dict[n2.name].name in self.node_dict[n1.name].neighbors
+            print(self.node_dict[n2.name].name)
+            print(self.node_dict[n1.name].neighbors)
+            for item in self.node_dict[n1.name].neighbors:
+                if self.node_dict[n2.name].name in item:
+                    return True
         except KeyError:
             raise ValueError('Graph does not contain both nodes.  Use has_node method.')
         except AttributeError:
             raise TypeError('Must pass node types to adjacent method.')
-        return n_adjacent
+        return False
 
     def nodes(self):
         """Return a list of all node names contained in graph."""
@@ -158,9 +158,11 @@ class SimpleGraph(object):
         return tmp
 
     def weight(self, n1, n2):
-        """Return the relative weight of an edge.  n1 and n2 are nodes."""
+        """Return the weight of an edge.  n1 and n2 are nodes."""
         try:
-            return abs(self.node_dict[n1.name].weight - self.node_dict[n2.name].weight)
+            for n in n1.neighbors:
+                if n[0] == n2.name:
+                    return n[1]
         except AttributeError:
             raise AttributeError('n1 and n2 must be nodes.')
         except KeyError:
@@ -176,8 +178,8 @@ class SimpleGraph(object):
             c = curr.pop()
             ret.append(c.name)
             for n in c.neighbors:
-                if self.node_dict[n].name not in ret:
-                    curr.append(self.node_dict[n])
+                if self.node_dict[n[0]].name not in ret:
+                    curr.append(self.node_dict[n[0]])
         return ret
 
     def breadth_first_traversal(self, start):
@@ -186,8 +188,8 @@ class SimpleGraph(object):
         for edge in breadth_list:
             tmp = self.neighbors(self.node_dict[edge])
             for e in tmp:
-                if e not in breadth_list:
-                    breadth_list.append(e)
+                if e[0] not in breadth_list:
+                    breadth_list.append(e[0])
         return breadth_list
 
 if __name__ == '__main__':
@@ -215,14 +217,14 @@ if __name__ == '__main__':
     gr.add_node(g)
     gr.add_node(h)
     gr.add_node(i)
-    gr.add_edge(a, b)
-    gr.add_edge(a, c)
-    gr.add_edge(b, d)
-    gr.add_edge(b, e)
-    gr.add_edge(c, f)
-    gr.add_edge(c, g)
-    gr.add_edge(e, h)
-    gr.add_edge(e, i)
+    gr.add_edge(a, b, 1)
+    gr.add_edge(a, c, 2)
+    gr.add_edge(b, d, 3)
+    gr.add_edge(b, e, 4)
+    gr.add_edge(c, f, 5)
+    gr.add_edge(c, g, 6)
+    gr.add_edge(e, h, 7)
+    gr.add_edge(e, i, 8)
 
     if sys.argv[1] == 'circular':
         gr.add_edge(d, a)
