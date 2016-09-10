@@ -2,7 +2,7 @@
 
 Repo that holds implementations of a variety of data structures, including nodes, linked lists, double linked lists, stacks, and queues.
 
-This branch features the priority queue. A Priority Queue is similar to a queue, except that in addition to a value, each item in the queue has a “priority”. When you pop an item off of the queue, you always get the highest priority item.
+This branch features a graph with weighted edges.
 
 #### methods
 .insert(item): inserts an item into the queue.
@@ -23,3 +23,4 @@ This branch features the graph data type
 
 - g.depth_first_traversal(start): Perform a full depth-first traversal of the graph beginning at start. Return the full visited path when traversal is complete.
 - g.breadth_first_traversal(start): Perform a full breadth-first traversal of the graph, beginning at start. Return the full visited path when traversal is complete.
+- g.weight(n1, n2): Returns the weight of the edge connected two nodes
