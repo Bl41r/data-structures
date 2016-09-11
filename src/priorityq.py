@@ -65,23 +65,6 @@ class PriorityQueue(object):
         """Return index of parent. Negative 1 indicates idx is root."""
         return ((child_idx - 1) // 2)
 
-    def _min_child(self, parent_idx):
-        """Return index of min child value."""
-        left_index = 2 * parent_idx + 1
-        try:
-            left = self.heap[left_index]
-        except IndexError:
-            return None
-
-        try:
-            right = self.heap[left_index + 1]
-        except IndexError:
-            return left_index
-
-        if (left.priority) < (right.priority):
-            return left_index
-        if (right.priority) <= (left.priority):
-            return left_index + 1
 
     # User methods
     def insert(self, pnode):
