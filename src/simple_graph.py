@@ -196,21 +196,21 @@ class SimpleGraph(object):
         return breadth_list
 
 
-def shortest_path(graph, neighbors, n1):
+def shortest_path(graph, distances, visited_set):
     """Helper function to return node name with lowest weight from n1."""
     n_list = []
-    for name, dist in neighbors.items():
-        n_list.append((dist, name))
+    for name, dist in distances.items():
+        if name not in visited_set and dist is not math.inf:
+            n_list.append((dist, name))
     if len(n_list):
-        print('min:', min(n_list)[1])
-        min(n_list)[1]
+        return min(n_list)[1]
     return None
 
 
 def spt_Dijkstra(graph, start_node_name, end_node_name):
     """Perform Shortest-Path Tree."""
     distances = {}
-    visited_set = []
+    visited_set = set()
     for key in graph.node_dict:
         distances[key] = math.inf
     curr_node = graph.node_dict[start_node_name]
@@ -223,8 +223,8 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
             if n not in visited_set:
                 tmp.append(n[0])
             distances[n[0]] = min(distances[n[0]], distances[curr_node.name] + graph.weight(curr_node, graph.node_dict[n[0]]))
-        visited_set.append(curr_node.name)
-        curr_node = graph.node_dict[shortest_path(graph, distances, curr_node)]
+        visited_set.add(curr_node.name)
+        curr_node = graph.node_dict[shortest_path(graph, distances, visited_set)]
         print('curr node now is:', curr_node)
 
         if curr_node is not None:
