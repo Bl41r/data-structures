@@ -196,21 +196,6 @@ class SimpleGraph(object):
         return breadth_list
 
 
-    #def find_h(self, start, end):
-    #"""Find heuristic arg for A* search"""
-    #breadth_list = [start.name]
-    #total_length = 0
-    #for edge in breadth_list:
-    #    tmp = self.neighbors(self.node_dict[edge])
-    #    for e in tmp:
-    #        if e[0] not in breadth_list:
-    #            breadth_list.append(e[0])
-    #            total_length += e[1]
-    #    if e[0] == end.name:
-    #        break
-    #return total_length // len(breadth_list)
-
-
 def heuristic(graph, curr_node):
     """Return a prediction based on the node.
 
