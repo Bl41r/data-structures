@@ -196,6 +196,20 @@ class SimpleGraph(object):
         return breadth_list
 
 
+    def find_h(self, start, end):
+    """Find heuristic arg for A* search"""
+    breadth_list = [start.name]
+    total_length = 0
+    for edge in breadth_list:
+        tmp = self.neighbors(self.node_dict[edge])
+        for e in tmp:
+            if e[0] not in breadth_list:
+                breadth_list.append(e[0])
+                total_length += e[1]
+        if e[0] == end.name:
+            break
+    return total_length // len(breadth_list)
+
 def shortest_path(graph, distances, visited_set):
     """Helper function to return node name with lowest weight from n1."""
     n_list = []
@@ -208,6 +222,35 @@ def shortest_path(graph, distances, visited_set):
 
 
 def spt_Dijkstra(graph, start_node_name, end_node_name):
+    """Perform Shortest-Path Tree."""
+    distances = {}
+    visited_set = set()
+    for key in graph.node_dict:
+        distances[key] = math.inf
+    curr_node = graph.node_dict[start_node_name]
+    distances[curr_node.name] = 0
+
+    while curr_node is not None:
+        print('distances:', distances)
+        tmp = []
+        for n in graph.neighbors(curr_node):
+            if n not in visited_set:
+                tmp.append(n[0])
+            distances[n[0]] = min(distances[n[0]], distances[curr_node.name] + graph.weight(curr_node, graph.node_dict[n[0]]))
+        visited_set.add(curr_node.name)
+        curr_node = graph.node_dict[shortest_path(graph, distances, visited_set)]
+        print('curr node now is:', curr_node)
+
+        if curr_node is not None:
+            if curr_node.name == end_node_name:
+                break
+
+    if distances[end_node_name] == math.inf:
+        return None
+    return distances[end_node_name]
+
+
+def spt_AStar(graph, start_node_name, end_node_name):
     """Perform Shortest-Path Tree."""
     distances = {}
     visited_set = set()
