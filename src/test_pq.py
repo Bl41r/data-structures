@@ -134,6 +134,68 @@ def test_empty_pqueue(pq):
         pq.pqueue.pop()
 
 
+def test_pqueue_one_node_pop_2x(pq):
+    """Add one item to a pq, then pop twice, make sure error raised."""
+    from priorityq import PNode
+    if type(pq.input_val) is int:
+        a = PNode('a', pq.input_val)
+        pq.pqueue.insert(a)
+        pq.pqueue.pop()
+        with pytest.raises(IndexError):
+            pq.pqueue.pop()
+
+
+def test_pqueue_one_node_pop_peek(pq):
+    """Add one item to a pq, then pop and assert peek is None."""
+    from priorityq import PNode
+    if type(pq.input_val) is int:
+        a = PNode('a', pq.input_val)
+        pq.pqueue.insert(a)
+        pq.pqueue.pop()
+        assert pq.pqueue.peek() is None
+
+
+def test_pqueue_with_one_item_in_sequence(pq):
+    """Add one item to a list, then create Pqueue and check length."""
+    from priorityq import PNode, PriorityQueue
+    if type(pq.input_val) is int:
+        a = PNode('a', pq.input_val)
+        new_heap = [a]
+        pq1 = PriorityQueue(new_heap)
+        assert len(pq1.heap) == 1
+
+
+def test_pqueue_with_tuple_input(pq):
+    """Test TypeError raised when using tuple instead of list."""
+    from priorityq import PNode, PriorityQueue
+    if type(pq.input_val) is int:
+        a = PNode('a', pq.input_val)
+        new_heap = (a)
+        with pytest.raises(TypeError):
+            pq1 = PriorityQueue(new_heap)
+
+
+def test_pqueue_with_list_non_PNodes():
+    """Test TypeError raised with list of non-PNodes."""
+    from priorityq import PriorityQueue
+    new_heap = [1, 2, 3, 'hi']
+    with pytest.raises(TypeError):
+        pq1 = PriorityQueue(new_heap)
+
+
+def test_equal_priorities():
+    """Assert order is by when inserted with equal priorities."""
+    from priorityq import PNode, PriorityQueue
+    a = PNode(1, 0)
+    b = PNode(2, 0)
+    c = PNode(3, 0)
+    pq1 = PriorityQueue()
+    pq1.insert(b)
+    pq1.insert(a)
+    pq1.insert(c)
+    print(pq1.heap)
+    assert pq1.pop() == b.value
+
 def test_pop_node(pq):
     """
     Confirm that the insert functions adds PNodes to the PriorityQueue and
@@ -151,7 +213,7 @@ def test_pop_node(pq):
         pq.pqueue.insert(a)
         pq.pqueue.insert(d)
         pq.pqueue.insert(b)
-        assert pq.pqueue.pop() == a
+        assert pq.pqueue.pop() == a.value
 
 
 def test_peek_empty_error(pq):

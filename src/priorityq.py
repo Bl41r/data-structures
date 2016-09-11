@@ -49,7 +49,7 @@ class PriorityQueue(object):
 
         try:
             self.heap = sorted(self.heap, key=getkey)
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, AttributeError):
             raise TypeError('Heap must contain only PNodes.')
 
     def __repr__(self):
@@ -96,7 +96,7 @@ class PriorityQueue(object):
         parent_idx = self._parent_index(new_val_idx)
 
         while True:
-            if pnode.priority <= self.heap[parent_idx].priority and new_val_idx != 0:
+            if pnode.priority < self.heap[parent_idx].priority and new_val_idx != 0:
                 self._swap(parent_idx, new_val_idx)
                 new_val_idx = parent_idx
                 parent_idx = self._parent_index(new_val_idx)
@@ -106,17 +106,9 @@ class PriorityQueue(object):
     def pop(self):
         """Pop the root of the tree and return the PNode value."""
         try:
-            self._swap(0, -1)
-            popped_val = self.heap.pop()
+            popped_val = self.heap.pop(0).value
         except IndexError:
             raise IndexError('Cannot pop an empty heap.')
-        curr_idx = 0
-
-        while self._min_child(curr_idx) is not None and self.heap[self._min_child(curr_idx)].priority < self.heap[curr_idx].priority:
-            min_child_idx = self._min_child(curr_idx)
-            self._swap(curr_idx, min_child_idx)
-            curr_idx = min_child_idx
-
         return popped_val
 
     def peek(self):
