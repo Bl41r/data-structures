@@ -197,14 +197,13 @@ class SimpleGraph(object):
 
 
 def shortest_path(graph, neighbors, n1):
-    """Helper function to return node that is lowest weight."""
+    """Helper function to return node name with lowest weight from n1."""
     n_list = []
-    for n in neighbors:
-        n_list.append((graph.weight(n1, graph.node_dict[n]), graph.node_dict[n]))
-    print('n_list:', n_list)
+    for name, dist in neighbors.items():
+        n_list.append((dist, name))
     if len(n_list):
-        print('min:', min(n_list)[1].name)
-        return min(n_list)[1]
+        print('min:', min(n_list)[1])
+        min(n_list)[1]
     return None
 
 
@@ -225,7 +224,7 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
                 tmp.append(n[0])
             distances[n[0]] = min(distances[n[0]], distances[curr_node.name] + graph.weight(curr_node, graph.node_dict[n[0]]))
         visited_set.append(curr_node.name)
-        curr_node = shortest_path(graph, tmp, curr_node)
+        curr_node = graph.node_dict[shortest_path(graph, distances, curr_node)]
         print('curr node now is:', curr_node)
 
         if curr_node is not None:
