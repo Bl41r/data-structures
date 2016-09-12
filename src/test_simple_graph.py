@@ -7,6 +7,13 @@ import pytest
 import random
 import string
 
+from graphs_for_testing import (
+    build_test_graph,
+    build_search_graph1,
+    build_search_graph2,
+    build_search_graph3
+    )
+
 
 '''
 g.nodes(): return a list of all nodes in the graph
@@ -149,7 +156,7 @@ def test_sg_add_edge_create_node(sg):
     strung_input = str(sg.input_val)
     a = Node(strung_input)
     b = Node(strung_input * 2)
-    sg.graph.add_edge(a, b)
+    sg.graph.add_edge(a, b, sg.weight)
     assert a.name in sg.graph.node_dict and b.name in sg.graph.node_dict
 
 
@@ -164,8 +171,8 @@ def test_sg_add_edge(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b)
-    assert a.neighbors[0] == b.name
+    sg.graph.add_edge(a, b, sg.weight)
+    assert a.neighbors[0][0] == b.name
 
 
 def test_sg_add_edge_nonnode(sg):
@@ -179,7 +186,7 @@ def test_sg_add_edge_nonnode(sg):
     b = strung_input
     sg.graph.add_node(a)
     with pytest.raises(TypeError):
-        sg.graph.add_edge(a, b)
+        sg.graph.add_edge(a, b, sg.weight)
 
 
 # Test delete node functions
@@ -226,7 +233,7 @@ def test_del_node_and_edge(sg):
     print(a.name)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b)
+    sg.graph.add_edge(a, b, sg.weight)
     sg.graph.del_node(b)
     assert b.name not in sg.graph.node_dict
 
@@ -246,9 +253,9 @@ def test_sg_edges(sg):
     sg.graph.add_node(b)
     sg.graph.add_node(c)
     sg.graph.add_node(d)
-    sg.graph.add_edge(a, c)
-    sg.graph.add_edge(b, d)
-    sg.graph.add_edge(a, d)
+    sg.graph.add_edge(a, c, 1)
+    sg.graph.add_edge(b, d, 1)
+    sg.graph.add_edge(a, d, 1)
     e = a.output_neighbors()
     f = b.output_neighbors()
     g = e + f
@@ -276,9 +283,9 @@ def test_neighbors(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b)
+    sg.graph.add_edge(a, b, sg.weight)
     c = sg.graph.neighbors(a)
-    assert b.name in c
+    assert b.name in c[0][0]
 
 
 def test_neighbors_no_arg(sg):
@@ -302,8 +309,18 @@ def test_adjacent(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b)
+    sg.graph.add_edge(a, b, sg.weight)
     assert sg.graph.adjacent(a, b)
+
+
+def test_not_adjacent(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    assert sg.graph.adjacent(a, b) is False
 
 
 def test_adjacent_missing_node(sg):
@@ -344,51 +361,39 @@ def test_sg_nodes_in_graph(sg):
     assert len(result) == 5
 
 
-def build_test_graph(type='tree'):
-    """Construct and return a test graph.
+def test_weight_non_nodes():
+    """Assert Error raised when non-nodes entered."""
+    from simple_graph import SimpleGraph
+    gr = SimpleGraph()
+    with pytest.raises(AttributeError):
+        gr.weight(5, 6)
 
-    If type == 'circular, an edge from d to a is constructed as well.'
-    """
+
+def test_weight_non_graph_nodes():
+    """Assert Error raised when nodes not in graph entered."""
     from simple_graph import SimpleGraph
     from simple_graph import Node
-
     a = Node('a_node')
-    b = Node('b_node', 1)
-    c = Node('c_node', 2)
-    d = Node('d_node', 3)
-    e = Node('e_node', 4)
-    f = Node('f_node', 5)
-    g = Node('g_node', 6)
-    h = Node('h_node', 7)
-    i = Node('i_node', 8)
+    b = Node('b_node')
+    gr = SimpleGraph()
+    with pytest.raises(KeyError):
+        gr.weight(a, b)
 
+
+def test_add_edge_same_names():
+    """Test error raised when nodes have same name."""
+    from simple_graph import SimpleGraph
+    from simple_graph import Node
+    a = Node('a_node')
+    c = Node('a_node')
     gr = SimpleGraph()
     gr.add_node(a)
-    gr.add_node(b)
-    gr.add_node(c)
-    gr.add_node(d)
-    gr.add_node(e)
-    gr.add_node(f)
-    gr.add_node(g)
-    gr.add_node(h)
-    gr.add_node(i)
-    gr.add_edge(a, b)
-    gr.add_edge(a, c)
-    gr.add_edge(b, d)
-    gr.add_edge(b, e)
-    gr.add_edge(c, f)
-    gr.add_edge(c, g)
-    gr.add_edge(e, h)
-    gr.add_edge(e, i)
-
-    if type == 'circular':
-        gr.add_edge(d, a)
-    return gr
+    with pytest.raises(ValueError):
+        gr.add_edge(a, c, 1)
 
 
 def test_one_node_trav():
     """Assert both breadth and depth traversal return correct list.
-
     This graph has one node that is connected to itself.
     """
     from simple_graph import SimpleGraph
@@ -397,7 +402,7 @@ def test_one_node_trav():
     a = Node('a_node')
     gr = SimpleGraph()
     gr.add_node(a)
-    gr.add_edge(a, a)
+    gr.add_edge(a, a, 1)
     depth = gr.breadth_first_traversal(gr.node_dict['a_node'])
     breadth = gr.depth_first_traversal(gr.node_dict['a_node'])
     assert len(depth) == len(breadth) == 1
@@ -471,134 +476,49 @@ def test_depth_ft():
     assert len(tree) == len(circ)
 
 
-def test_weights():
-    """Test weight functionality."""
-    from simple_graph import Node
-    gr = build_test_graph()
-    j = Node('j_node', 9)   # not in graph
-
-    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['b_node']) == 1
-    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['c_node']) == 2
-    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['d_node']) == 3
-    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['d_node']) == 2
-    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['e_node']) == 3
-
-    f = 3
-    with pytest.raises(AttributeError):
-        assert gr.weight(gr.node_dict['a_node'], f)
-
-    with pytest.raises(KeyError):
-        assert gr.weight(gr.node_dict['a_node'], j)
-
-def build_search_graph1():
-    """Construct and return a test graph.
-
-    This graph will be used for searching algorithms.  The shortest path
-    should be 11 (A -> C -> D -> F).
-    """
-    from simple_graph import SimpleGraph
-    from simple_graph import Node
-
-    a = Node('a_node', 0)
-    b = Node('b_node', 8)
-    c = Node('c_node', 5)
-    d = Node('d_node', 7)
-    e = Node('e_node', 12)
-    f = Node('f_node', 3)
-
-    gr = SimpleGraph()
-    gr.add_node(a)
-    gr.add_node(b)
-    gr.add_node(c)
-    gr.add_node(d)
-    gr.add_node(e)
-    gr.add_node(f)
-    gr.add_edge(a, b)
-    gr.add_edge(a, c)
-    gr.add_edge(b, d)
-    gr.add_edge(c, d)
-    gr.add_edge(c, e)
-    gr.add_edge(e, f)
-    gr.add_edge(d, f)
-
-    return gr
-
-
-def build_search_graph2():
-    """Construct and return a test graph.
-
-    This graph will be used for searching algorithms.  The shortest path
-    should be  (A -> C -> D -> F).
-    """
-    from simple_graph import SimpleGraph
-    from simple_graph import Node
-
-    a = Node('a_node', 0)
-    b = Node('b_node', 1)
-    c = Node('c_node', 5)
-    d = Node('d_node', 1)
-    e = Node('e_node', 12)
-    f = Node('f_node', 3)
-
-    gr = SimpleGraph()
-    gr.add_node(a)
-    gr.add_node(b)
-    gr.add_node(c)
-    gr.add_node(d)
-    gr.add_node(e)
-    gr.add_node(f)
-    gr.add_edge(a, b)
-    gr.add_edge(a, c)
-    gr.add_edge(b, d)
-    gr.add_edge(b, e)
-    gr.add_edge(c, d)
-    gr.add_edge(c, e)
-    gr.add_edge(e, f)
-    gr.add_edge(d, f)
-
-    return gr
-
-
-def build_search_graph3():
-    """Construct and return a test graph.
-
-    This graph will be used for searching algorithms.  The shortest path
-    should be  (A -> C -> D -> F).
-    """
-    from simple_graph import SimpleGraph
-    from simple_graph import Node
-
-    a = Node('a_node', 0)
-    b = Node('b_node', 1)
-    c = Node('c_node', 5)
-    d = Node('d_node', 1)
-    e = Node('e_node', 12)
-    f = Node('f_node', 3)
-
-    gr = SimpleGraph()
-    gr.add_node(a)
-    gr.add_node(b)
-    gr.add_node(c)
-    gr.add_node(d)
-    gr.add_node(e)
-    gr.add_node(f)
-    gr.add_edge(a, b)
-    gr.add_edge(a, c)
-    gr.add_edge(b, d)
-    gr.add_edge(b, e)
-    gr.add_edge(c, d)
-    gr.add_edge(c, e)
-
-    return gr
-
-
-def test_SPT_Dijkstra():
-    gr = build_search_graph()
-    shortest = 0
-    shortest += gr.weight(gr.node_dict['a_node'], gr.node_dict['c_node'])
-    print(shortest)
-    shortest += gr.weight(gr.node_dict['c_node'], gr.node_dict['d_node'])
-    print(shortest)
-    shortest += gr.weight(gr.node_dict['d_node'], gr.node_dict['f_node'])
-    print(shortest)
+def test_SPT_Dijkstra1():
+    """Test SPT algorithm."""
+    from simple_graph import spt_Dijkstra
+    gr = build_search_graph1()
+    shortest = spt_Dijkstra(gr, 'a_node', 'f_node')
     assert shortest == 11
+
+
+def test_SPT_Dijkstra2():
+    """Test SPT algorithm."""
+    from simple_graph import spt_Dijkstra
+    gr = build_search_graph2()
+    shortest = spt_Dijkstra(gr, 'a_node', 'f_node')
+    assert shortest == 3
+
+
+def test_SPT_Dijkstra3():
+    """Test SPT algorithm with a more complex graph."""
+    from simple_graph import spt_Dijkstra
+    gr = build_search_graph3()
+    shortest = spt_Dijkstra(gr, 'a_node', 'g_node')
+    assert shortest == 7
+
+
+def test_spt_AStar1():
+    """Test SPT algorithm."""
+    from simple_graph import spt_AStar
+    gr = build_search_graph1()
+    shortest = spt_AStar(gr, 'a_node', 'f_node')
+    assert shortest == 11
+
+
+def test_spt_AStar2():
+    """Test SPT algorithm."""
+    from simple_graph import spt_AStar
+    gr = build_search_graph2()
+    shortest = spt_AStar(gr, 'a_node', 'f_node')
+    assert shortest == 3
+
+
+def test_spt_AStar3():
+    """Test SPT algorithm with a more complex graph."""
+    from simple_graph import spt_AStar
+    gr = build_search_graph3()
+    shortest = spt_AStar(gr, 'a_node', 'g_node')
+    assert shortest == 7

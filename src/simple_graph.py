@@ -163,13 +163,13 @@ class SimpleGraph(object):
     def weight(self, n1, n2):
         """Return the weight of an edge.  n1 and n2 are nodes."""
         try:
+            if n1.name not in self.node_dict or n2.name not in self.node_dict:
+                raise KeyError('Nodes must be in graph.')
             for n in n1.neighbors:
                 if n[0] == n2.name:
                     return n[1]
         except AttributeError:
             raise AttributeError('n1 and n2 must be nodes.')
-        except KeyError:
-            raise KeyError('Nodes must be contained in the graph.')
 
     # Traversal methods
     def depth_first_traversal(self, start):
@@ -217,7 +217,7 @@ def shortest_path(graph, distances, visited_set, use_heuristic=False):
     n_list = []
     h = 0
     for name, dist in distances.items():
-        if name not in visited_set and dist is not math.inf:
+        if name not in visited_set and dist != float('inf'):
             if use_heuristic:
                 h = heuristic(graph, graph.node_dict[name])
             n_list.append((dist + h, name))
@@ -231,7 +231,7 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
     distances = {}
     visited_set = set()
     for key in graph.node_dict:
-        distances[key] = math.inf
+        distances[key] = float('inf')
     curr_node = graph.node_dict[start_node_name]
     distances[curr_node.name] = 0
 
@@ -250,7 +250,7 @@ def spt_Dijkstra(graph, start_node_name, end_node_name):
             if curr_node.name == end_node_name:
                 break
 
-    if distances[end_node_name] == math.inf:
+    if distances[end_node_name] == float('inf'):
         return None
     return distances[end_node_name]
 
@@ -260,7 +260,7 @@ def spt_AStar(graph, start_node_name, end_node_name):
     distances = {}
     visited_set = set()
     for key in graph.node_dict:
-        distances[key] = math.inf
+        distances[key] = float('inf')
     curr_node = graph.node_dict[start_node_name]
     distances[curr_node.name] = 0
 
@@ -279,12 +279,12 @@ def spt_AStar(graph, start_node_name, end_node_name):
             if curr_node.name == end_node_name:
                 break
 
-    if distances[end_node_name] == math.inf:
+    if distances[end_node_name] == float('inf'):
         return None
     return distances[end_node_name]
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     if len(sys.argv) != 2:
         print('usage: "python3 simple_graph.py <demo-type>" <demo-type> can be either circular, tree, or struct.')
         sys.exit(1)
