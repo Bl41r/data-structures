@@ -5,7 +5,7 @@ Simple edge-weighted graph data type which contains a dict of nodes.  Nodes are 
 class, which makes them adaptable for additional attributes to be added.
 In this implementation, weight is a positive integer directional edge.
 """
-
+from __future__ import unicode_literals
 import sys
 import timeit
 
@@ -87,6 +87,12 @@ class SimpleGraph(object):
         if isinstance(weight, int) and weight >= 0:
             n1.neighbors.append((n2.name, weight))
             n1.neighbors = list(set(n1.neighbors))
+
+    def del_edge(self, n1, n2):
+        """Delete an edge."""
+        for tup in self.node_dict[n1.name].neighbors:
+            if tup[0] == n2.name:
+                n1.neighbors.remove(tup)
 
     def del_node(self, n):
         """Delete node from graph.
