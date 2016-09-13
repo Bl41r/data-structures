@@ -104,7 +104,7 @@ def test_node_repr(sg):
 # Test all add node to graph functions
 
 
-def test_sg_add_new_node(sg):
+def test_sg_add_node(sg):
     """
     Test addition of single node to simple_graph. Non-node type objects should
     raise a type error.
@@ -114,6 +114,17 @@ def test_sg_add_new_node(sg):
     a = Node(strung_input)
     sg.graph.add_node(a)
     assert a.name in sg.graph.node_dict
+
+
+def test_sg_add_node_quick(sg):
+    """
+    Test addition of single node to simple_graph. Non-node type objects should
+    raise a type error.
+    """
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    sg.graph.add_node_quick(strung_input)
+    assert strung_input in sg.graph.node_dict
 
 
 def test_sg_add_existing_node(sg):
@@ -168,6 +179,20 @@ def test_sg_add_edge(sg):
     assert a.neighbors[0][0] == b.name
 
 
+def test_sg_add_edge_by_name(sg):
+    """
+    Test addition of an edge to simple_graph. Node b is expected to be in node
+    a's neighbors list
+    """
+    strung_input = str(sg.input_val)
+    a = strung_input
+    b = strung_input + 'a'
+    sg.graph.add_node_quick(a)
+    sg.graph.add_node_quick(b)
+    sg.graph.add_edge_by_name(a, b, sg.weight)
+    assert sg.graph.node_dict[a].neighbors[0][0] == b
+
+
 def test_sg_add_edge_nonnode(sg):
     """
     Test addition of an edge to simple_graph with a non-node-type.
@@ -197,6 +222,19 @@ def test_del_node(sg):
     sg.graph.add_node(b)
     sg.graph.del_node(a)
     assert a.name not in sg.graph.node_dict
+
+
+def test_del_node_by_name(sg):
+    """
+    Test deletion of node from simple_graph.
+    """
+    strung_input = str(sg.input_val)
+    sg.graph.add_node_quick(strung_input)
+    sg.graph.add_node_quick(strung_input + 'a')
+    sg.graph.add_edge_by_name(strung_input, strung_input + 'a', 2)
+    sg.graph.del_node_by_name(strung_input)
+    assert strung_input not in sg.graph.node_dict
+    assert strung_input not in sg.graph.node_dict[strung_input + 'a'].neighbors
 
 
 def test_del_nonexist_node(sg):
@@ -281,6 +319,18 @@ def test_neighbors(sg):
     assert b.name in c[0][0]
 
 
+def test_neighbors_by_name(sg):
+    from simple_graph import Node
+    strung_input = str(sg.input_val)
+    a = Node(strung_input)
+    b = Node(strung_input * 2)
+    sg.graph.add_node(a)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b, sg.weight)
+    c = sg.graph.neighbors_by_name(strung_input)
+    assert b.name in c[0][0]
+
+
 def test_neighbors_no_arg(sg):
     strung_input = str(sg.input_val)
     with pytest.raises(TypeError):
@@ -305,26 +355,15 @@ def test_adjacent(sg):
     sg.graph.add_edge(a, b, sg.weight)
     assert sg.graph.adjacent(a, b)
 
-
-def test_adjacent_missing_node(sg):
+def test_adjacent_by_name(sg):
     from simple_graph import Node
     strung_input = str(sg.input_val)
     a = Node(strung_input)
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
-    with pytest.raises(ValueError):
-        assert sg.graph.adjacent(a, b)
-
-
-def test_adjacent_non_node(sg):
-    from simple_graph import Node
-    strung_input = str(sg.input_val)
-    print(strung_input)
-    print(type(strung_input))
-    a = Node(strung_input)
-    sg.graph.add_node(a)
-    with pytest.raises(TypeError):
-        assert sg.graph.adjacent(a, strung_input)
+    sg.graph.add_node(b)
+    sg.graph.add_edge(a, b, sg.weight)
+    assert sg.graph.adjacent_by_name(a.name, b.name)
 
 
 def test_sg_nodes_in_graph(sg):
@@ -471,21 +510,24 @@ def test_depth_ft():
     assert len(tree) == len(circ)
 
 
-#def test_weights():
-#    """Test weight functionality."""
-#    from simple_graph import Node
-#    gr = build_test_graph()
-#    j = Node('j_node', 9)   # not in graph
+def test_weight_by_name():
+    """Test weight functionality."""
+    from simple_graph import SimpleGraph
+    gr = SimpleGraph()
+    gr.add_node_quick('a')
+    gr.add_node_quick('b')
+    gr.add_edge_by_name('a', 'b', 5)
+    assert gr.weight_by_name('a', 'b') == 5
 
-#    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['b_node']) == 1
-#    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['c_node']) == 2
-#    assert gr.weight(gr.node_dict['a_node'], gr.node_dict['d_node']) == 3
-#    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['d_node']) == 2
-#    assert gr.weight(gr.node_dict['b_node'], gr.node_dict['e_node']) == 3
 
-#    f = 3
-#    with pytest.raises(AttributeError):
-#        assert gr.weight(gr.node_dict['a_node'], f)
-
-#    with pytest.raises(KeyError):
-#        assert gr.weight(gr.node_dict['a_node'], j)
+def test_weight():
+    """Test weight functionality."""
+    from simple_graph import Node
+    from simple_graph import SimpleGraph
+    gr = SimpleGraph()
+    a = Node('a')
+    b = Node('b')
+    gr.add_node(a)
+    gr.add_node(b)
+    gr.add_edge_by_name('a', 'b', 5)
+    assert gr.weight(a, b) == 5

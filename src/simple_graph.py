@@ -5,7 +5,6 @@ Simple edge-weighted graph data type which contains a dict of nodes.  Nodes are 
 class, which makes them adaptable for additional attributes to be added.
 In this implementation, weight is a positive integer directional edge.
 """
-from __future__ import unicode_literals
 import sys
 import timeit
 
@@ -65,6 +64,12 @@ class SimpleGraph(object):
             raise KeyError('Node {} already exists as {}'.format(n.name, self))
         self.node_dict[n.name] = n
 
+    def add_node_quick(self, name, data=None):
+        """Add a node quickly to the graph by supplying a name to it."""
+        if not isinstance(name, type('')):
+            raise TypeError('Name must be a string.')
+        self.add_node(Node(name, data))
+
     def add_edge(self, n1, n2, weight):
         """Add n2.name to n1.neighbors.
 
@@ -88,6 +93,13 @@ class SimpleGraph(object):
             n1.neighbors.append((n2.name, weight))
             n1.neighbors = list(set(n1.neighbors))
 
+    def add_edge_by_name(self, node_name1, node_name2, weight):
+        """Add an edge by the name of the nodes."""
+        if node_name1 in self.node_dict.keys() and node_name2 in self.node_dict.keys():
+            if isinstance(weight, int) and weight >= 0:
+                self.node_dict[node_name1].neighbors.append((node_name2, weight))
+                self.node_dict[node_name1].neighbors = list(set(self.node_dict[node_name1].neighbors))
+
     def del_edge(self, n1, n2):
         """Delete an edge."""
         for tup in self.node_dict[n1.name].neighbors:
@@ -110,6 +122,18 @@ class SimpleGraph(object):
             if name in self.node_dict[key].neighbors:
                 del name
 
+
+    def del_node_by_name(self, name):
+        """Delete a node using the name."""
+        try:
+            del self.node_dict[name]
+        except KeyError:
+            raise KeyError('Node does not exist in graph.')
+
+        for key in self.node_dict:
+            if name in self.node_dict[key].neighbors:
+                del name
+
     def edges(self):
         """Return a list of all edges."""
         edges = []
@@ -125,6 +149,11 @@ class SimpleGraph(object):
             raise TypeError('Must pass a node to has_node method.')
         return node_in_graph
 
+    def has_node_by_name(self, name):
+        """True if node called name is in the graph."""
+        node_in_graph = name in self.node_dict
+        return node_in_graph
+
     def neighbors(self, n):
         """Return the list of all nodes connected ‘n’ is connected to 
 
@@ -138,6 +167,16 @@ class SimpleGraph(object):
             raise ValueError('Node is not contained within graph.')
         return node_list
 
+    def neighbors_by_name(self, name):
+        """Return neighbors connected to node called name."""
+        try:
+            node_list = self.node_dict[name].neighbors
+        except AttributeError:
+            raise TypeError('Must pass a node to neighbors method.')
+        except KeyError:
+            raise ValueError('Node is not contained within graph.')
+        return node_list
+
     def adjacent(self, n1, n2):
         """Return True if there is an edge connecting n1 -> n2.
 
@@ -145,16 +184,24 @@ class SimpleGraph(object):
         are not in g.
         """
         try:
-            print(self.node_dict[n2.name].name)
-            print(self.node_dict[n1.name].neighbors)
             for item in self.node_dict[n1.name].neighbors:
                 if self.node_dict[n2.name].name in item:
                     return True
+            return False
         except KeyError:
             raise ValueError('Graph does not contain both nodes.  Use has_node method.')
         except AttributeError:
             raise TypeError('Must pass node types to adjacent method.')
-        return False
+
+    def adjacent_by_name(self, name1, name2):
+        """Same as adjacent with node names used."""
+        try:
+            for item in self.node_dict[name1].neighbors:
+                if self.node_dict[name2].name in item:
+                    return True
+            return False
+        except KeyError:
+            raise ValueError('Graph does not contain both nodes.  Use has_node method.')
 
     def nodes(self):
         """Return a list of all node names contained in graph."""
@@ -171,6 +218,15 @@ class SimpleGraph(object):
                     return n[1]
         except AttributeError:
             raise AttributeError('n1 and n2 must be nodes.')
+        except KeyError:
+            raise KeyError('Nodes must be contained in the graph.')
+
+    def weight_by_name(self, name1, name2):
+        """Same as weight but with node names."""
+        try:
+            for n in self.node_dict[name1].neighbors:
+                if n[0] == name2:
+                    return n[1]
         except KeyError:
             raise KeyError('Nodes must be contained in the graph.')
 
