@@ -89,16 +89,28 @@ class SimpleGraph(object):
         if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
             raise ValueError('Cannot Overwrite existing nodes in graph.')
 
-        if isinstance(weight, int) and weight >= 0:
+        try:
+            weight = float(weight)
+        except ValueError:
+            raise ValueError('Weight must be a positive number.')
+        if weight >= 0:
             n1.neighbors.append((n2.name, weight))
             n1.neighbors = list(set(n1.neighbors))
+        else:
+            raise ValueError('Weight must be >= 0')
 
     def add_edge_by_name(self, node_name1, node_name2, weight):
         """Add an edge by the name of the nodes."""
         if node_name1 in self.node_dict.keys() and node_name2 in self.node_dict.keys():
-            if isinstance(weight, int) and weight >= 0:
+            try:
+                weight = float(weight)
+            except ValueError:
+                raise ValueError('Weight must be a positive number.')
+            if weight >= 0:
                 self.node_dict[node_name1].neighbors.append((node_name2, weight))
                 self.node_dict[node_name1].neighbors = list(set(self.node_dict[node_name1].neighbors))
+            else:
+                raise ValueError('Weight must be >= 0')
 
     def del_edge(self, n1, n2):
         """Delete an edge."""
