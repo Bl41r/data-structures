@@ -160,7 +160,7 @@ def test_sg_add_edge_create_node(sg):
     strung_input = str(sg.input_val)
     a = Node(strung_input)
     b = Node(strung_input * 2)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     assert a.name in sg.graph.node_dict and b.name in sg.graph.node_dict
 
 
@@ -175,8 +175,8 @@ def test_sg_add_edge(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
-    assert a.neighbors[0][0] == b.name
+    sg.graph.add_edge(a, b)
+    assert a.neighbors[0] == b.name
 
 
 def test_sg_add_edge_by_name(sg):
@@ -189,8 +189,8 @@ def test_sg_add_edge_by_name(sg):
     b = strung_input + 'a'
     sg.graph.add_node_quick(a)
     sg.graph.add_node_quick(b)
-    sg.graph.add_edge_by_name(a, b, sg.weight)
-    assert sg.graph.node_dict[a].neighbors[0][0] == b
+    sg.graph.add_edge_by_name(a, b)
+    assert sg.graph.node_dict[a].neighbors[0] == b
 
 
 def test_sg_add_edge_nonnode(sg):
@@ -204,7 +204,7 @@ def test_sg_add_edge_nonnode(sg):
     b = strung_input
     sg.graph.add_node(a)
     with pytest.raises(TypeError):
-        sg.graph.add_edge(a, b, sg.weight)
+        sg.graph.add_edge(a, b)
 
 
 # Test delete node functions
@@ -231,7 +231,7 @@ def test_del_node_by_name(sg):
     strung_input = str(sg.input_val)
     sg.graph.add_node_quick(strung_input)
     sg.graph.add_node_quick(strung_input + 'a')
-    sg.graph.add_edge_by_name(strung_input, strung_input + 'a', 2)
+    sg.graph.add_edge_by_name(strung_input, strung_input + 'a')
     sg.graph.del_node_by_name(strung_input)
     assert strung_input not in sg.graph.node_dict
     assert strung_input not in sg.graph.node_dict[strung_input + 'a'].neighbors
@@ -264,7 +264,7 @@ def test_del_node_and_edge(sg):
     print(a.name)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     sg.graph.del_node(b)
     assert b.name not in sg.graph.node_dict
 
@@ -284,9 +284,9 @@ def test_sg_edges(sg):
     sg.graph.add_node(b)
     sg.graph.add_node(c)
     sg.graph.add_node(d)
-    sg.graph.add_edge(a, c, 1)
-    sg.graph.add_edge(b, d, 1)
-    sg.graph.add_edge(a, d, 1)
+    sg.graph.add_edge(a, c)
+    sg.graph.add_edge(b, d)
+    sg.graph.add_edge(a, d)
     e = a.output_neighbors()
     f = b.output_neighbors()
     g = e + f
@@ -314,9 +314,9 @@ def test_neighbors(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     c = sg.graph.neighbors(a)
-    assert b.name in c[0][0]
+    assert b.name in c[0]
 
 
 def test_neighbors_by_name(sg):
@@ -326,9 +326,9 @@ def test_neighbors_by_name(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     c = sg.graph.neighbors_by_name(strung_input)
-    assert b.name in c[0][0]
+    assert b.name in c[0]
 
 
 def test_neighbors_no_arg(sg):
@@ -352,7 +352,7 @@ def test_adjacent(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     assert sg.graph.adjacent(a, b)
 
 def test_adjacent_by_name(sg):
@@ -362,7 +362,7 @@ def test_adjacent_by_name(sg):
     b = Node(strung_input * 2)
     sg.graph.add_node(a)
     sg.graph.add_node(b)
-    sg.graph.add_edge(a, b, sg.weight)
+    sg.graph.add_edge(a, b)
     assert sg.graph.adjacent_by_name(a.name, b.name)
 
 

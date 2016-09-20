@@ -3,7 +3,6 @@
 
 Simple edge-weighted graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
-In this implementation, weight is a positive integer directional edge.
 """
 import sys
 import timeit
@@ -34,7 +33,7 @@ class Node(object):
         """Return a list of strings indicating its neighbors."""
         output = []
         for n in self.neighbors:
-            output.append("{} to {}, weight = {}".format(self.name, n[0], n[1]))
+            output.append("{} to {}".format(self.name, n[0]))
         return output
 
 
@@ -70,13 +69,13 @@ class SimpleGraph(object):
             raise TypeError('Name must be a string.')
         self.add_node(Node(name, data))
 
-    def add_edge(self, n1, n2, weight):
+    def add_edge(self, n1, n2):
         """Add n2.name to n1.neighbors.
 
         If either don't exist, add to graph.  n1 and n2 are Node
         instances which should be contained in the graph's node_dict.
         If n1 already contains n2 as a neighbor, n2 will not be appended
-        again.  Weight is a positive integer.
+        again.
         """
         try:
             if n1.name not in self.node_dict:
@@ -88,29 +87,15 @@ class SimpleGraph(object):
 
         if n1 is not self.node_dict[n1.name] or n2 is not self.node_dict[n2.name]:
             raise ValueError('Cannot Overwrite existing nodes in graph.')
+        
+        n1.neighbors.append(n2.name)
+        n1.neighbors = list(set(n1.neighbors))
 
-        try:
-            weight = float(weight)
-        except ValueError:
-            raise ValueError('Weight must be a positive number.')
-        if weight >= 0:
-            n1.neighbors.append((n2.name, weight))
-            n1.neighbors = list(set(n1.neighbors))
-        else:
-            raise ValueError('Weight must be >= 0')
-
-    def add_edge_by_name(self, node_name1, node_name2, weight):
+    def add_edge_by_name(self, node_name1, node_name2):
         """Add an edge by the name of the nodes."""
         if node_name1 in self.node_dict.keys() and node_name2 in self.node_dict.keys():
-            try:
-                weight = float(weight)
-            except ValueError:
-                raise ValueError('Weight must be a positive number.')
-            if weight >= 0:
-                self.node_dict[node_name1].neighbors.append((node_name2, weight))
-                self.node_dict[node_name1].neighbors = list(set(self.node_dict[node_name1].neighbors))
-            else:
-                raise ValueError('Weight must be >= 0')
+            self.node_dict[node_name1].neighbors.append((node_name2))
+            self.node_dict[node_name1].neighbors = list(set(self.node_dict[node_name1].neighbors))
 
     def del_edge(self, n1, n2):
         """Delete an edge."""
