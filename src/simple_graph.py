@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """Simple graph implementation.
 
-Simple edge-weighted graph data type which contains a dict of nodes.  Nodes are a
+Simple graph data type which contains a dict of nodes.  Nodes are a
 class, which makes them adaptable for additional attributes to be added.
 """
-import sys
-import timeit
 
 
 class Node(object):
@@ -154,7 +152,7 @@ class SimpleGraph(object):
     def neighbors(self, n):
         """Return the list of all nodes connected ‘n’ is connected to 
 
-        by edges and weight of edge.  Raises an error if n is not in g.
+        by edges.  Raises an error if n is not in g.
         """
         try:
             node_list = self.node_dict[n.name].neighbors

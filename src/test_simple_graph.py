@@ -15,7 +15,7 @@ g.edges(): return a list of all edges in the graph
 
 g.add_node(n): adds a new node ‘n’ to the graph
 
-g.add_edge(n1, n2, weight): adds a new edge to the graph connecting ‘n1’ and ‘n2’,
+g.add_edge(n1, n2): adds a new edge to the graph connecting ‘n1’ and ‘n2’,
 if either n1 or n2 are not already present in the graph, they should be added.
 
 g.del_node(n): deletes the node ‘n’ from the graph,
@@ -84,7 +84,7 @@ def test_node_init(sg):
     """
     from simple_graph import Node
     try:
-        a = Node(sg.input_val, sg.weight)
+        a = Node(sg.input_val)
         assert a.name == sg.input_val
     except TypeError:
         with pytest.raises(TypeError):
